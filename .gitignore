@@ -1,5 +1,11 @@
 github credentials.txt
+supabase credentials.txt
 .github-credentials*
 *.local
 .DS_Store
 Thumbs.db
+# js/env.js ships intentionally: it holds ONLY the public Project URL + publishable key (RLS protects the data; the secret key never appears there)
+node_modules/
+.vercel
+*credentials*.txt
+resend api cedentials.txt

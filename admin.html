@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — GTA VI HQ</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=3">
+<style>
+  .admin-wrap{max-width:1100px}
+  .admin-nav{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:18px 0}
+  .admin-nav select,.admin-nav input{max-width:220px}
+  .row-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .editor-grid label{display:block;margin:10px 0 4px;font-weight:600;font-size:.85rem}
+  .editor-grid input,.editor-grid select,.editor-grid textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius);background:#12151D;color:var(--ink);font-family:inherit}
+  .editor-grid textarea{min-height:90px}
+  .full{grid-column:1/-1}
+  .status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  @media(max-width:760px){.editor-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ <span class="badge unconfirmed" style="margin-left:6px">ADMIN</span></a>
+    <div class="nav-actions">
+      <a class="btn ghost sm" href="index.html">View site</a>
+      <button id="signout-btn" class="btn ghost sm" hidden>Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap admin-wrap" id="main">
+  <div id="no-config" class="callout warn" hidden>
+    <b>Supabase is not configured.</b> Create <code>js/env.js</code> from <code>js/env.example.js</code>
+    with your Project URL and publishable key, then reload this page. Setup guide: <a href="SETUP-SUPABASE.md">SETUP-SUPABASE.md</a>.
+  </div>
+
+  <!-- LOGIN -->
+  <section id="login-view">
+    <div class="page-head"><span class="updated">Authorized administrators only</span><h1>Admin Sign In</h1></div>
+    <div class="card" style="max-width:480px">
+      <div class="editor-grid">
+        <label class="full" for="a-email">Email</label><input class="full" id="a-email" type="email" autocomplete="username">
+        <label class="full" for="a-pass">Password</label><input class="full" id="a-pass" type="password" autocomplete="current-password">
+        <button id="login-btn" class="btn full" type="button">Sign in</button>
+        <div class="full" id="login-err" style="color:var(--destructive);font-size:.85rem"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dash-view" hidden>
+    <div class="page-head">
+      <span class="updated" id="sb-state"></span>
+      <h1>Content Dashboard</h1>
+    </div>
+    <div class="admin-nav">
+      <select id="f-type"><option value="">All types</option><option>cheat</option><option>character</option><option>vehicle</option><option>weapon</option><option>location</option><option>mission</option><option>guide</option><option>news</option><option>blog</option><option>faq</option></select>
+      <select id="f-status"><option value="">All statuses</option><option>published</option><option>draft</option></select>
+      <input id="f-q" type="search" placeholder="Filter by title…">
+      <button id="new-btn" class="btn">+ New content</button>
+      <span class="count" id="list-count"></span>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Verified</th><th>Updated</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+
+    <!-- EDITOR -->
+    <div id="editor" hidden style="margin-top:30px">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 id="editor-title" style="margin:0">New content</h2>
+          <button id="close-editor" class="btn ghost sm">✕ Close</button>
+        </div>
+        <form id="content-form" novalidate>
+          <div class="editor-grid">
+            <div><label for="c-type">Type</label><select id="c-type"><option>cheat</option><option>character</option><option>vehicle</option><option>weapon</option><option>location</option><option>mission</option><option>guide</option><option>news</option><option>blog</option><option>faq</option></select></div>
+            <div><label for="c-slug">Slug (URL id — latin letters, digits, dashes)</label><input id="c-slug" pattern="[a-z0-9-]+" required></div>
+            <div><label for="c-title">Title</label><input id="c-title" required></div>
+            <div><label for="c-status">Status</label><select id="c-status"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+            <div><label for="c-verification">Verification badge</label><select id="c-verification"><option>CONFIRMED</option><option>SUPPORTED</option><option>UNCONFIRMED</option><option>SPECULATION</option><option>NOT_AVAILABLE</option></select></div>
+            <div><label for="c-verified-at">Last verified date</label><input id="c-verified-at" type="date"></div>
+            <div class="full"><label for="c-desc">Description (short summary)</label><textarea id="c-desc" maxlength="500"></textarea></div>
+            <div class="full"><label for="c-body">Body (long-form, optional)</label><textarea id="c-body"></textarea></div>
+            <div class="full"><label for="c-img">Featured image URL</label><input id="c-img" placeholder="https://…supabase.co/storage/v1/object/public/media/…"></div>
+            <div class="full"><label for="c-img-alt">Image alt text</label><input id="c-img-alt"></div>
+            <div class="full"><label for="c-img-attr">Image attribution / licence</label><input id="c-img-attr" value="Original artwork — this site"></div>
+            <div class="full"><label for="c-sources">Sources (one URL per line)</label><textarea id="c-sources" placeholder="https://www.powerpyx.com/…&#10;https://www.rockstargames.com/…"></textarea></div>
+            <div class="full"><label for="c-fields">Entity fields (JSON — type-specific: input, effect, category, stats…)</label><textarea id="c-fields" style="min-height:160px;font-family:monospace;font-size:.85rem"></textarea></div>
+            <div class="full"><label for="c-file">Upload image to Supabase Storage (jpg/png/webp/svg, ≤5 MB)</label><input id="c-file" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml,image/avif"></div>
+            <div class="full" id="upload-state" style="font-size:.85rem;color:var(--muted)"></div>
+            <div class="full" style="display:flex;gap:12px;margin-top:16px">
+              <button type="submit" class="btn">💾 Save</button>
+              <button type="button" id="preview-btn" class="btn ghost">👁 Preview</button>
+              <button type="button" id="delete-btn" class="btn ghost" style="color:var(--destructive)">🗑 Delete…</button>
+            </div>
+            <div class="full" id="form-msg"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/env.js"></script>
+<script type="module">
+  // Admin requires the Supabase JS SDK — loaded from CDN only when env.js exists.
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  const SB_URL = window.SUPABASE_URL || "", SB_KEY = window.SUPABASE_PUBLISHABLE_KEY || "";
+  if (!SB_URL.includes(".supabase.co") || SB_KEY.length < 20) {
+    $("no-config").hidden = false; $("login-view").hidden = true;
+    throw new Error("Supabase not configured — admin disabled (safe state)");
+  }
+  const sb = createClient(SB_URL, SB_KEY);
+
+  const TYPES = ["cheat","character","vehicle","weapon","location","mission","guide","news","blog","faq"];
+  let editingId = null;
+
+  /* ---------- auth ---------- */
+  async function refreshSession() {
+    const { data } = await sb.auth.getSession();
+    const logged = !!(data && data.session);
+    $("login-view").hidden = logged; $("dash-view").hidden = !logged; $("signout-btn").hidden = !logged;
+    if (logged) { $("sb-state").textContent = "Signed in as " + data.session.user.email; load(); }
+  }
+  $("login-btn").addEventListener("click", async () => {
+    $("login-err").textContent = "";
+    const { error } = await sb.auth.signInWithPassword({ email: $("a-email").value.trim(), password: $("a-pass").value });
+    if (error) { $("login-err").textContent = "Sign-in failed: " + error.message; return; }
+    refreshSession();
+  });
+  $("signout-btn").addEventListener("click", async () => { await sb.auth.signOut(); refreshSession(); });
+  $("a-pass").addEventListener("keydown", e => { if (e.key === "Enter") $("login-btn").click(); });
+
+  /* ---------- list ---------- */
+  async function load() {
+    let q = sb.from("content").select("*").order("updated_at", { ascending: false }).limit(500);
+    const t = $("f-type").value, st = $("f-status").value, s = $("f-q").value.trim();
+    if (t) q = q.eq("type", t);
+    if (st) q = q.eq("status", st);
+    if (s) q = q.ilike("title", "%" + s + "%");
+    const { data, error } = await q;
+    const rows = $("rows");
+    if (error) { rows.innerHTML = `<tr><td colspan="6">Load failed: ${esc(error.message)}</td></tr>`; return; }
+    $("list-count").textContent = data.length + " records";
+    rows.innerHTML = data.map(r => `<tr>
+      <td><b>${esc(r.title)}</b><br><span class="small">/${esc(r.type)}/${esc(r.slug)}</span></td>
+      <td>${esc(r.type)}</td>
+      <td><span class="status-dot" style="background:${r.status === "published" ? "var(--success)" : "var(--warning)"}"></span> ${esc(r.status)}</td>
+      <td class="small">${esc(r.verification || "—")}${r.verified_at ? " · " + esc(r.verified_at) : ""}</td>
+      <td class="small">${esc((r.updated_at || "").slice(0, 10))}</td>
+      <td><div class="row-actions"><button class="btn ghost sm" data-edit="${r.id}">Edit</button>
+        <button class="btn ghost sm" data-toggle="${r.id}" data-next="${r.status === "published" ? "draft" : "published"}">${r.status === "published" ? "Unpublish" : "Publish"}</button>
+        <a class="btn ghost sm" href="detail.html?type=${esc(r.type)}&id=${esc(r.slug)}&preview=1" target="_blank">Preview</a></div></td>
+    </tr>`).join("") || `<tr><td colspan="6">No records yet — click “+ New content”.</td></tr>`;
+  }
+  ["f-type","f-status"].forEach(id => $(id).addEventListener("change", load));
+  let deb; $("f-q").addEventListener("input", () => { clearTimeout(deb); deb = setTimeout(load, 250); });
+
+  /* ---------- editor ---------- */
+  function fieldsToForm(r) {
+    $("c-type").value = r.type; $("c-slug").value = r.slug; $("c-title").value = r.title;
+    $("c-status").value = r.status; $("c-verification").value = r.verification || "SUPPORTED";
+    $("c-verified-at").value = r.verified_at || new Date().toISOString().slice(0, 10);
+    $("c-desc").value = r.description || ""; $("c-body").value = r.body || "";
+    $("c-img").value = r.featured_image_url || ""; $("c-img-alt").value = r.image_alt || "";
+    $("c-img-attr").value = r.image_attribution || "Original artwork — this site";
+    const f = r.fields || {};
+    $("c-sources").value = (f.sources || []).join("\n");
+    const rest = Object.assign({}, f); delete rest.sources;
+    $("c-fields").value = JSON.stringify(rest, null, 2);
+  }
+  function formToPayload() {
+    let fields;
+    try { fields = JSON.parse($("c-fields").value || "{}"); }
+    catch (e) { $("form-msg").textContent = "⚠️ Entity fields JSON is invalid: " + e.message; return null; }
+    const sources = $("c-sources").value.split(/\n+/).map(s => s.trim()).filter(Boolean);
+    if (sources.length) fields.sources = sources; else delete fields.sources;
+    return {
+      type: $("c-type").value, slug: $("c-slug").value.trim(), title: $("c-title").value.trim(),
+      status: $("c-status").value, verification: $("c-verification").value, verified_at: $("c-verified-at").value || null,
+      description: $("c-desc").value.trim() || null, body: $("c-body").value.trim() || null,
+      featured_image_url: $("c-img").value.trim() || null, image_alt: $("c-img-alt").value.trim() || null,
+      image_attribution: $("c-img-attr").value.trim() || null,
+      published_at: $("c-status").value === "published" ? new Date().toISOString() : null,
+      fields
+    };
+  }
+  function openEditor(row) {
+    editingId = row ? row.id : null;
+    $("editor").hidden = false; $("form-msg").textContent = "";
+    $("editor-title").textContent = row ? "Edit: " + row.title : "New content";
+    if (row) fieldsToForm(row);
+    else {
+      $("content-form").reset();
+      $("c-verified-at").value = new Date().toISOString().slice(0, 10);
+      $("c-img-attr").value = "Original artwork — this site";
+      $("c-fields").value = "{}";
+    }
+    $("editor").scrollIntoView({ behavior: "smooth" });
+  }
+  $("new-btn").addEventListener("click", () => openEditor(null));
+  $("close-editor").addEventListener("click", () => $("editor").hidden = true);
+
+  $("content-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const payload = formToPayload(); if (!payload) return;
+    const { error } = editingId
+      ? await sb.from("content").update(payload).eq("id", editingId)
+      : await sb.from("content").insert(payload);
+    if (error) { $("form-msg").textContent = "⚠️ Save failed: " + error.message; return; }
+    $("form-msg").textContent = "✅ Saved"; editingId = null; $("editor").hidden = true; load();
+  });
+
+  $("preview-btn").addEventListener("click", () => {
+    const payload = formToPayload(); if (!payload) return;
+    sessionStorage.setItem("gta-preview", JSON.stringify(payload));
+    window.open("detail.html?type=" + encodeURIComponent(payload.type) + "&id=" + encodeURIComponent(payload.slug) + "&preview=1", "_blank");
+  });
+
+  $("delete-btn").addEventListener("click", async () => {
+    if (!editingId) { $("form-msg").textContent = "⚠️ Only saved records can be deleted."; return; }
+    const title = $("c-title").value;
+    if (!confirm(`Delete “${title}” permanently? This cannot be undone.`)) return;
+    if (!confirm("Second confirmation — really delete this content record?")) return;
+    const { error } = await sb.from("content").delete().eq("id", editingId);
+    if (error) { $("form-msg").textContent = "⚠️ Delete failed: " + error.message; return; }
+    $("form-msg").textContent = "Deleted"; editingId = null; $("editor").hidden = true; load();
+  });
+
+  /* ---------- row actions (event delegation) ---------- */
+  $("rows").addEventListener("click", async e => {
+    const ed = e.target.closest("[data-edit]");
+    if (ed) {
+      const { data } = await sb.from("content").select("*").eq("id", ed.dataset.edit).maybeSingle();
+      if (data) openEditor(data);
+      return;
+    }
+    const tg = e.target.closest("[data-toggle]");
+    if (tg) {
+      const next = tg.dataset.next;
+      const payload = next === "published" ? { status: "published", published_at: new Date().toISOString() } : { status: "draft" };
+      const { error } = await sb.from("content").update(payload).eq("id", tg.dataset.toggle);
+      if (error) alert("Update failed: " + error.message); else load();
+    }
+  });
+
+  /* ---------- image upload ---------- */
+  $("c-file").addEventListener("change", async () => {
+    const file = $("c-file").files[0]; if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { $("upload-state").textContent = "⚠️ File too large (max 5 MB)"; return; }
+    $("upload-state").textContent = "Uploading…";
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const path = "content/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
+    const { error } = await sb.storage.from("media").upload(path, file, { contentType: file.type, upsert: false });
+    if (error) { $("upload-state").textContent = "⚠️ Upload failed: " + error.message; return; }
+    const { data } = sb.storage.from("media").getPublicUrl(path);
+    $("c-img").value = data.publicUrl;
+    $("c-img-alt").value = $("c-img-alt").value || file.name.replace(/\.[^.]+$/, "");
+    $("upload-state").textContent = "✅ Uploaded — image URL set. Attribution metadata is stored with the record on save.";
+    // register attribution metadata (best effort)
+    try {
+      await sb.from("media_assets").insert({
+        bucket_path: path, url: data.publicUrl, alt: $("c-img-alt").value,
+        attribution: $("c-img-attr").value, license: "Site-original", size_bytes: file.size
+      });
+    } catch (e) { console.warn("media_assets insert:", e.message); }
+  });
+
+  refreshSession();
+</script>
+</body>
+</html>

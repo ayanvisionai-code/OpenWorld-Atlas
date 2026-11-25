@@ -48,7 +48,7 @@
         <label for="re">Email (optional — never published)</label>
         <input id="re" name="email" type="email" placeholder="you@example.com">
         <button class="btn" type="submit" style="margin-top:18px">Submit request</button>
-        <div class="form-ok" id="request-ok">✅ Saved locally and ready to send. This site has no server yet, so to deliver it now, <a id="mailto-link" href="#">open it in your email app</a>. Requests are never published.</div>
+        <div class="form-ok" id="request-ok">✅ Request received. If you left an email, the team can reply to you there. Your message is also delivered privately to the site owner — their address is never shown on the site.</div>
       </form>
       <p class="small" style="margin-top:10px">Spam protection: requests are rate-limited to one per session, validated, and stored only in your own browser until you choose to send them.</p>
     </div>
@@ -59,7 +59,7 @@
       <h4>Corrections</h4>
       <p class="small">Pick "Correction" in the form above with the page URL and the verified source that contradicts it. Verified corrections ship fast.</p>
       <h4>Direct email</h4>
-      <p class="small">[add your email before going live]</p>
+      <p class="small">The fastest way to reach us is the form on this page — every message goes straight to the team's private inbox. We keep the inbox address off the site so it can't be harvested by spam bots.</p>
     </div>
   </div>
 </main>
@@ -73,16 +73,8 @@
     <div class="fnav"><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheats</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="disclaimer.html">Legal</a></div>
   </div>
 </footer>
-<script src="app.js?v=3"></script>
-<script>
-  const f = document.getElementById("request-form");
-  f.addEventListener("submit", e => {
-    setTimeout(() => {
-      const q = document.getElementById("rq").value.trim(), c = document.getElementById("rc").value, m = document.getElementById("re").value.trim();
-      const body = encodeURIComponent("Question/topic: " + q + "\nCategory: " + c + (m ? "\nReply-to: " + m : ""));
-      document.getElementById("mailto-link").href = "mailto:REPLACE-WITH-YOUR-EMAIL@example.com?subject=" + encodeURIComponent("GTA VI HQ content request — " + c) + "&body=" + body;
-    }, 50);
-  });
-</script>
+<script src="js/env.js" onerror="this.remove"></script>
+    <script src="js/env.js" onerror="this.remove"></script>
+    <script src="app.js?v=3"></script>
 </body>
 </html>

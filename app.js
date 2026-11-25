@@ -4,12 +4,89 @@
 
   /* ---------------- Data store ---------------- */
   const DB = { cheats: null, characters: null, vehicles: null, weapons: null, locations: null, missions: null, guides: null };
-  const DATA_VER = "2026-11-25c"; // bump when data/*.json changes so browsers refetch
+  const DATA_VER = "2026-11-25d"; // bump when data/*.json changes so browsers refetch
+
+  /* Supabase config: provided by js/env.js (public values only — URL + publishable key).
+     Absent file → JSON fallback; the site never breaks. */
+  const SB_URL = (typeof window.SUPABASE_URL === "string" && window.SUPABASE_URL.includes(".supabase.co")) ? window.SUPABASE_URL.replace(/\/$/, "") : null;
+  const SB_KEY = (typeof window.SUPABASE_PUBLISHABLE_KEY === "string" && window.SUPABASE_PUBLISHABLE_KEY.length > 20) ? window.SUPABASE_PUBLISHABLE_KEY : null;
+  const SB_ON = !!(SB_URL && SB_KEY);
+
+  /* Map a content row (PostgREST) into the entity shape the renderers expect */
+  function rowToRecord(r) {
+    const f = r.fields || {};
+    return Object.assign({}, f, {
+      id: f.id || r.slug,
+      name: f.name || r.title,
+      verification: f.verification || r.verification || "SUPPORTED",
+      sources: f.sources || []
+    });
+  }
+  const TYPE_TO_DB = {
+    cheat: "cheats", character: "characters", vehicle: "vehicles", weapon: "weapons",
+    location: "locations", mission: "missions", guide: "guides", news: "news"
+  };
+  const DB_LIST_KEY = { cheats: "cheats", characters: "characters", vehicles: "vehicles", weapons: "weapons", locations: "regions", missions: "missions", guides: "guides", news: "news" };
+
+  async function sbRest(path, opts) {
+    const r = await fetch(SB_URL + path, Object.assign({
+      headers: Object.assign({ apikey: SB_KEY, Authorization: "Bearer " + SB_KEY }, (opts && opts.headers) || {})
+    }, opts || {}));
+    if (!r.ok) throw new Error("supabase " + r.status);
+    return r.json();
+  }
+
+  /* Fallback: bundled JSON (always fetched — holds wrapper metadata like chapters & how-to) */
   const READY = Promise.all(
     Object.keys(DB).map(k =>
       fetch("data/" + k + ".json?v=" + DATA_VER, { cache: "reload" }).then(r => { if (!r.ok) throw new Error(k); return r.json(); }).then(j => { DB[k] = j; })
     )
-  );
+  ).then(async () => {
+    if (!SB_ON) return; // pure-JSON mode
+    try {
+      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&order=updated_at.asc", {});
+      if (!Array.isArray(rows)) return;
+      for (const r of rows) {
+        const dbKey = TYPE_TO_DB[r.type]; if (!dbKey || !DB[dbKey]) continue;
+        const list = DB[dbKey][DB_LIST_KEY[dbKey]];
+        if (!list) continue;
+        const rec = rowToRecord(r);
+        const i = list.findIndex(x => x.id === rec.id);
+        if (i >= 0) list[i] = rec; else list.push(rec); // admin edits override seed; new rows appended
+      }
+      if (rows.length) console.info("[GTA VI HQ] loaded " + rows.length + " published records from Supabase");
+    } catch (e) {
+      console.warn("[GTA VI HQ] Supabase load failed — using bundled JSON fallback:", e.message);
+    }
+  });
+
+  /* Supabase JS client (lazy, only for authenticated admin features) */
+  let _sbPromise = null;
+  function sb() {
+    if (!SB_ON) return Promise.resolve(null);
+    if (!_sbPromise) _sbPromise = import("https://esm.sh/@supabase/supabase-js@2").then(m => m.createClient(SB_URL, SB_KEY));
+    return _sbPromise;
+  }
+
+  /* Server-side search (no full-DB download): PostgREST ilike per word, merged client-side */
+  async function serverSearch(q, limit) {
+    if (!SB_ON) return null;
+    const words = q.toLowerCase().split(/\s+/).filter(w => w.length >= 3).slice(0, 4);
+    if (!words.length) return null;
+    const ors = words.map(w =>
+      `title.ilike.*${w}*,description.ilike.*${w}*,fields->>name.ilike.*${w}*,fields->>effect.ilike.*${w}*,fields->>keywords.ilike.*${w}*`).join(",");
+    const rows = await sbRest(`/rest/v1/content?select=*&status=eq.published&or=(${ors})&limit=${limit || 40}`, {});
+    return rows.map(r => ({
+      r: {
+        type: r.type,
+        title: r.title,
+        desc: r.description || "",
+        badge: r.verification,
+        url: "detail.html?type=" + r.type + "&id=" + r.slug
+      },
+      s: 50
+    }));
+  }
 
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const badge = st => {
@@ -222,8 +299,66 @@
     });
   }
 
+  /* Admin draft preview (authenticated only — RLS blocks drafts for everyone else) */
+  async function previewDraft(type, id) {
+    try {
+      // 1) unsaved editor preview (admin dashboard stashes the payload in sessionStorage)
+      const p = sessionStorage.getItem("gta-preview");
+      if (p) {
+        const row = JSON.parse(p);
+        if (row && row.type === type && row.slug === id) {
+          const f = row.fields || {};
+          return Object.assign({}, f, { id: f.id || row.slug, name: f.name || row.title, verification: row.verification || "SUPPORTED", sources: f.sources || [] });
+        }
+      }
+      // 2) saved draft from the database (requires an authenticated admin session — RLS enforces)
+      const client = await sb(); if (!client) return null;
+      const { data: sess } = await client.auth.getSession();
+      if (!sess || !sess.session) return null;
+      const { data, error } = await client.from("content").select("*").eq("type", type).eq("slug", id).maybeSingle();
+      if (error || !data) return null;
+      return rowToRecord(data);
+    } catch (e) { console.warn("preview failed:", e.message); return null; }
+  }
+
+  /* Contact submission → database (anon insert allowed by RLS). Rate-limited per session. */
+  async function submitContact(entry) {
+    if (!SB_ON) return false;
+    const last = +sessionStorage.getItem("gta-last-submit") || 0;
+    if (Date.now() - last < 30000) return false; // one submission per 30s per session
+    try {
+      await sbRest("/rest/v1/contact_submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ question: entry.q, category: entry.cat || "Other", email: entry.mail || null })
+      });
+      sessionStorage.setItem("gta-last-submit", String(Date.now()));
+      return true;
+    } catch (e) { console.warn("contact submit failed:", e.message); return false; }
+  }
+
+  /* Email delivery via the server-side Edge Function. The Resend API key and
+     the admin's email address live ONLY in Supabase secrets — nothing secret
+     is in this file, the page source, or the network payload beyond the
+     visitor's own message. */
+  async function notifyByEmail(entry) {
+    if (!SB_ON) return false;
+    const last = +sessionStorage.getItem("gta-last-email") || 0;
+    if (Date.now() - last < 30000) return false; // rate limit shared with DB insert
+    try {
+      const r = await fetch(SB_URL + "/functions/v1/contact-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SB_KEY },
+        body: JSON.stringify({ question: entry.q, category: entry.cat || "Other", email: entry.mail || "" })
+      });
+      if (!r.ok) return false;
+      sessionStorage.setItem("gta-last-email", String(Date.now()));
+      return true;
+    } catch (e) { console.warn("email notify failed:", e.message); return false; }
+  }
+
   /* ---------------- Detail renderer (detail.html?type=&id=) ---------------- */
-  function renderDetail(type, id) {
+  async function renderDetail(type, id) {
     const root = document.getElementById("detail-root");
     const cfg = {
       cheat:    { title: "Cheat code", back: "cheats.html", data: DB.cheats.cheats, nameKey: "name" },
@@ -234,7 +369,12 @@
       mission:  { title: "Mission", back: "missions.html", data: DB.missions.missions, nameKey: "name" }
     }[type];
     if (!cfg) { root.innerHTML = emptyState("Unknown content type."); return; }
-    const it = cfg.data.find(x => x.id === id);
+    let it = cfg.data.find(x => x.id === id);
+    if (!it && new URLSearchParams(location.search).get("preview") === "1") {
+      // Admin draft preview: authenticated session can read draft rows (RLS-enforced)
+      it = await previewDraft(type, id);
+      if (!it) { root.innerHTML = emptyState("Draft not found — sign in to the admin dashboard first."); return; }
+    }
     if (!it) { root.innerHTML = emptyState("Record not found — it may have been renamed. <a href='" + cfg.back + "'>Browse all " + cfg.title.toLowerCase() + "s</a>."); return; }
     document.title = it.name + " — GTA 6 " + cfg.title + " | GTA VI HQ";
     let body = "";
@@ -379,7 +519,10 @@
   }
   function renderNews() {
     const root = document.getElementById("news-root"); if (!root) return;
-    const items = [
+    const dbNews = DB.news && DB.news.news;
+    const items = dbNews && dbNews.length ? dbNews.map(n => ({
+      d: n.date || "", t: n.title || n.name, s: n.verification || "SUPPORTED", x: n.summary || n.effect || "", u: n.url || ("detail.html?type=news&id=" + n.id)
+    })) : [
       { d: "Nov 24, 2026", t: "Launch-weekend estimate: 44.9M copies, ~$4B gross", s: "SUPPORTED", x: "Alinea Analytics estimates GTA 6 sold 44.9 million copies with ~$4 billion gross by the end of launch weekend — twice Taylor Swift's entire Eras Tour take.", u: "https://www.polygon.com/gta-6-grand-theft-auto-first-weekend-sales/" },
       { d: "Nov 20, 2026", t: "Official: $3.79B day-one retail sales, 32.5M units pre-release", s: "CONFIRMED", x: "Take-Two's press release confirms the biggest entertainment launch in history across any medium.", u: "https://taketwointeractivesoftwareinc.gcs-web.com/news-releases/news-release-details/grand-theft-auto-vi-shatters-entertainment-box-office-records/" },
       { d: "Nov 18, 2026", t: "Metacritic 99 — highest-rated game of all time", s: "CONFIRMED", x: "99 on both PS5 and Xbox Series X from 150+ critic reviews, above Ocarina of Time; OpenCritic 98; user score ~5.7.", u: "https://www.metacritic.com/game/grand-theft-auto-vi/" },
@@ -401,10 +544,25 @@
       if (!q.value.trim() || q.value.trim().length < 8) { q.nextElementSibling.classList.add("show"); ok = false; }
       if (!ok) return;
       const store = JSON.parse(localStorage.getItem("gta-requests") || "[]");
-      store.push({ q: q.value.trim(), cat: cat.value, mail: mail.value.trim(), at: new Date().toISOString() });
+      const entry = { q: q.value.trim(), cat: cat.value, mail: mail.value.trim(), at: new Date().toISOString() };
+      store.push(entry);
       localStorage.setItem("gta-requests", JSON.stringify(store));
       f.querySelector(".form-ok").classList.add("show");
       f.reset();
+      // Persist to the database when Supabase is configured (rate-limited per session)
+      if (window.GTA && window.GTA.submitContact) {
+        window.GTA.submitContact(entry).then(ok => {
+          if (!ok) console.warn("[GTA VI HQ] submission kept locally only (database unavailable)");
+        });
+      }
+      // Deliver straight to the site owner's inbox via the server-side email function
+      if (window.GTA && window.GTA.notifyByEmail) {
+        window.GTA.notifyByEmail(entry).then(ok => {
+          const okBox = f.querySelector(".form-ok");
+          if (ok) { okBox.innerHTML = "✅ <b>Sent!</b> Your request reached the team. If you left an email, you'll get a reply there."; okBox.classList.add("show"); }
+          else console.warn("[GTA VI HQ] request saved locally; email delivery not configured yet");
+        });
+      }
     });
   }
 
@@ -442,5 +600,5 @@
     });
     if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.filter(c => ["jason-duval","lucia-caminos","mandy","niko-bellic","boobie-ike"].includes(c.id)), "Character", c => "detail.html?type=character&id=" + c.id));
   });
-  window.GTA = { DB, READY, openSearch, score, esc, badge, na };
+  window.GTA = { DB, READY, openSearch, score, esc, badge, na, serverSearch, submitContact, notifyByEmail, SB_ON, sb };
 })();
