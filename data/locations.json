@@ -1,0 +1,38 @@
+{
+  "meta": {"updated": "2026-11-25", "note": "Regions and descriptions are official Rockstar text. Map geometry below is an original schematic for navigation only — NOT the official game map, not to scale, no coordinates claimed."},
+  "regions": [
+    {"id":"vice-city","name":"Vice City","region":"Vice City","category":"City","verification":"CONFIRMED","mapSquare":"G7","county":"Vice-Dade (per official map breakdown)",
+     "officialText":"We're a long way from the '80s, but Vice City is still the sun and fun capital of America, the glamour, hustle, and greed of America captured in a single city.",
+     "places":["Downtown","Little Cuba","Vice Beach","Ocean Beach","Port Vice City","Rockridge","Tisha-Wocka"],
+     "related":["jason-duval","lucia-caminos","boobie-ike"],"keywords":["vice city","city","ocean beach","downtown","beach"],"sources":["https://www.rockstargames.com/VI","https://mygta.co/map/"]},
+    {"id":"leonida-keys","name":"Leonida Keys","region":"Leonida Keys","category":"Islands","verification":"CONFIRMED","mapSquare":"K6–L3","county":null,
+     "officialText":"Life in this tropical archipelago isn't flashy but it's easy, right on the doorstep of some of the most beautiful and dangerous waters in all of America.",
+     "places":["Key Lento area (per press coverage)","Brian Heder's properties","Mandy's house"],
+     "related":["brian-heder","mandy","cal-hampton","jason-duval"],"keywords":["keys","islands","tropical","heder","mandy"],"sources":["https://www.rockstargames.com/VI","https://mygta.co/map/"]},
+    {"id":"grassrivers","name":"Grassrivers","region":"Grassrivers","category":"Rural area / wetlands","verification":"CONFIRMED","mapSquare":null,"county":null,
+     "officialText":"You never know what lies beneath the surface of this primordial expanse, the gators may be the most famous attraction, but there are far deadlier predators and weirder discoveries among the mangroves.",
+     "places":["Mangrove swamps","Gator waters"],"related":[],"keywords":["grassrivers","everglades","swamp","gators","mangroves"],"sources":["https://www.rockstargames.com/VI"]},
+    {"id":"port-gellhorn","name":"Port Gellhorn","region":"Port Gellhorn","category":"Town","verification":"CONFIRMED","mapSquare":null,"county":null,
+     "officialText":"Cheap motels, shut-down attractions, and empty strip malls won't bring the tourists.",
+     "places":["Gellhorn Raceway (per PowerPyx unlock conditions)"],"related":[],"keywords":["port gellhorn","panhandle","industrial","motel"],"sources":["https://www.rockstargames.com/VI","https://www.powerpyx.com/gta-6-all-cheats/"]},
+    {"id":"ambrosia","name":"Ambrosia","region":"Ambrosia","category":"Rural area","verification":"CONFIRMED","mapSquare":null,"county":null,
+     "officialText":"Rockstar's oil-and-sugar country: an interior area tied to the state's agricultural and industrial backroads.",
+     "places":[],"related":[],"keywords":["ambrosia","oil","interior"],"sources":["https://www.rockstargames.com/VI","https://progressbar.gg/gta6/map-regions/"]},
+    {"id":"mount-kalaga","name":"Mount Kalaga National Park","region":"Mount Kalaga","category":"National park","verification":"CONFIRMED","mapSquare":null,"county":null,
+     "officialText":"A national landmark up against the state's northern border, Mount Kalaga offers prime hunting, fishing.",
+     "places":["Backwoods (per Ultimate Edition buggy description)"],"related":[],"keywords":["mount kalaga","national park","hunting","fishing"],"sources":["https://www.rockstargames.com/VI","https://www.playstation.com/en-us/games/grand-theft-auto-vi/"]},
+    {"id":"paradise-garage","name":"Paradise Garage","region":"Vice City","category":"Building / business","verification":"CONFIRMED","mapSquare":"Watson Bay","county":null,
+     "officialText":"Ultimate Edition garage: weapon locker plus a secure place to deposit stolen goods to be fenced, storing the '67 Vapid Dominator Buggy.",
+     "places":["Watson Bay"],"related":[],"keywords":["paradise garage","garage","watson bay","fence"],"sources":["https://www.playstation.com/en-us/games/grand-theft-auto-vi/"]},
+    {"id":"vercetti-estate","name":"Vercetti Estate","region":"Vice City","category":"Landmark","verification":"CONFIRMED","mapSquare":null,"county":null,
+     "officialText":"Source of the Ultimate Edition Morgan revolvers — a returning GTA landmark from the Vice City era.",
+     "places":[],"related":[],"keywords":["vercetti","estate","landmark"],"sources":["https://www.playstation.com/en-us/games/grand-theft-auto-vi/"]}
+  ],
+  "sizeFacts": [
+    {"claim":"Map is twice the size of GTA 5's","status":"CONFIRMED (Rockstar quote)","source":"https://www.polygon.com/gta-6-map-size-game-length/"},
+    {"claim":"Map is three times the size of Red Dead Redemption 2's","status":"CONFIRMED (Rockstar quote)","source":"https://www.polygon.com/gta-6-map-size-game-length/"},
+    {"claim":"Vice City itself is twice the size of Los Santos","status":"CONFIRMED (Rockstar quote)","source":"https://mapheist.com/en/analysis/gta-6-map-size/"},
+    {"claim":"Vice City + suburbs is 11x Los Santos + suburbs","status":"CONFIRMED (Rockstar quote)","source":"https://games.gg/news/gta-6-vice-city-map-size/"},
+    {"claim":"Leonida land area ≈ 82.7 km² vs GTA 5's 49.7 km² (1.66x); ≈2.2x counting all modelled surfaces","status":"UNCONFIRMED (fan measurement — gtadb, CC BY 4.0)","source":"https://atlasgta.com/map/"}
+  ]
+}

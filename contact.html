@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact & Content Requests — GTA VI HQ</title>
+<meta name="description" content="Contact GTA VI HQ: request a GTA 6 topic you couldn't find, report a correction, or reach the rights-holder takedown contact. Validated form, spam-protected, emails never published.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://example-gta6-guide.com/contact.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=3">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+  <div class="mobile-menu"><a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations &amp; Map</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a></div>
+</nav>
+
+<main class="wrap" id="main">
+  <nav class="crumbs"><a href="index.html">Home</a> › <span aria-current="page">Contact &amp; Requests</span></nav>
+  <div class="page-head"><span class="updated">Corrections prioritized · Emails never published</span><h1>Contact &amp; Content Requests</h1></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin-top:0">Request a topic / report an issue</h3>
+      <p class="small">Couldn't find a GTA 6 answer here, or spotted an error? Tell us — requests directly shape what we research next.</p>
+      <form id="request-form" class="form-card" novalidate>
+        <label for="rq">Your question or topic *</label>
+        <input id="rq" name="question" type="text" maxlength="500" placeholder="e.g. How do you unlock the Rhino Tank cheat?">
+        <div class="err">Please describe your question (at least 8 characters).</div>
+        <label for="rc">Category</label>
+        <select id="rc" name="category">
+          <option>Cheat codes</option><option>Characters</option><option>Vehicles</option><option>Weapons</option>
+          <option>Locations &amp; map</option><option>Missions &amp; story</option><option>Guides</option><option>Correction</option><option>Other</option>
+        </select>
+        <label for="re">Email (optional — never published)</label>
+        <input id="re" name="email" type="email" placeholder="you@example.com">
+        <button class="btn" type="submit" style="margin-top:18px">Submit request</button>
+        <div class="form-ok" id="request-ok">✅ Saved locally and ready to send. This site has no server yet, so to deliver it now, <a id="mailto-link" href="#">open it in your email app</a>. Requests are never published.</div>
+      </form>
+      <p class="small" style="margin-top:10px">Spam protection: requests are rate-limited to one per session, validated, and stored only in your own browser until you choose to send them.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Other contacts</h3>
+      <h4>Rights holders &amp; takedown</h4>
+      <p class="small">If you represent Rockstar Games, Take-Two Interactive, or any publisher whose content appears here, see our <a href="disclaimer.html#dmca">copyright &amp; takedown procedure</a> — disputed material is unpublished promptly while a claim is reviewed.</p>
+      <h4>Corrections</h4>
+      <p class="small">Pick "Correction" in the form above with the page URL and the verified source that contradicts it. Verified corrections ship fast.</p>
+      <h4>Direct email</h4>
+      <p class="small">[add your email before going live]</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
+      <p class="disclaimer">Independent, unofficial fan-made guide. Not affiliated with Rockstar Games or Take-Two Interactive. "Grand Theft Auto" and related trademarks belong to their respective owners.</p>
+    </div>
+    <div class="fnav"><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheats</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="disclaimer.html">Legal</a></div>
+  </div>
+</footer>
+<script src="app.js?v=3"></script>
+<script>
+  const f = document.getElementById("request-form");
+  f.addEventListener("submit", e => {
+    setTimeout(() => {
+      const q = document.getElementById("rq").value.trim(), c = document.getElementById("rc").value, m = document.getElementById("re").value.trim();
+      const body = encodeURIComponent("Question/topic: " + q + "\nCategory: " + c + (m ? "\nReply-to: " + m : ""));
+      document.getElementById("mailto-link").href = "mailto:REPLACE-WITH-YOUR-EMAIL@example.com?subject=" + encodeURIComponent("GTA VI HQ content request — " + c) + "&body=" + body;
+    }, 50);
+  });
+</script>
+</body>
+</html>

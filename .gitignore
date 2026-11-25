@@ -1,0 +1,5 @@
+github credentials.txt
+.github-credentials*
+*.local
+.DS_Store
+Thumbs.db

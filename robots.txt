@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /search.html
+
+Sitemap: https://example-gta6-guide.com/sitemap.xml

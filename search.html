@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search — GTA VI HQ</title>
+<meta name="description" content="Search the full GTA VI HQ database: cheat codes, characters, vehicles, weapons, locations, missions, guides and FAQs — with verification badges on every result.">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=3">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+  <div class="mobile-menu"><a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations &amp; Map</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a></div>
+</nav>
+
+<main class="wrap" id="main">
+  <div class="page-head">
+    <span class="updated">Full-database search · typo tolerant · grouped by type</span>
+    <h1>Search GTA VI HQ</h1>
+  </div>
+  <div class="toolbar" style="max-width:720px">
+    <input id="page-search" type="search" placeholder="Try “money cheat”, “lucia”, “jet”, “ending”…" aria-label="Search the site">
+    <span class="count" id="search-count"></span>
+  </div>
+  <div id="page-results" aria-live="polite"></div>
+  <p class="small" style="margin-top:20px">Nothing found? <a href="contact.html">Request the topic</a> — we research and add verified answers.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
+      <p class="disclaimer">This is an independent, unofficial fan-made information website. It is not affiliated with, endorsed by, sponsored by, or associated with Rockstar Games or Take-Two Interactive. "Grand Theft Auto" and related trademarks belong to their respective owners and are used for identification and informational purposes only. All artwork on this site is original. See our <a href="disclaimer.html">full disclaimer &amp; credit policy</a>.</p>
+    </div>
+    <div class="fnav"><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheats</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="disclaimer.html">Legal</a></div>
+  </div>
+</footer>
+<script src="app.js?v=3"></script>
+<script>
+  GTA.READY.then(() => {
+    const inp = document.getElementById("page-search"), out = document.getElementById("page-results"), count = document.getElementById("search-count");
+    const q0 = new URLSearchParams(location.search).get("q");
+    if (q0) inp.value = q0;
+    const run = () => {
+      const res = GTA.score(inp.value).slice(0, 40);
+      count.textContent = inp.value.trim() ? res.length + " results" : "";
+      if (!inp.value.trim()) { out.innerHTML = '<div class="empty"><div class="big">🔍</div>Type above, or press <code>/</code> anywhere on the site.</div>'; return; }
+      if (!res.length) { out.innerHTML = '<div class="empty"><div class="big">📭</div><b>No matching information found.</b><br><a href="contact.html">Request this topic →</a></div>'; return; }
+      out.innerHTML = '<div class="grid g2">' + res.map(x => {
+        const r = x.r;
+        return `<a class="card entity-card" href="${GTA.esc(r.url)}"><span class="badge ${r.badge === "CONFIRMED" ? "confirmed" : r.badge ? "unavailable" : "confirmed"}">${GTA.esc(r.type)}</span><div class="t">${GTA.esc(r.title)}</div><div class="d">${GTA.esc((r.desc || "").slice(0, 140))}</div></a>`;
+      }).join("") + "</div>";
+    };
+    let t; inp.addEventListener("input", () => { clearTimeout(t); t = setTimeout(run, 120); });
+    run();
+  });
+</script>
+</body>
+</html>

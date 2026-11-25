@@ -1,0 +1,1285 @@
+{
+  "meta": {
+    "updated": "2026-11-25",
+    "primarySource": "PowerPyx — https://www.powerpyx.com/gta-6-all-cheats/",
+    "corroboratedBy": [
+      "Insider Gaming",
+      "Vice",
+      "Polygon"
+    ]
+  },
+  "howTo": [
+    "Finish the main story — cheats do nothing on an unfinished save, and the Cheats menu (Progress Menu → Cheats) only appears after the credits.",
+    "Press Up on the D-pad to open the in-game phone.",
+    "Hold L1 (PS5) / LB (Xbox) and press R1 (RB).",
+    "Enter the cheat's D-pad arrow sequence while still holding. Arrows are identical on both consoles.",
+    "Warning: any cheat disables saving and trophies/achievements for the rest of that play session."
+  ],
+  "cheats": [
+    {
+      "id": "money-250k",
+      "name": "$250,000",
+      "category": "player",
+      "effect": "Instantly gives you $250,000. Repeatable.",
+      "unlock": "Finish the story",
+      "input": [
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "UP",
+        "LEFT",
+        "DOWN",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "money",
+        "cash",
+        "dollars",
+        "rich",
+        "250000",
+        "money cheat"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/",
+        "https://www.polygon.com/gta-6-cheat-codes-list-unlock/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "drunk",
+      "name": "Drunk",
+      "category": "player",
+      "effect": "Instantly makes you and your partner drunk.",
+      "unlock": "Spend $2,500 on alcohol",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "drunk",
+        "alcohol",
+        "beer"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "raise-heat",
+      "name": "Raise Heat Level",
+      "category": "player",
+      "effect": "Raises your level of heat across the map.",
+      "unlock": "Lose a 3-star wanted level 25 times",
+      "input": [
+        "LEFT",
+        "DOWN",
+        "RIGHT",
+        "DOWN",
+        "UP",
+        "DOWN",
+        "UP"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "heat",
+        "police",
+        "wanted"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "raise-wanted",
+      "name": "Raise Wanted Level",
+      "category": "player",
+      "effect": "Raises your wanted level across the map.",
+      "unlock": "Lose a 3-star wanted level 50 times",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "wanted",
+        "stars",
+        "police"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "unlimited-focus",
+      "name": "Unlimited Focus",
+      "category": "player",
+      "effect": "Focus never runs out.",
+      "unlock": "Finish the story",
+      "input": [
+        "DOWN",
+        "UP",
+        "UP",
+        "DOWN",
+        "UP",
+        "DOWN",
+        "UP",
+        "DOWN",
+        "UP",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "focus",
+        "stamina"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "no-fall-damage",
+      "name": "No Fall Damage",
+      "category": "player",
+      "effect": "You are immune to fall damage.",
+      "unlock": "Survive a freefall from 40 feet 20 times",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "fall",
+        "damage",
+        "immune"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "parachute",
+      "name": "Parachute",
+      "category": "player",
+      "effect": "Adds a parachute to your loadout.",
+      "unlock": "Complete 50 skydives or base jumps from 300 feet or higher",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "parachute",
+        "skydive",
+        "base jump"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "body-armor",
+      "name": "Body Armor",
+      "category": "player",
+      "effect": "Adds body armor to your loadout.",
+      "unlock": "Complete 100 workouts",
+      "input": [
+        "DOWN",
+        "UP",
+        "LEFT",
+        "UP",
+        "UP",
+        "UP",
+        "UP",
+        "UP",
+        "DOWN",
+        "DOWN"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "armor",
+        "health",
+        "protection"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "repair-vehicle",
+      "name": "Repair Vehicle",
+      "category": "player",
+      "effect": "Fully repairs your current vehicle.",
+      "unlock": "1st place in 10 races at Gellhorn Raceway, Thrillbilly Mud Club and Boone Speedway",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "repair",
+        "fix",
+        "vehicle health"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "unlimited-nitrous",
+      "name": "Unlimited Nitrous",
+      "category": "player",
+      "effect": "Nitrous and fuel never run out on vehicles.",
+      "unlock": "Complete 50 stunt jumps",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "nitrous",
+        "boost",
+        "fuel"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "max-ammo",
+      "name": "Max Ammo",
+      "category": "combat",
+      "effect": "Fills all ammo to maximum.",
+      "unlock": "Win 25 bronze medals or higher at shooting ranges",
+      "input": [
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "LEFT",
+        "UP",
+        "UP",
+        "DOWN",
+        "LEFT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "ammo",
+        "bullets",
+        "ammunition"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "infinite-ammo",
+      "name": "Infinite Ammo",
+      "category": "combat",
+      "effect": "Ammo never runs out.",
+      "unlock": "Win 25 silver medals or higher at shooting ranges",
+      "input": [
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "LEFT",
+        "UP",
+        "DOWN",
+        "DOWN",
+        "DOWN"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "infinite ammo",
+        "unlimited bullets"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "no-reload",
+      "name": "No Reload",
+      "category": "combat",
+      "effect": "Ammo never runs out and there is no need to reload.",
+      "unlock": "Win 25 gold medals at shooting ranges",
+      "input": [
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "LEFT",
+        "UP",
+        "DOWN",
+        "DOWN",
+        "UP"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "reload",
+        "no reload"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "all-explosive-weapons",
+      "name": "All Explosive Weapons",
+      "category": "combat",
+      "effect": "Adds all explosive weapons to your loadout with full ammo.",
+      "unlock": "Throw 100 grenades",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "explosive",
+        "grenades",
+        "weapons"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "incendiary-ammo",
+      "name": "Incendiary Ammo",
+      "category": "combat",
+      "effect": "All ammo is incendiary.",
+      "unlock": "Burn 100 enemies with fire damage",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "fire",
+        "incendiary",
+        "burn"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "exploding-bottles",
+      "name": "Exploding Bottles",
+      "category": "combat",
+      "effect": "All bottles explode when damaged.",
+      "unlock": "Throw 100 molotovs",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "bottles",
+        "molotov",
+        "explode"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "explosive-shotgun",
+      "name": "Explosive Shotgun",
+      "category": "combat",
+      "effect": "Adds a Mason & Keen Shortstraw to your loadout that fires explosive shells.",
+      "unlock": "Hit 100 enemies with explosive damage",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "shotgun",
+        "shortstraw",
+        "explosive"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "hauners-hat",
+      "name": "Hauners H-AT",
+      "category": "combat",
+      "effect": "Adds a Hauners H-AT weapon to your loadout.",
+      "unlock": "Blow up 100 vehicles",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "h-at",
+        "heavy weapon",
+        "hauners"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "attack-force",
+      "name": "Attack Force",
+      "category": "combat",
+      "effect": "Bullets and melee attacks launch targets on impact.",
+      "unlock": "Finish the story",
+      "input": [
+        "DOWN",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "RIGHT",
+        "DOWN",
+        "DOWN",
+        "UP",
+        "DOWN"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "launch",
+        "force",
+        "knockback"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "exploding-balls",
+      "name": "Exploding Balls",
+      "category": "combat",
+      "effect": "Sports balls explode on impact.",
+      "unlock": "Hit 20 enemies with explosive damage",
+      "input": [
+        "DOWN",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "RIGHT",
+        "DOWN",
+        "DOWN",
+        "UP",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "balls",
+        "sports",
+        "explode"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "vehicle-force",
+      "name": "Vehicle Force",
+      "category": "combat",
+      "effect": "Vehicle collisions launch targets.",
+      "unlock": "Kill 25 enemies with a vehicle (driving over civilians counts too)",
+      "input": [
+        "DOWN",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "UP",
+        "DOWN"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "vehicle force",
+        "ram",
+        "collision"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "interstate-ambulance",
+      "name": "Interstate Ambulance",
+      "category": "vehicle",
+      "effect": "Spawns an Interstate Ambulance.",
+      "unlock": "Discover the Interstate Ambulance in the Progress menu",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "ambulance",
+        "emergency"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "airboat-09",
+      "name": "Airboat 09",
+      "category": "vehicle",
+      "effect": "Spawns an Airboat 09.",
+      "unlock": "Complete 5 survival challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "airboat",
+        "boat",
+        "swamp"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "bravado-banshee",
+      "name": "Bravado Banshee",
+      "category": "vehicle",
+      "effect": "Spawns a Bravado Banshee.",
+      "unlock": "Complete all combat challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "banshee",
+        "sports car"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "tuff-bmx",
+      "name": "Tuff BMX",
+      "category": "vehicle",
+      "effect": "Spawns a Tuff BMX.",
+      "unlock": "Complete 5 fitness challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "bmx",
+        "bike",
+        "bicycle"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "maibatsu-boomazoom",
+      "name": "Maibatsu Boomazoom",
+      "category": "vehicle",
+      "effect": "Spawns a Maibatsu Boomazoom.",
+      "unlock": "Complete 5 shopping challenges",
+      "input": [
+        "LEFT",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "LEFT",
+        "UP",
+        "LEFT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "boomazoom",
+        "maibatsu"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "nagasaki-carbon-rs",
+      "name": "Nagasaki Carbon RS",
+      "category": "vehicle",
+      "effect": "Spawns a Nagasaki Carbon RS.",
+      "unlock": "Complete all exploration challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "carbon rs",
+        "motorcycle",
+        "sport bike"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "vapid-dominator-65",
+      "name": "'65 Vapid Dominator",
+      "category": "vehicle",
+      "effect": "Spawns a '65 Vapid Dominator.",
+      "unlock": "Complete all fitness challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "dominator",
+        "muscle car",
+        "65"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "progen-emerus",
+      "name": "Progen Emerus",
+      "category": "vehicle",
+      "effect": "Spawns a Progen Emerus.",
+      "unlock": "Complete all vehicle challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "emerus",
+        "supercar",
+        "progen"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "inflatable-flamingo",
+      "name": "Inflatable Flamingo",
+      "category": "vehicle",
+      "effect": "Spawns an Inflatable Flamingo.",
+      "unlock": "Destroy 50 cocaine flamingos",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "flamingo",
+        "inflatable",
+        "funny"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "mtl-pumper",
+      "name": "MTL Pumper",
+      "category": "vehicle",
+      "effect": "Spawns an MTL Pumper.",
+      "unlock": "Discover the MTL Pumper in the Progress menu",
+      "input": [
+        "LEFT",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "RIGHT",
+        "UP"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "pumper",
+        "fire truck",
+        "mtl"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "stanier-taxi",
+      "name": "Vapid Stanier G2 Taxi",
+      "category": "vehicle",
+      "effect": "Spawns a Vapid Stanier G2 Taxi.",
+      "unlock": "Complete 5 sports challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "taxi",
+        "cab",
+        "stanier"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "hauners-p996",
+      "name": "Hauners P-996 Lazer",
+      "category": "vehicle",
+      "effect": "Spawns a Hauners P-996 Lazer fighter jet.",
+      "unlock": "Complete all challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "lazer",
+        "jet",
+        "fighter",
+        "plane",
+        "aircraft"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "hvy-bulldozer",
+      "name": "HVY Bulldozer",
+      "category": "vehicle",
+      "effect": "Spawns an HVY Bulldozer.",
+      "unlock": "Discover the HVY Bulldozer in the Progress menu",
+      "input": [
+        "LEFT",
+        "UP",
+        "RIGHT",
+        "DOWN",
+        "LEFT",
+        "RIGHT",
+        "RIGHT",
+        "DOWN"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "bulldozer",
+        "industrial",
+        "construction"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "lapwing-mallard",
+      "name": "Lapwing Mallard",
+      "category": "vehicle",
+      "effect": "Spawns a Lapwing Mallard.",
+      "unlock": "Complete 5 vehicle challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "mallard",
+        "plane",
+        "aircraft"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "brimstone-golfer",
+      "name": "Brimstone Golfer",
+      "category": "vehicle",
+      "effect": "Spawns a Brimstone Golfer.",
+      "unlock": "Complete all sports challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "golfer",
+        "cart",
+        "caddy"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "rhino-tank",
+      "name": "Hauners Rhino Tank",
+      "category": "vehicle",
+      "effect": "Spawns a Hauners Rhino Tank.",
+      "unlock": "Complete all survival challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "tank",
+        "rhino",
+        "military"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "maibatsu-sanchez",
+      "name": "Maibatsu Sanchez",
+      "category": "vehicle",
+      "effect": "Spawns a Maibatsu Sanchez.",
+      "unlock": "Complete 5 criminal challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "sanchez",
+        "dirt bike",
+        "offroad"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "sea-sparrow",
+      "name": "Nagasaki Sea Sparrow",
+      "category": "vehicle",
+      "effect": "Spawns a Nagasaki Sea Sparrow.",
+      "unlock": "Complete 5 exploration challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "sea sparrow",
+        "helicopter",
+        "chopper"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "speeder-700",
+      "name": "Speeder 700 GT",
+      "category": "vehicle",
+      "effect": "Spawns a Speeder 700 GT.",
+      "unlock": "Complete 5 combat challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "speeder",
+        "boat",
+        "speedboat"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "truffade-thrax",
+      "name": "Truffade Thrax",
+      "category": "vehicle",
+      "effect": "Spawns a Truffade Thrax.",
+      "unlock": "Complete all shopping challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "thrax",
+        "supercar",
+        "truffade"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "zombie-bobber",
+      "name": "Western Zombie Bobber",
+      "category": "vehicle",
+      "effect": "Spawns a Western Zombie Bobber.",
+      "unlock": "Complete all criminal challenges",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "bobber",
+        "motorcycle",
+        "chopper bike"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "move-time",
+      "name": "Move Time Forward",
+      "category": "environment",
+      "effect": "Moves the time of day forward.",
+      "unlock": "Find 10 collectible watches",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "time",
+        "clock",
+        "day"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "pause-time",
+      "name": "Pause Time of Day",
+      "category": "environment",
+      "effect": "Pauses the time of day.",
+      "unlock": "Find 20 collectible watches",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "pause time",
+        "frozen time"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "cycle-weather",
+      "name": "Cycle Weather",
+      "category": "environment",
+      "effect": "Cycles through weather conditions.",
+      "unlock": "Finish the story",
+      "input": [
+        "DOWN",
+        "RIGHT",
+        "UP",
+        "DOWN",
+        "RIGHT",
+        "UP",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "weather",
+        "rain",
+        "storm",
+        "sunny"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "golden-hour",
+      "name": "Golden Hour",
+      "category": "filter",
+      "effect": "Applies a golden filter with a widescreen aspect ratio.",
+      "unlock": "Spend 4 hours holding hands with your partner",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "golden hour",
+        "filter",
+        "cinematic"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "powdered-sugar",
+      "name": "Powdered Sugar",
+      "category": "filter",
+      "effect": "Turns the world white with sparkling highlights.",
+      "unlock": "Scan all space debris with WAiNK",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "white",
+        "snow filter"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "pinhole",
+      "name": "Pinhole",
+      "category": "filter",
+      "effect": "Applies a pinhole camera filter.",
+      "unlock": "Clear 25 gang operations with your partner",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "pinhole",
+        "camera"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "neon-jungle",
+      "name": "Neon Jungle",
+      "category": "filter",
+      "effect": "Applies neon highlights to the world.",
+      "unlock": "Discover all 16 Girlypop vehicles",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "neon",
+        "jungle",
+        "glow"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "yesteryear",
+      "name": "Yesteryear",
+      "category": "filter",
+      "effect": "Applies a black & white CRT TV filter.",
+      "unlock": "Discover the Ridgeway",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "black and white",
+        "retro tv"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "cataclysm",
+      "name": "Cataclysm",
+      "category": "filter",
+      "effect": "Fills the world with murky smoke.",
+      "unlock": "Discover Martha's Vamos in the Progress menu",
+      "input": [
+        "DOWN",
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "RIGHT",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "RIGHT",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "cataclysm",
+        "smoke",
+        "apocalypse"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "videotape",
+      "name": "Videotape",
+      "category": "filter",
+      "effect": "Applies a videotape-style filter.",
+      "unlock": "Complete 50 activities with your partner",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "videotape",
+        "vhs",
+        "retro"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "dark-mirror",
+      "name": "Dark Mirror",
+      "category": "filter",
+      "effect": "Flips the world upside down and turns it black.",
+      "unlock": "Make $500,000 selling vehicles",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "upside down",
+        "dark",
+        "mirror"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "migraine",
+      "name": "Migraine",
+      "category": "filter",
+      "effect": "Applies a blurred, distorted filter.",
+      "unlock": "Survive 6 minutes with a 6-star wanted level",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "blur",
+        "distorted",
+        "migraine"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "dollhouse",
+      "name": "Dollhouse",
+      "category": "filter",
+      "effect": "Applies a vivid filter with a narrow aspect ratio.",
+      "unlock": "Spend 8 hours with your partner",
+      "input": [
+        "DOWN",
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "RIGHT",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "DOWN",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "dollhouse",
+        "vivid",
+        "narrow"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "bubblegum",
+      "name": "Bubblegum",
+      "category": "filter",
+      "effect": "Turns the world purple and yellow with sparkling highlights.",
+      "unlock": "Find all 24 collectible cards for the Vice City Flamingos",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "bubblegum",
+        "purple",
+        "yellow"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "fast-forward",
+      "name": "Fast Forward",
+      "category": "filter",
+      "effect": "Applies motion blur and accelerates cloud movements.",
+      "unlock": "Complete 50 meditations",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "fast forward",
+        "motion blur",
+        "clouds"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "fisheye",
+      "name": "Fisheye",
+      "category": "filter",
+      "effect": "Applies a fisheye lens filter.",
+      "unlock": "Catch 100 fish",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "fisheye",
+        "lens",
+        "fishing"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "faded-glory",
+      "name": "Faded Glory",
+      "category": "filter",
+      "effect": "Applies a color CRT TV filter.",
+      "unlock": "Rob 50 stores with your partner",
+      "input": [
+        "DOWN",
+        "DOWN",
+        "UP",
+        "RIGHT",
+        "RIGHT",
+        "UP",
+        "LEFT",
+        "LEFT",
+        "LEFT",
+        "RIGHT"
+      ],
+      "inputStatus": "CONFIRMED",
+      "keywords": [
+        "faded glory",
+        "crt",
+        "color tv"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "CONFIRMED"
+    },
+    {
+      "id": "pixel-art",
+      "name": "Pixel Art",
+      "category": "filter",
+      "effect": "Applies a pixelated filter.",
+      "unlock": "Make $250,000 selling collectibles",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "pixel",
+        "8-bit",
+        "retro"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    },
+    {
+      "id": "hellscape",
+      "name": "Hellscape",
+      "category": "filter",
+      "effect": "Turns the world red and orange with a heat haze.",
+      "unlock": "Steal 100 cop vehicles",
+      "input": null,
+      "inputStatus": "NOT AVAILABLE",
+      "keywords": [
+        "hellscape",
+        "red",
+        "heat"
+      ],
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "verification": "SUPPORTED"
+    }
+  ]
+}

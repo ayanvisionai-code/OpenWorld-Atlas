@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="m" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12082b"/>
+      <stop offset="1" stop-color="#2a1246"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1433"/>
+      <stop offset="1" stop-color="#3a1d5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#m)"/>
+  <!-- neon glow sun -->
+  <circle cx="450" cy="200" r="120" fill="#ff2d78" opacity=".25"/>
+  <circle cx="450" cy="200" r="80" fill="#ff9142" opacity=".85"/>
+  <circle cx="450" cy="200" r="80" fill="none" stroke="#ffd166" stroke-width="3"/>
+  <!-- stars -->
+  <g fill="#fff" opacity=".8">
+    <circle cx="120" cy="70" r="2"/><circle cx="240" cy="40" r="1.5"/><circle cx="330" cy="90" r="2"/>
+    <circle cx="560" cy="50" r="2"/><circle cx="680" cy="90" r="1.5"/><circle cx="780" cy="60" r="2"/>
+    <circle cx="840" cy="130" r="1.5"/><circle cx="80" cy="140" r="1.5"/>
+  </g>
+  <!-- road -->
+  <path d="M0 600 L380 260 L520 260 L900 600 Z" fill="url(#road)"/>
+  <!-- lane markings -->
+  <g fill="#ffd166">
+    <polygon points="447,300 453,300 449,340 445,340" />
+    <polygon points="443,360 451,360 445,410 437,410" />
+    <polygon points="430,430 446,430 438,500 428,500" />
+    <polygon points="415,520 440,520 428,600 404,600" />
+  </g>
+  <!-- neon palm silhouettes -->
+  <g fill="none" stroke="#ff2d78" stroke-width="5" stroke-linecap="round">
+    <path d="M130 560 L130 400"/>
+    <path d="M130 400 C90 380 60 380 30 395"/>
+    <path d="M130 400 C170 380 200 380 230 395"/>
+    <path d="M130 400 C110 360 90 345 65 338"/>
+    <path d="M130 400 C150 360 170 345 195 338"/>
+  </g>
+  <g fill="none" stroke="#2de2c8" stroke-width="5" stroke-linecap="round">
+    <path d="M770 560 L770 380"/>
+    <path d="M770 380 C730 360 700 360 670 375"/>
+    <path d="M770 380 C810 360 840 360 870 375"/>
+    <path d="M770 380 C750 340 730 325 705 318"/>
+    <path d="M770 380 C790 340 810 325 835 318"/>
+  </g>
+  <!-- horizon glow line -->
+  <rect y="255" width="900" height="4" fill="#ff9142" opacity=".6"/>
+</svg>

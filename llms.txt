@@ -1,0 +1,32 @@
+# GTA VI HQ — unofficial GTA 6 fact-checked guide
+
+> An independent, non-commercial fan guide answering every major GTA 6 question with named, linked sources and verification badges (CONFIRMED / UNCONFIRMED / NOT AVAILABLE). All artwork on the site is original — no official game screenshots or promotional artwork are used. Not affiliated with Rockstar Games or Take-Two Interactive; "Grand Theft Auto" and related marks belong to their respective owners.
+
+## What this site covers (all fact-checked, source-linked)
+
+- **GTA 6 cheat codes** — a searchable 61-cheat database (10 Player, 11 Combat, 21 Vehicle-spawn, 3 Environment, 16 Screen Filter) with unlock conditions and every currently known D-pad input (17 inputs documented, primarily via PowerPyx's complete cheat guide), each honestly labelled "input confirmed" vs "not yet discovered". Includes the $250,000 money cheat: Up, Right, Down, Left, Up, Left, Down, Right (phone open, hold L1/LB, press R1/RB). Cheats only work after finishing the story; any cheat disables saving and trophies for that session. We never print unverified inputs.
+- **GTA 6 characters** — Jason Duval (Dylan Rourke), Lucia Caminos (Manni L. Perez), Mandy (Lexie Shoaibi, mission "Pipework"), Brian Heder, Cal Hampton, Boobie Ike, Dre'Quan, Raul Bautista, Mia Caminos and more; Niko Bellic cameo in "Taking Liberties" (Chapter 5). Includes the sourced answer that there is no evidence Lucia is trans.
+- **GTA 6 vehicles & weapons** — confirmed models (incl. the Hauners P-996 Lazer, Progen Emerus, H-AT) with "Not confirmed yet" shown honestly where stats/inputs aren't published.
+- **GTA 6 map** — Leonida's six official regions (Vice City, Leonida Keys, Grassrivers, Port Gellhorn, Ambrosia, Mount Kalaga); officially "twice the size of GTA 5, three times RDR2"; fan-measured ~82.7 km² land vs GTA 5's 49.7 km². Site includes an original schematic (not the official map) plus a link to Rockstar's official printable map.
+- **GTA 6 story** — prologue + 5 chapters, ~91 main missions, 50–80 hours, final mission "The End of the Road" with the Swim for It / No Surrender choice (spoiler-controlled reveal).
+- **Platforms & price** — released Nov 19, 2026 on PS5 & Xbox Series X|S ($79.99 / $99.99 Ultimate); no PC version announced (GamesBeat reports early-2027 target, explicitly unconfirmed); Xbox One via cloud only; GTA Online not yet announced.
+- **Reception & sales** — Metacritic 99 (highest-rated game ever), $3.79 billion day-one retail sales, 32.5M units pre-release (Take-Two official).
+
+## Key pages
+
+- /index.html — hub with popular topics and dynamic sections
+- /cheats.html — searchable 61-cheat directory (filters, sort, input status)
+- /detail.html?type=cheat&id=money-250k — example entity profile (also type=character|vehicle|weapon|location|mission)
+- /blog/gta-6-money-cheat.html — money cheat deep dive
+- /blog/gta-6-cheat-codes-how-to-enter.html — how to enter codes
+- /characters.html, /vehicles.html, /weapons.html, /map.html, /missions.html, /guides.html, /news.html, /faq.html
+- /pc.html — platforms, price, PC status
+- /disclaimer.html — credit, images & takedown policy; /privacy.html, /terms.html
+- /search.html?q= — full-site search (typo-tolerant, grouped by type)
+- /sitemap.xml, /robots.txt
+
+## Citation & verification policy
+
+Every factual claim names and links its source (Rockstar Games / Take-Two press releases, Metacritic, PlayStation, Polygon, GameSpot, GamesRadar, BBC, CNBC, VGC, PC Gamer, PowerPyx, etc.). Unconfirmed reports are explicitly labeled. Cheat inputs are attributed to their publishing source and marked as community-documented, not official. Facts current as of November 25, 2026.
+
+Contact: [add your email before going live]

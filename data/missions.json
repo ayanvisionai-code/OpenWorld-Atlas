@@ -1,0 +1,345 @@
+{
+  "meta": {
+    "updated": "2026-11-25",
+    "note": "Mission counts: walkthroughs report 91–96 main missions depending on how short story steps are counted (readdork: 91 + 28 steps + 23 optional; leonidatricks: 96 + 23 + 24). Chapter 1 counts differ because some sites fold the prologue in."
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "name": "Just Like Paradise",
+      "missions": "21–23",
+      "verification": "CONFIRMED",
+      "note": "Includes the prologue era and Jason's Keys errands for Brian Heder."
+    },
+    {
+      "n": 2,
+      "name": "Paradise Lost",
+      "missions": "11–14",
+      "verification": "CONFIRMED",
+      "note": "Counts differ across walkthroughs because of how Chapter 2's short steps are split."
+    },
+    {
+      "n": 3,
+      "name": "Tits Ass Drug Money",
+      "missions": "26",
+      "verification": "CONFIRMED",
+      "note": "Includes meeting Mia Caminos (Mami Knows Best) and the Vice City move."
+    },
+    {
+      "n": 4,
+      "name": "Vice City, Baby",
+      "missions": "25–26",
+      "verification": "CONFIRMED",
+      "note": "Deep in Vice City: Boobie Ike, Dre'Quan, Real Dimez, Raul Bautista jobs."
+    },
+    {
+      "n": 5,
+      "name": "Top of the World, Ma",
+      "missions": "7",
+      "verification": "CONFIRMED",
+      "note": "Endgame — includes the Niko Bellic cameo and the finale."
+    }
+  ],
+  "missions": [
+    {
+      "id": "lucias-release",
+      "name": "Lucia's Release",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "The prologue: Lucia is prepared for release from the Leonida Penitentiary. The game's menu explicitly frames this as taking place before she leaves prison.",
+      "objectives": [
+        "Prepare for Lucia's release"
+      ],
+      "sources": [
+        "https://nerdschalk.com/is-lucia-trans-gta-6/"
+      ],
+      "keywords": [
+        "prologue",
+        "lucia",
+        "prison",
+        "release",
+        "how many chapters",
+        "chapter count",
+        "story chapters",
+        "chapters"
+      ]
+    },
+    {
+      "id": "gone-fishing",
+      "name": "Gone Fishing",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Early Jason mission in the Keys (per PowerPyx's published mission list).",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "fishing",
+        "jason",
+        "keys",
+        "chapters"
+      ]
+    },
+    {
+      "id": "pipework",
+      "name": "Pipework",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": true,
+      "summary": "Brian asks Jason to collect overdue rent from Mandy. She refuses to pay until Jason fixes her blocked sink — and spends the visit flirting with him. Viral details: a severed finger in the sink, tubs of acid and a possible fresh grave in the garden.",
+      "objectives": [
+        "Go to Mandy's house",
+        "Fix the sink",
+        "Collect the rent"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mandy_(Grand_Theft_Auto)",
+        "https://www.indy100.com/gaming/gta-6-who-plays-mandy"
+      ],
+      "keywords": [
+        "mandy",
+        "rent",
+        "pipework",
+        "sink",
+        "chapters"
+      ]
+    },
+    {
+      "id": "hey-arnold",
+      "name": "Hey Arnold!",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Meet Brian (per PowerPyx's published mission list).",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "brian",
+        "meet",
+        "chapters"
+      ]
+    },
+    {
+      "id": "feng-shui",
+      "name": "Feng Shui",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Meet Cal (per PowerPyx's published mission list).",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "cal",
+        "meet",
+        "chapters"
+      ]
+    },
+    {
+      "id": "buck-me",
+      "name": "Buck Me",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Set up the BuckMe bank account — the game's money-deposit system (short story steps around it include depositing cash).",
+      "sources": [
+        "https://readdork.com/gaming/gta-6-walkthrough"
+      ],
+      "keywords": [
+        "buckme",
+        "bank",
+        "money",
+        "chapters"
+      ]
+    },
+    {
+      "id": "coming-home",
+      "name": "Coming Home",
+      "chapter": 1,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Lucia's Release story step — Lucia leaves prison.",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "lucia",
+        "release",
+        "coming home",
+        "chapters"
+      ]
+    },
+    {
+      "id": "mami-knows-best",
+      "name": "Mami Knows Best",
+      "chapter": 3,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Lucia catches up with her mother Mia at Peacock Bay, Vice City; Mia takes her to see the first property she has to sell — a run-down house in Hamlet.",
+      "objectives": [
+        "Meet Mia",
+        "View the listing"
+      ],
+      "sources": [
+        "https://gtadb.io/gta-6/characters/mia-caminos",
+        "https://www.gtabase.com/gta-6/characters/mia-caminos"
+      ],
+      "keywords": [
+        "mia",
+        "mother",
+        "real estate",
+        "hamlet",
+        "chapters"
+      ]
+    },
+    {
+      "id": "dealers-choice",
+      "name": "Dealer's Choice",
+      "chapter": 3,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Go see Dre'Quan (per PowerPyx's published mission list).",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "drequan",
+        "meet",
+        "chapters"
+      ]
+    },
+    {
+      "id": "car-service",
+      "name": "Car Service",
+      "chapter": 3,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": false,
+      "summary": "Steal the car for Raul Bautista.",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ],
+      "keywords": [
+        "raul",
+        "steal",
+        "car",
+        "chapters"
+      ]
+    },
+    {
+      "id": "taking-liberties",
+      "name": "Taking Liberties",
+      "chapter": 5,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": true,
+      "summary": "Jason, Lucia and Giorgio Gallo meet an older Niko Bellic over a $2 billion cartel shipment. Niko explains the shipment went wrong, says he hasn't killed anybody since 2012, knocks Gallo down, points a gun at him, looks at Jason, and leaves.",
+      "objectives": [
+        "Meet Giorgio Gallo",
+        "Survive the Niko encounter"
+      ],
+      "sources": [
+        "https://www.pcgamer.com/games/grand-theft-auto/gta-6-niko-bellic/",
+        "https://esports.gg/guides/grand-theft-auto-6/niko-bellic-gta-6-returns/"
+      ],
+      "keywords": [
+        "niko",
+        "bellic",
+        "cameo",
+        "gallo",
+        "taking liberties",
+        "chapters"
+      ]
+    },
+    {
+      "id": "protective-custody",
+      "name": "Protective Custody",
+      "chapter": 5,
+      "type": "Story",
+      "verification": "CONFIRMED",
+      "spoiler": true,
+      "summary": "Late Chapter 5 mission preceding the finale; one guide reports an earlier prompt in this mission can affect the ending pool (guides disagree — marked UNCONFIRMED for that detail).",
+      "sources": [
+        "https://gta6-help.com/en/gta-6/missions/the-end-of-the-road/"
+      ],
+      "keywords": [
+        "protective custody",
+        "choice",
+        "chapters"
+      ]
+    },
+    {
+      "id": "the-end-of-the-road",
+      "name": "The End of the Road",
+      "chapter": 5,
+      "type": "Finale",
+      "verification": "CONFIRMED",
+      "spoiler": true,
+      "summary": "The 91st and final mission. Starts at Cal's place in the Keys: gear up, assault a waterfront tower for a hard drive, escape through a construction site, drive south. A tip-off changes the plan and ends at a bridge blocked by sheriff's cars, helicopter overhead. ~25 minutes in, after a car conversation, the game freezes with two prompts: Swim for It (Triangle/Y) and No Surrender (R2/RT).",
+      "objectives": [
+        "Gear up",
+        "Assault the waterfront tower",
+        "Escape",
+        "Reach the bridge choice"
+      ],
+      "choices": [
+        {
+          "prompt": "Swim for It (Triangle / Y)",
+          "outcome": "Can end in multiple ways; guides disagree on what decides the variant. Confirmed by footage: multiple outcomes exist."
+        },
+        {
+          "prompt": "No Surrender (R2 / RT)",
+          "outcome": "Ends with both protagonists dead (confirmed by multiple complete finale runs)."
+        }
+      ],
+      "rewards": "Gold trophy: \"You Gotta Know When to Get Off\". After the credits you return to free roam before the finale.",
+      "sources": [
+        "https://lootester.com/gta-6-endings-explained/",
+        "https://gta6-help.com/en/gta-6/missions/the-end-of-the-road/",
+        "https://everyblip.com/choices/"
+      ],
+      "keywords": [
+        "ending",
+        "finale",
+        "swim for it",
+        "no surrender",
+        "the end of the road",
+        "trophy"
+      ]
+    }
+  ],
+  "length": [
+    {
+      "claim": "Main story ~50–80 hours",
+      "status": "SUPPORTED",
+      "source": "https://readdork.com/gaming/gta-6-walkthrough"
+    },
+    {
+      "claim": "65+ hours main campaign; 90–100 with side content; 200+ for 100%",
+      "status": "SUPPORTED",
+      "source": "https://www.gamespot.com/articles/how-long-to-beat-gta-6/"
+    },
+    {
+      "claim": "Median finish time 56h 50m among 344 tracked players (as of Nov 25, 2026)",
+      "status": "SUPPORTED",
+      "source": "https://whofinished.com/en/gta-6/how-long"
+    },
+    {
+      "claim": "No mission replay and no gold medals in the story",
+      "status": "UNCONFIRMED",
+      "source": "https://leonidatricks.com/story/"
+    }
+  ]
+}
