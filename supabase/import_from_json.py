@@ -9,18 +9,19 @@ deleted — only the records present in the JSON are created/updated.
 SETUP (run in your terminal, NOT in browser code):
   Windows (PowerShell):
     $env:SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"
-    $env:SUPABASE_SERVICE_ROLE = "YOUR-SERVICE-ROLE-KEY"   # server-side ONLY
+    $env:SUPABASE_SECRET_KEY = "YOUR-SUPABASE-SECRET-KEY"  # server-side ONLY
     python supabase/import_from_json.py
 
   macOS/Linux:
     SUPABASE_URL=https://YOUR-PROJECT.supabase.co \
-    SUPABASE_SERVICE_ROLE=YOUR-SERVICE-ROLE-KEY python3 supabase/import_from_json.py
+    SUPABASE_SECRET_KEY=YOUR-SUPABASE-SECRET-KEY python3 supabase/import_from_json.py
 
 The service-role key must NEVER be committed, shared, or used client-side.
 """
 import json
 import os
 import sys
+import argparse
 import urllib.request
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,7 +36,7 @@ TYPE_MAP = [  # (json file, list key, content type)
     ("guides.json",     "guides",     "guide"),
 ]
 
-def row_for(rtype, rec):
+def row_for(rtype, rec, publish=False):
     fields = {k: v for k, v in rec.items() if k != "id"}
     fields["id"] = rec.get("id")
     title = rec.get("name") or rec.get("title") or rec.get("id")
@@ -46,16 +47,21 @@ def row_for(rtype, rec):
         "description": rec.get("summary") or rec.get("effect") or rec.get("description") or rec.get("officialText"),
         "verification": rec.get("verification") or "SUPPORTED",
         "verified_at": "2026-11-25",
-        "status": "published",
-        "published_at": None,  # DB default now() not used on upsert; set explicitly below if publishing
+        # Existing seed data is imported as drafts unless an editor explicitly
+        # reviewed it and opted in with --publish.
+        "status": "published" if publish else "draft",
+        "published_at": None,
         "fields": fields,
     }
 
 def main():
+    parser = argparse.ArgumentParser(description="Import bundled Atlas seed records.")
+    parser.add_argument("--publish", action="store_true", help="Publish imported rows after editorial review.")
+    args = parser.parse_args()
     url = os.environ.get("SUPABASE_URL", "").rstrip("/")
-    key = os.environ.get("SUPABASE_SERVICE_ROLE", "")
+    key = os.environ.get("SUPABASE_SECRET_KEY", "")
     if not url or not key:
-        sys.exit("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE environment variables first (see file header).")
+        sys.exit("Set SUPABASE_URL and SUPABASE_SECRET_KEY environment variables first (see file header).")
     if "service" not in key.lower() and not key.startswith("sb_secret") and len(key) < 100:
         print("WARNING: that key does not look like a service-role key; import may fail with RLS errors.")
 
@@ -67,7 +73,7 @@ def main():
         recs = data.get(listkey, [])
         now = "now"
         for rec in recs:
-            row = row_for(rtype, rec)
+            row = row_for(rtype, rec, publish=args.publish)
             if row["status"] == "published" and not row["published_at"]:
                 row["published_at"] = now
             rows.append(row)

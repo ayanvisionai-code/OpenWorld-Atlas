@@ -53,21 +53,31 @@ Run locally (this is the only place the service-role key is used):
 ```
 # Windows PowerShell:
 $env:SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"
-$env:SUPABASE_SERVICE_ROLE = "YOUR-SERVICE-ROLE-KEY"
+$env:SUPABASE_SECRET_KEY = "YOUR-SUPABASE-SECRET-KEY"
 python supabase/import_from_json.py
 ```
 
-It upserts all 137 bundled records (cheats, characters, vehicles, weapons,
-locations, missions, guides) into `content`. Safe to re-run; deletes nothing.
+It upserts all bundled records (cheats, characters, vehicles, weapons,
+locations, missions, guides) into `content` as **drafts**. Safe to re-run;
+deletes nothing. Review sources and verification labels before publishing. Use
+`python supabase/import_from_json.py --publish` only after that review.
 
 ## Step 6 — Create your admin account (2 min)
 
 Dashboard → **Authentication → Users → Add user → Create new user**:
 - Email + password (that's your admin login for `/admin.html`).
 
-Security model: any **authenticated** user can manage content (RLS policy
-"admins manage content"). Only people you create here can sign in — the
-public can never write. If you add a second admin, create another user.
+Security model: an account must be explicitly assigned the `admin` or `editor`
+role after it is created. In the SQL Editor, replace the placeholder with the
+user UUID from Authentication → Users:
+
+```sql
+insert into public.user_roles (user_id, role)
+values ('AUTH-USER-UUID', 'admin');
+```
+
+The dashboard signs out authenticated users without an editorial role. Public
+visitors can read published content only.
 
 ## Step 7 — Deploy / test
 
@@ -85,7 +95,7 @@ public can never write. If you add a second admin, create another user.
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` / Project URL | `js/env.js` (public) | API base URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` / publishable key | `js/env.js` (public) | Browser read access (RLS-scoped) |
-| `SUPABASE_SERVICE_ROLE` | **your machine's env only** | One-time import script |
+| `SUPABASE_SECRET_KEY` | **your machine's env only** | One-time import script |
 
 ## Tables created
 

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /search.html
 
-Sitemap: https://example-gta6-guide.com/sitemap.xml
+Sitemap: https://openworld-atlas.vercel.app/sitemap.xml

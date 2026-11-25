@@ -141,8 +141,8 @@ create trigger content_updated_at before update on public.content
 
 -- ============================================================================
 -- ROW LEVEL SECURITY
--- Public: read published content only. Admins (any authenticated user):
--- full CRUD. Contact: anon insert-only.
+-- Public: read published content only. Editorial access is restricted to
+-- explicitly assigned administrators; being authenticated is not sufficient.
 -- ============================================================================
 alter table public.content             enable row level security;
 alter table public.categories          enable row level security;
@@ -154,65 +154,100 @@ alter table public.content_sources     enable row level security;
 alter table public.media_assets        enable row level security;
 alter table public.contact_submissions enable row level security;
 
+-- A separate role table prevents any newly-created Auth user from becoming an
+-- editor by accident. Grant the first role manually after creating the owner:
+-- insert into public.user_roles (user_id, role) values ('AUTH-USER-UUID', 'admin');
+create table if not exists public.user_roles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  role text not null check (role in ('admin', 'editor')),
+  created_at timestamptz not null default now()
+);
+alter table public.user_roles enable row level security;
+
+create or replace function public.is_editor()
+returns boolean language sql stable security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.user_roles
+    where user_id = auth.uid() and role in ('admin', 'editor')
+  );
+$$;
+
+revoke all on function public.is_editor() from public;
+grant execute on function public.is_editor() to anon, authenticated;
+
+drop policy if exists "admins read roles" on public.user_roles;
+create policy "admins read roles" on public.user_roles
+  for select to authenticated using (public.is_editor());
+
 -- --- content -----------------------------------------------------------------
 drop policy if exists "public read published content" on public.content;
 create policy "public read published content" on public.content
   for select using (status = 'published');
 
 drop policy if exists "admins manage content" on public.content;
-create policy "admins manage content" on public.content
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage content" on public.content;
+create policy "editors manage content" on public.content
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 -- --- reference tables: public read, admin write -------------------------------
 drop policy if exists "public read categories" on public.categories;
 create policy "public read categories" on public.categories
   for select using (true);
 drop policy if exists "admins manage categories" on public.categories;
-create policy "admins manage categories" on public.categories
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage categories" on public.categories;
+create policy "editors manage categories" on public.categories
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 drop policy if exists "public read tags" on public.tags;
 create policy "public read tags" on public.tags
   for select using (true);
 drop policy if exists "admins manage tags" on public.tags;
-create policy "admins manage tags" on public.tags
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage tags" on public.tags;
+create policy "editors manage tags" on public.tags
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 drop policy if exists "public read sources" on public.sources;
 create policy "public read sources" on public.sources
   for select using (true);
 drop policy if exists "admins manage sources" on public.sources;
-create policy "admins manage sources" on public.sources
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage sources" on public.sources;
+create policy "editors manage sources" on public.sources
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 drop policy if exists "public read content_categories" on public.content_categories;
 create policy "public read content_categories" on public.content_categories
   for select using (true);
 drop policy if exists "admins manage content_categories" on public.content_categories;
-create policy "admins manage content_categories" on public.content_categories
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage content_categories" on public.content_categories;
+create policy "editors manage content_categories" on public.content_categories
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 drop policy if exists "public read content_tags" on public.content_tags;
 create policy "public read content_tags" on public.content_tags
   for select using (true);
 drop policy if exists "admins manage content_tags" on public.content_tags;
-create policy "admins manage content_tags" on public.content_tags
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage content_tags" on public.content_tags;
+create policy "editors manage content_tags" on public.content_tags
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 drop policy if exists "public read content_sources" on public.content_sources;
 create policy "public read content_sources" on public.content_sources
   for select using (true);
 drop policy if exists "admins manage content_sources" on public.content_sources;
-create policy "admins manage content_sources" on public.content_sources
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage content_sources" on public.content_sources;
+create policy "editors manage content_sources" on public.content_sources
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 -- --- media_assets -------------------------------------------------------------
 drop policy if exists "public read media" on public.media_assets;
 create policy "public read media" on public.media_assets
   for select using (true);
 drop policy if exists "admins manage media" on public.media_assets;
-create policy "admins manage media" on public.media_assets
-  for all to authenticated using (true) with check (true);
+drop policy if exists "editors manage media" on public.media_assets;
+create policy "editors manage media" on public.media_assets
+  for all to authenticated using (public.is_editor()) with check (public.is_editor());
 
 -- --- contact_submissions ------------------------------------------------------
 drop policy if exists "anon submit contact" on public.contact_submissions;
@@ -220,14 +255,17 @@ create policy "anon submit contact" on public.contact_submissions
   for insert to anon, authenticated with check (true);
 
 drop policy if exists "admins read contact" on public.contact_submissions;
-create policy "admins read contact" on public.contact_submissions
-  for select to authenticated using (true);
+drop policy if exists "editors read contact" on public.contact_submissions;
+create policy "editors read contact" on public.contact_submissions
+  for select to authenticated using (public.is_editor());
 drop policy if exists "admins update contact" on public.contact_submissions;
-create policy "admins update contact" on public.contact_submissions
-  for update to authenticated using (true) with check (true);
+drop policy if exists "editors update contact" on public.contact_submissions;
+create policy "editors update contact" on public.contact_submissions
+  for update to authenticated using (public.is_editor()) with check (public.is_editor());
 drop policy if exists "admins delete contact" on public.contact_submissions;
-create policy "admins delete contact" on public.contact_submissions
-  for delete to authenticated using (true);
+drop policy if exists "editors delete contact" on public.contact_submissions;
+create policy "editors delete contact" on public.contact_submissions
+  for delete to authenticated using (public.is_editor());
 
 -- ============================================================================
 -- STORAGE — bucket 'media': public images, admin upload only.
@@ -240,19 +278,22 @@ create policy "public read media objects" on storage.objects
   for select using (bucket_id = 'media');
 
 drop policy if exists "admins upload media objects" on storage.objects;
-create policy "admins upload media objects" on storage.objects
+drop policy if exists "editors upload media objects" on storage.objects;
+create policy "editors upload media objects" on storage.objects
   for insert to authenticated with check (
-    bucket_id = 'media'
+    bucket_id = 'media' and public.is_editor()
     and (metadata->>'mimetype') in
       ('image/jpeg','image/png','image/webp','image/svg+xml','image/avif')
     and coalesce((metadata->>'size')::bigint, 0) <= 5242880
   );
 
 drop policy if exists "admins update media objects" on storage.objects;
-create policy "admins update media objects" on storage.objects
-  for update to authenticated using (bucket_id = 'media')
-  with check (bucket_id = 'media');
+drop policy if exists "editors update media objects" on storage.objects;
+create policy "editors update media objects" on storage.objects
+  for update to authenticated using (bucket_id = 'media' and public.is_editor())
+  with check (bucket_id = 'media' and public.is_editor());
 
 drop policy if exists "admins delete media objects" on storage.objects;
-create policy "admins delete media objects" on storage.objects
-  for delete to authenticated using (bucket_id = 'media');
+drop policy if exists "editors delete media objects" on storage.objects;
+create policy "editors delete media objects" on storage.objects
+  for delete to authenticated using (bucket_id = 'media' and public.is_editor());

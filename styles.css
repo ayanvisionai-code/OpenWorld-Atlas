@@ -1,12 +1,12 @@
-/* GTA VI HQ — premium dark gaming encyclopedia design system v2 */
+/* OpenWorld Atlas — cinematic editorial design system */
 :root{
-  --bg:#08090D; --bg-2:#101219; --card:#151923; --card-2:#1A1F2B;
-  --ink:#F5F5F7; --muted:#A1A6B3; --faint:#6B7180;
-  --accent:#FF7138; --red:#E84C45; --teal:#3FD6A8; --yellow:#F5C042; --purple:#8A6CFF;
-  --border:#282D38; --border-soft:#20242F;
+  --bg:#111318; --bg-2:#171B22; --card:#1D222B; --card-2:#242A34;
+  --ink:#F0EEE9; --muted:#A5ABB5; --faint:#777F8C;
+  --accent:#D98B48; --red:#B85F46; --teal:#7CB9A6; --yellow:#D8B55B; --purple:#A18ACB;
+  --border:#303641; --border-soft:#272D37;
   --ok:#3FD6A8; --warn:#F5C042; --off:#6B7180;
   --radius:14px; --radius-sm:9px;
-  --font-display:"Anton",Impact,"Arial Narrow",sans-serif;
+  --font-display:"Space Grotesk",Inter,system-ui,sans-serif;
   --font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --shadow:0 10px 32px rgba(0,0,0,.45);
 }
@@ -25,13 +25,14 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#0D0F
 /* ---------- Nav ---------- */
 .nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(12px);background:rgba(8,9,13,.86);border-bottom:1px solid var(--border-soft)}
 .nav-inner{max-width:1180px;margin:auto;display:flex;align-items:center;gap:14px;padding:12px 20px}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.3rem;letter-spacing:.5px;color:var(--ink)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.02rem;font-weight:700;letter-spacing:.11em;color:var(--ink)}
 .logo:hover{text-decoration:none}
 .logo .vi{color:var(--accent)}
+.atlas-mark{display:inline-grid;place-items:center;width:23px;height:23px;border:1px solid rgba(217,139,72,.65);color:var(--accent);font-size:.85rem;line-height:1}
 .nav-links{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
 .nav-links a{color:var(--muted);padding:8px 11px;border-radius:9px;font-size:.92rem;font-weight:500;white-space:nowrap}
 .nav-links a:hover{color:var(--ink);background:#1B2029;text-decoration:none}
-.nav-links a.active{color:#fff;background:linear-gradient(135deg,rgba(255,113,56,.22),rgba(232,76,69,.16))}
+.nav-links a.active{color:#fff;background:rgba(217,139,72,.16)}
 .nav-actions{display:flex;gap:8px;align-items:center}
 .search-btn{display:flex;align-items:center;gap:8px;background:#12151D;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:8px 16px;font-size:.9rem;cursor:pointer;font-family:inherit}
 .search-btn:hover{border-color:var(--accent);color:var(--ink)}
@@ -70,12 +71,12 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#0D0F
 .chip-row button:hover{border-color:var(--accent);color:var(--ink)}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border-soft);background:radial-gradient(1100px 500px at 80% -10%,rgba(255,113,56,.14),transparent 60%),radial-gradient(800px 420px at 8% 0%,rgba(138,108,255,.10),transparent 55%)}
-.hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border-soft);background:radial-gradient(1100px 500px at 80% -10%,rgba(217,139,72,.16),transparent 60%),#111318}
+.hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.38;filter:saturate(.7) contrast(1.08)}
 .hero-inner{position:relative;z-index:2;max-width:1180px;margin:auto;padding:80px 20px 60px}
 .kicker{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(255,113,56,.4);padding:6px 14px;border-radius:999px;background:rgba(255,113,56,.08)}
-h1{font-family:var(--font-display);font-size:clamp(2.3rem,5.6vw,4.2rem);line-height:1.05;text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px;color:#fff}
-.hero h1 .grad{background:linear-gradient(180deg,#fff 15%,var(--accent) 60%,var(--red) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+h1{font-family:var(--font-display);font-size:clamp(2.3rem,5.6vw,4.2rem);line-height:1.03;letter-spacing:-.045em;margin:18px 0 14px;color:#fff}
+.hero h1 .grad{color:var(--accent)}
 .sub{max-width:740px;color:var(--muted);font-size:1.08rem}
 .hero-search{margin-top:26px;max-width:640px}
 .hero-search button{width:100%;text-align:left}
@@ -86,7 +87,7 @@ h1{font-family:var(--font-display);font-size:clamp(2.3rem,5.6vw,4.2rem);line-hei
 /* ---------- Layout ---------- */
 .wrap{max-width:1180px;margin:auto;padding:52px 20px}
 section{scroll-margin-top:90px}
-h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.4vw,2.3rem);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;color:#fff}
+h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.4vw,2.3rem);letter-spacing:-.035em;margin-bottom:14px;color:#fff}
 h3{font-size:1.22rem;margin:26px 0 10px;color:var(--accent)}
 h4{margin:16px 0 8px;color:var(--yellow)}
 p{margin-bottom:14px}
@@ -96,7 +97,7 @@ p{margin-bottom:14px}
 .g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-.card{background:linear-gradient(180deg,var(--card),#11141C);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .15s,transform .15s}
+.card{background:linear-gradient(180deg,var(--card),#181D25);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .15s,transform .15s}
 .card:hover{border-color:#3A4150}
 .card h3{margin-top:0}
 .card .more{font-size:.9rem;font-weight:600}

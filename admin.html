@@ -126,7 +126,15 @@
   /* ---------- auth ---------- */
   async function refreshSession() {
     const { data } = await sb.auth.getSession();
-    const logged = !!(data && data.session);
+    let logged = !!(data && data.session);
+    if (logged) {
+      const { data: allowed, error } = await sb.rpc("is_editor");
+      if (error || !allowed) {
+        await sb.auth.signOut();
+        logged = false;
+        $("login-err").textContent = "This account does not have editorial access.";
+      }
+    }
     $("login-view").hidden = logged; $("dash-view").hidden = !logged; $("signout-btn").hidden = !logged;
     if (logged) { $("sb-state").textContent = "Signed in as " + data.session.user.email; load(); }
   }

@@ -1,4 +1,4 @@
-/* GTA VI HQ — app runtime: data store, search engine, renderers */
+/* OpenWorld Atlas — runtime: data store, search and renderers */
 (function () {
   "use strict";
 
@@ -54,9 +54,9 @@
         const i = list.findIndex(x => x.id === rec.id);
         if (i >= 0) list[i] = rec; else list.push(rec); // admin edits override seed; new rows appended
       }
-      if (rows.length) console.info("[GTA VI HQ] loaded " + rows.length + " published records from Supabase");
+      if (rows.length) console.info("[OpenWorld Atlas] loaded " + rows.length + " published records from Supabase");
     } catch (e) {
-      console.warn("[GTA VI HQ] Supabase load failed — using bundled JSON fallback:", e.message);
+      console.warn("[OpenWorld Atlas] Supabase load failed — using bundled JSON fallback:", e.message);
     }
   });
 
@@ -376,7 +376,7 @@
       if (!it) { root.innerHTML = emptyState("Draft not found — sign in to the admin dashboard first."); return; }
     }
     if (!it) { root.innerHTML = emptyState("Record not found — it may have been renamed. <a href='" + cfg.back + "'>Browse all " + cfg.title.toLowerCase() + "s</a>."); return; }
-    document.title = it.name + " — GTA 6 " + cfg.title + " | GTA VI HQ";
+    document.title = it.name + " — " + cfg.title + " | OpenWorld Atlas";
     let body = "";
     if (type === "cheat") {
       const catName = { player: "Player", combat: "Combat", vehicle: "Spawn Vehicle", environment: "Environment", filter: "Screen Filter" }[it.category];
@@ -459,7 +459,7 @@
     s.textContent = JSON.stringify({
       "@context": "https://schema.org", "@type": type === "cheat" ? "HowTo" : "Article",
       headline: it.name + " — GTA 6 " + cfg.title, description: it.summary || it.effect || it.description || it.officialText || "",
-      author: { "@type": "Organization", name: "GTA VI HQ" }, dateModified: "2026-11-25"
+      author: { "@type": "Organization", name: "OpenWorld Atlas" }, dateModified: new Date().toISOString().slice(0, 10)
     });
     document.head.appendChild(s);
   }
@@ -522,47 +522,36 @@
     const dbNews = DB.news && DB.news.news;
     const items = dbNews && dbNews.length ? dbNews.map(n => ({
       d: n.date || "", t: n.title || n.name, s: n.verification || "SUPPORTED", x: n.summary || n.effect || "", u: n.url || ("detail.html?type=news&id=" + n.id)
-    })) : [
-      { d: "Nov 24, 2026", t: "Launch-weekend estimate: 44.9M copies, ~$4B gross", s: "SUPPORTED", x: "Alinea Analytics estimates GTA 6 sold 44.9 million copies with ~$4 billion gross by the end of launch weekend — twice Taylor Swift's entire Eras Tour take.", u: "https://www.polygon.com/gta-6-grand-theft-auto-first-weekend-sales/" },
-      { d: "Nov 20, 2026", t: "Official: $3.79B day-one retail sales, 32.5M units pre-release", s: "CONFIRMED", x: "Take-Two's press release confirms the biggest entertainment launch in history across any medium.", u: "https://taketwointeractivesoftwareinc.gcs-web.com/news-releases/news-release-details/grand-theft-auto-vi-shatters-entertainment-box-office-records/" },
-      { d: "Nov 18, 2026", t: "Metacritic 99 — highest-rated game of all time", s: "CONFIRMED", x: "99 on both PS5 and Xbox Series X from 150+ critic reviews, above Ocarina of Time; OpenCritic 98; user score ~5.7.", u: "https://www.metacritic.com/game/grand-theft-auto-vi/" },
-      { d: "Nov 19, 2026", t: "GTA 6 out now on PS5 & Xbox Series X|S", s: "CONFIRMED", x: "Released at midnight local time. No PC version announced; Xbox One via cloud only. Pre-load ran from Nov 12.", u: "https://www.rockstargames.com/VI/out-now" },
-      { d: "Nov 19, 2026", t: "Full credits published — cast revealed", s: "CONFIRMED", x: "Dylan Rourke as Jason, Manni L. Perez as Lucia, Lexie Shoaibi as Mandy; Michael Hollick credited as 'The Hitman'.", u: "https://www.polygon.com/gta-6-cast-list-actors-cameos-grand-theft-auto/" },
-      { d: "Ongoing", t: "Cheat inputs still being discovered (15 of 61 known)", s: "UNCONFIRMED", x: "PowerPyx's list is the primary source; we update our database as inputs are verified. No unlimited-money cheat exists.", u: "https://www.powerpyx.com/gta-6-all-cheats/" }
-    ];
+    })) : [];
+    if (!items.length) { root.innerHTML = emptyState("No verified news has been published yet. Check back after the editorial desk has reviewed a source."); return; }
     root.innerHTML = items.map(i => `<div class="card"><span class="badge ${i.s === "CONFIRMED" ? "confirmed" : i.s === "SUPPORTED" ? "confirmed" : "unconfirmed"}">${i.s.toLowerCase()}</span>
       <div class="t" style="font-weight:700;margin:6px 0">${esc(i.t)}</div><div class="small">${esc(i.d)} — ${esc(i.x)}</div>
       <div class="srcline"><a href="${esc(i.u)}" target="_blank" rel="noopener">Source ↗</a></div></div>`).join("");
   }
   function contentRequestForm() {
     const f = document.getElementById("request-form"); if (!f) return;
-    f.addEventListener("submit", e => {
+    f.addEventListener("submit", async e => {
       e.preventDefault();
       const q = f.querySelector("[name=question]"), cat = f.querySelector("[name=category]"), mail = f.querySelector("[name=email]");
       let ok = true;
       f.querySelectorAll(".err").forEach(x => x.classList.remove("show"));
       if (!q.value.trim() || q.value.trim().length < 8) { q.nextElementSibling.classList.add("show"); ok = false; }
       if (!ok) return;
-      const store = JSON.parse(localStorage.getItem("gta-requests") || "[]");
       const entry = { q: q.value.trim(), cat: cat.value, mail: mail.value.trim(), at: new Date().toISOString() };
-      store.push(entry);
-      localStorage.setItem("gta-requests", JSON.stringify(store));
-      f.querySelector(".form-ok").classList.add("show");
+      const button = f.querySelector("button[type=submit]");
+      const okBox = f.querySelector(".form-ok");
+      button.disabled = true; button.textContent = "Sending…"; okBox.classList.remove("show");
+      const saved = window.GTA && window.GTA.submitContact ? await window.GTA.submitContact(entry) : false;
+      button.disabled = false; button.textContent = "Submit request";
+      if (!saved) {
+        okBox.textContent = "We couldn’t submit your request right now. Please try again later.";
+        okBox.classList.add("show");
+        return;
+      }
       f.reset();
-      // Persist to the database when Supabase is configured (rate-limited per session)
-      if (window.GTA && window.GTA.submitContact) {
-        window.GTA.submitContact(entry).then(ok => {
-          if (!ok) console.warn("[GTA VI HQ] submission kept locally only (database unavailable)");
-        });
-      }
-      // Deliver straight to the site owner's inbox via the server-side email function
-      if (window.GTA && window.GTA.notifyByEmail) {
-        window.GTA.notifyByEmail(entry).then(ok => {
-          const okBox = f.querySelector(".form-ok");
-          if (ok) { okBox.innerHTML = "✅ <b>Sent!</b> Your request reached the team. If you left an email, you'll get a reply there."; okBox.classList.add("show"); }
-          else console.warn("[GTA VI HQ] request saved locally; email delivery not configured yet");
-        });
-      }
+      okBox.innerHTML = "✅ <b>Received.</b> Your request has been securely recorded. Email replies require the notification service to be configured.";
+      okBox.classList.add("show");
+      if (window.GTA && window.GTA.notifyByEmail) window.GTA.notifyByEmail(entry);
     });
   }
 

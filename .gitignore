@@ -4,7 +4,8 @@ supabase credentials.txt
 *.local
 .DS_Store
 Thumbs.db
-# js/env.js ships intentionally: it holds ONLY the public Project URL + publishable key (RLS protects the data; the secret key never appears there)
+# Generated from Vercel's public deployment variables; never commit a local copy.
+js/env.js
 node_modules/
 .vercel
 *credentials*.txt
