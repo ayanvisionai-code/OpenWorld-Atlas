@@ -509,6 +509,7 @@
   }
   function entityCard(type, it, url) {
     return `<a class="card entity-card" href="${url}">
+      <span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>
       <span class="badge ${it.verification === "CONFIRMED" ? "confirmed" : it.verification === "UNCONFIRMED" ? "unconfirmed" : "unavailable"}">${(it.verification || "").toLowerCase()}</span>
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;
@@ -557,6 +558,13 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
+    if (document.title.includes("GTA VI HQ")) document.title = document.title.replace("GTA VI HQ", "OpenWorld Atlas");
+    document.querySelectorAll("a.logo").forEach(logo => {
+      const href = logo.getAttribute("href") || "index.html";
+      const asset = href.includes("../") ? "../images/openworld-atlas-mark.svg" : "images/openworld-atlas-mark.svg";
+      logo.setAttribute("aria-label", "OpenWorld Atlas — Explore Every Detail");
+      logo.innerHTML = '<img src="' + asset + '" alt="" class="logo-mark"> <span>OPENWORLD <b>ATLAS</b></span>';
+    });
     const mt = document.querySelector(".menu-toggle"), mm = document.querySelector(".mobile-menu");
     if (mt && mm) mt.addEventListener("click", () => mm.classList.toggle("open"));
     initSearchUI();

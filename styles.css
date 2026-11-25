@@ -28,6 +28,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#0D0F
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.02rem;font-weight:700;letter-spacing:.11em;color:var(--ink)}
 .logo:hover{text-decoration:none}
 .logo .vi{color:var(--accent)}
+.logo-mark{width:25px;height:25px;flex:none}
 .atlas-mark{display:inline-grid;place-items:center;width:23px;height:23px;border:1px solid rgba(217,139,72,.65);color:var(--accent);font-size:.85rem;line-height:1}
 .nav-links{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
 .nav-links a{color:var(--muted);padding:8px 11px;border-radius:9px;font-size:.92rem;font-weight:500;white-space:nowrap}
@@ -183,6 +184,13 @@ details .a p{margin-bottom:10px}
 .media-card .body{padding:16px 18px 18px}
 .entity-card{display:block;color:inherit}
 .entity-card:hover{text-decoration:none;border-color:#3A4150;transform:translateY(-2px)}
+.entity-art{display:block;height:54px;margin:-20px -20px 16px;border-radius:var(--radius) var(--radius) 0 0;background:linear-gradient(120deg,#242A34,#303641)}
+.art-character{background:radial-gradient(circle at 72% 20%,rgba(217,139,72,.35),transparent 28%),linear-gradient(120deg,#282b33,#151922)}
+.art-vehicle{background:linear-gradient(125deg,#151922 20%,#3b4651 20% 22%,#1f2831 22% 58%,#D98B48 58% 60%,#161b22 60%)}
+.art-weapon{background:linear-gradient(145deg,#202731,#202731 42%,#D98B48 42% 45%,#161b21 45%)}
+.art-location{background:linear-gradient(160deg,#26343a 0 45%,#D98B48 45% 47%,#161b22 47%)}
+.art-mission{background:radial-gradient(circle at 20% 70%,rgba(217,139,72,.45),transparent 18%),linear-gradient(135deg,#191d24,#303641)}
+.art-guide{background:linear-gradient(90deg,#222832 0 31%,#D98B48 31% 34%,#222832 34% 66%,#A5ABB5 66% 69%,#222832 69%)}
 .entity-card .t{font-weight:700;color:var(--ink);margin:4px 0 6px}
 .entity-card .d{font-size:.86rem;color:var(--muted)}
 .icon-bubble{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#171B26;border:1px solid var(--border);margin-bottom:12px;font-size:1.4rem}
