@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gaming &amp; streaming setup planner | OpenWorld Atlas</title>
+  <meta name="description" content="Build an itemized US hardware budget for a PS5, Xbox or gaming PC. Compare three tiers and skip equipment you already own.">
+  <link rel="canonical" href="https://openworld-atlas.vercel.app/setup">
+  <meta property="og:url" content="https://openworld-atlas.vercel.app/setup">
+  <link rel="icon" href="/images/openworld-atlas-mark.svg">
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <script defer src="/js/setup.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to planner</a>
+  <nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/images/openworld-atlas-mark.svg" width="28" height="28" alt=""> OPENWORLD ATLAS</a><a href="/guides">Guides</a><a href="/pc">Platforms</a></div></nav>
+  <main id="main" class="wrap planner">
+    <header class="planner-cover">
+      <div><p class="planner-label">Equipment guide · United States</p><h1>Build your setup.</h1><p>Price a living-room console, a gaming desk or a streaming studio. Leave out anything you already own.</p></div>
+    </header>
+    <form id="setup-form">
+      <div class="setup-controls">
+        <label>Platform<select name="platform"><option value="ps">PlayStation 5</option><option value="xbox">Xbox Series</option><option value="pc">Gaming PC</option></select></label>
+        <label>Use<select name="purpose"><option value="play">Gaming</option><option value="stream">Gaming and streaming</option></select></label>
+      </div>
+      <fieldset class="tier-picker"><legend>Choose a budget</legend>
+        <label><input type="radio" name="tier" value="0" checked> <strong>Essentials</strong><output></output><small>Reuse your display and furniture.</small></label>
+        <label><input type="radio" name="tier" value="1"> <strong>Mid-range</strong><output></output><small>Add a dedicated screen and headset.</small></label>
+        <label><input type="radio" name="tier" value="2"> <strong>Studio</strong><output></output><small>Budget for a premium display and furnished desk.</small></label>
+      </fieldset>
+      <fieldset><legend>Include in my estimate</legend><div id="options" class="setup-options"></div></fieldset>
+    </form>
+    <noscript>Enable JavaScript to personalize the item list. A new PS5 Digital console alone has a US planning budget of $599 with an existing HDMI display.</noscript>
+    <section class="setup-receipt"><header><h2>Your equipment list</h2><output id="total" aria-live="polite"></output></header><p id="assumptions"></p><ul id="parts"></ul></section>
+    <p class="small">Hardware allowances in USD, reviewed November 27, 2026. Excludes the game, internet, tax, delivery and subscriptions. Check seller, configuration and checkout price on Amazon. These are ordinary product links.</p>
+    <section class="src"><h2>Before you buy</h2><p>Rockstar lists PS5 and Xbox Series X|S. The PC presets are general gaming and streaming examples. GTA VI performance on these PCs is unverified. <a href="https://www.rockstargames.com/VI">Rockstar platform listing</a></p><p>PS5 can broadcast with a linked streaming account. A capture card is an optional path for sending console video to a separate compatible computer. <a href="https://www.playstation.com/en-us/support/games/ps5-stream-gameplay-broadcast/">PlayStation broadcasting guide</a> · <a href="https://direct.playstation.com/en-us/hardware/ps5">US console prices</a> · <a href="https://help.elgato.com/hc/en-us/articles/5293216945805-Elgato-Game-Capture-HD60-X-Technical-Specifications">Capture specifications</a></p></section>
+  </main>
+  <footer><div class="footer-inner"><a class="logo" href="/">OPENWORLD ATLAS</a><a href="/editorial-standards">Editorial standards</a><a href="/contact">Suggest a correction</a></div></footer>
+</body></html>

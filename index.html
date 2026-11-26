@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=7">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"OpenWorld Atlas","url":"https://openworld-atlas.vercel.app/",
  "description":"Independent gaming information and editorial platform.",
@@ -25,12 +25,12 @@
  "disambiguatingDescription":"Unofficial, non-commercial fan guide to Grand Theft Auto VI. Not affiliated with Rockstar Games or Take-Two Interactive."}
 </script>
 </head>
-<body>
+<body class="home-page">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="nav">
   <div class="nav-inner">
     <a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a>
-    <div class="nav-links">
+    <div class="nav-links"><a href="/setup">Setup planner</a>
       <a href="/" class="active">Home</a>
       <a href="/characters">Characters</a>
       <a href="/vehicles">Vehicles</a>
@@ -47,87 +47,92 @@
       <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
   </div>
-  <div class="mobile-menu">
+  <div class="mobile-menu"><a href="/setup">Setup planner</a>
     <a href="/" class="active">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations &amp; Map</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a>
   </div>
 </nav>
 
-<header class="hero">
+<header class="hero home-hero">
   <img class="hero-art" src="images/editorial/hero-coastal-city.png" alt="Original illustrative coastal skyline at sunset" width="1672" height="941" fetchpriority="high" decoding="async">
   <div class="hero-inner">
-    <span class="kicker">Independent · Source-led · Unofficial</span>
-    <h1>Explore Every Detail <span class="grad">of the Open World.</span></h1>
-    <p class="sub">Discover characters, vehicles, locations, missions, gameplay guides and carefully researched information about GTA VI.</p>
-    <div class="hero-search"><button class="search-btn" data-search-open style="padding:14px 20px;font-size:1rem">🔍 <span class="lbl">Search the Atlas</span></button></div>
-    <div class="hero-actions"><a class="btn" href="#database">Explore the Database</a><a class="btn ghost" href="/news">Read Latest Updates</a></div>
-    <div class="hero-facts">
-      <span class="chip">Claims <b>source-labelled</b></span>
-      <span class="chip">Artwork <b>original or held</b></span>
-      <span class="chip">Unknowns <b>stay unknown</b></span>
+    <div class="hero-copy">
+      <span class="kicker">Independent GTA VI field guide</span>
+      <h1>Inside the world <span class="grad">of GTA VI.</span></h1>
+      <p class="sub">Explore the people and places of Leonida, follow the latest reporting, and plan the setup you’ll play on.</p>
+      <div class="hero-actions"><a class="btn" href="#database">Explore the atlas <span aria-hidden="true">↗</span></a><a class="btn ghost" href="/news">Latest updates</a></div>
+      <button class="hero-search" data-search-open aria-label="Search the Atlas"><span aria-hidden="true">⌕</span><span>Search the Atlas</span><kbd>/</kbd></button>
+    </div>
+    <aside class="hero-panel" aria-label="OpenWorld Atlas editorial approach">
+      <p class="panel-label">Editorial approach</p>
+      <p class="panel-title">Evidence before amplification.</p>
+      <p class="panel-copy">Every public entry is labelled by its evidence status and routes back to its supporting source.</p>
+      <a href="/editorial-standards" class="panel-link">Read our standards <span aria-hidden="true">→</span></a>
+    </aside>
+    <div class="hero-facts" aria-label="Site principles">
+      <span>Source-labelled claims</span>
+      <span>Independent coverage</span>
+      <span>Clear corrections process</span>
     </div>
   </div>
 </header>
 
 <main class="wrap" id="main">
-  <section>
-    <h2>Start with the record</h2>
-    <div class="grid g2">
-      <div class="card"><span class="tag teal">Editorial standard</span><h3>Verification before visibility</h3><p class="small">Every content record supports sources, a verification label and a last-reviewed date. Drafts stay private until an editor publishes them.</p><a class="more" href="/about">How the standard works →</a></div>
-      <div class="card"><span class="tag yellow">Asset policy</span><h3>Original visuals by design</h3><p class="small">The Atlas uses original abstract artwork and clearly documented rights metadata—never copied screenshots, logos or promotional renders.</p><a class="more" href="/disclaimer#images">Read the asset policy →</a></div>
+  <a class="setup-feature" href="/setup"><strong>What will your setup cost?</strong> Compare console and PC equipment, then price the gear you need. <span>Build my setup →</span></a>
+  <section class="home-principles" aria-label="How OpenWorld Atlas works">
+    <div class="principle-intro"><h2>How to read the Atlas.</h2><p>Check a record’s sources, learn how we use illustrations, or send the desk a correction.</p></div>
+    <div class="principle-list">
+      <a class="principle" href="/editorial-standards"><span class="principle-index">01</span><div><h3>Evidence-led</h3><p>Claims carry an explicit status and supporting source.</p></div><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="principle" href="/disclaimer#images"><span class="principle-index">02</span><div><h3>Original visual direction</h3><p>Editorial artwork is distinct from official promotional material.</p></div><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="principle" href="/contact"><span class="principle-index">03</span><div><h3>Open to correction</h3><p>Readers can flag an issue directly to the editorial desk.</p></div><span class="arrow" aria-hidden="true">↗</span></a>
     </div>
   </section>
 
   <section class="atlas-categories" id="database">
-    <div class="section-intro"><span class="kicker">The database</span><h2>Find your way through the world</h2><p class="small">Browse source-labelled records across the Atlas. A designed editorial treatment appears where approved artwork is not yet available.</p></div>
-    <div class="grid g3">
-      <a class="card entity-card" href="/characters"><img class="entity-image" src="images/editorial/character-illustration.png" alt="Illustrative anonymous silhouette for the characters directory" loading="lazy" width="1448" height="1086"><h3>Characters</h3><p class="small">Profiles, relationships and verified story context.</p></a>
-      <a class="card entity-card" href="/vehicles"><img class="entity-image" src="images/editorial/vehicle-editorial.png" alt="Illustrative unbranded vehicle editorial image" loading="lazy" width="1672" height="941"><h3>Vehicles</h3><p class="small">Categories and sourced vehicle information.</p></a>
-      <a class="card entity-card" href="/weapons"><img class="entity-image" src="images/editorial/equipment-still-life.png" alt="Illustrative generic equipment still life" loading="lazy" width="1448" height="1086"><h3>Weapons</h3><p class="small">Equipment records without invented specifications.</p></a>
-      <a class="card entity-card" href="/map"><img class="entity-image" src="images/editorial/location-marina.png" alt="Illustrative coastal marina environment" loading="lazy" width="1448" height="1086"><h3>Locations</h3><p class="small">Original editorial views of regions and places.</p></a>
-      <a class="card entity-card" href="/missions"><img class="entity-image" src="images/editorial/mission-waterfront.png" alt="Illustrative nighttime waterfront environment" loading="lazy" width="1448" height="1086"><h3>Missions</h3><p class="small">Walkthroughs and mission context when verified.</p></a>
-      <a class="card entity-card" href="/cheats"><img class="entity-image" src="images/editorial/guide-map-desk.png" alt="Illustrative controller, compass and map desk scene" loading="lazy" width="1448" height="1086"><h3>Cheat Codes</h3><p class="small">Inputs are listed only when a source supports them.</p></a>
+    <div class="section-heading"><div><span class="eyebrow">The atlas</span><h2>Find the thread.</h2></div><p>Six editorial desks, one clear standard for every record.</p></div>
+    <div class="atlas-grid">
+      <a class="atlas-card atlas-card-feature" href="/characters"><img src="images/editorial/character-illustration.png" alt="Illustrative anonymous silhouette for the characters directory" loading="lazy" width="1448" height="1086"><div class="atlas-card-copy"><span>01 / Character index</span><h3>Characters</h3><p>Profiles, relationships and sourced story context.</p><b>Open index <i aria-hidden="true">↗</i></b></div></a>
+      <a class="atlas-card" href="/vehicles"><img src="images/editorial/vehicle-editorial.png" alt="Illustrative unbranded vehicle editorial image" loading="lazy" width="1672" height="941"><div class="atlas-card-copy"><span>02 / Vehicle file</span><h3>Vehicles</h3><b>Browse records <i aria-hidden="true">↗</i></b></div></a>
+      <a class="atlas-card" href="/map"><img src="images/editorial/location-marina.png" alt="Illustrative coastal marina environment" loading="lazy" width="1448" height="1086"><div class="atlas-card-copy"><span>03 / World index</span><h3>Locations</h3><b>View places <i aria-hidden="true">↗</i></b></div></a>
+      <a class="atlas-card" href="/missions"><img src="images/editorial/mission-waterfront.png" alt="Illustrative nighttime waterfront environment" loading="lazy" width="1448" height="1086"><div class="atlas-card-copy"><span>04 / Mission desk</span><h3>Missions</h3><b>Explore coverage <i aria-hidden="true">↗</i></b></div></a>
+      <a class="atlas-card" href="/weapons"><img src="images/editorial/equipment-still-life.png" alt="Illustrative generic equipment still life" loading="lazy" width="1448" height="1086"><div class="atlas-card-copy"><span>05 / Equipment file</span><h3>Weapons</h3><b>Open index <i aria-hidden="true">↗</i></b></div></a>
+      <a class="atlas-card atlas-card-wide" href="/cheats"><img src="images/editorial/guide-map-desk.png" alt="Illustrative controller, compass and map desk scene" loading="lazy" width="1448" height="1086"><div class="atlas-card-copy"><span>06 / Research notes</span><h3>Cheat Codes</h3><p>Entries appear only when the underlying evidence is ready.</p><b>See research notes <i aria-hidden="true">↗</i></b></div></a>
     </div>
   </section>
 
-  <section>
-    <h2>Cheat code directory</h2>
-    <p class="small">Only publish inputs with a verifiable source. Entries without evidence remain unavailable rather than guessed.</p>
+  <section class="home-feed">
+    <div class="section-heading"><div><span class="eyebrow">Field notes</span><h2>Current research.</h2></div><a class="text-link" href="/cheats">All research notes <span aria-hidden="true">→</span></a></div>
+    <p class="section-deck">Only records that have passed editorial review belong here. If evidence is unavailable, we say so.</p>
     <div class="grid g3" id="home-cheats"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
-    <p style="margin-top:14px"><a class="btn sm" href="/cheats">Browse cheat-code records →</a></p>
   </section>
 
   <section class="editorial-standards">
-    <div class="section-intro"><span class="kicker">The editorial desk</span><h2>Evidence before amplification</h2></div>
-    <div class="grid g2"><p class="lead">OpenWorld Atlas distinguishes confirmed reporting from supported coverage, unconfirmed claims and information that is not available. We preserve uncertainty rather than inventing certainty.</p><p class="small">Every publishable record supports source references and verification dates. If a correction is needed, readers can flag it directly to the editorial team.</p></div>
-    <p><a class="btn ghost sm" href="/about">Read our editorial standards →</a> <a class="btn ghost sm" href="/contact">Report a correction →</a></p>
+    <div><span class="eyebrow">The editorial desk</span><h2>Evidence before<br>amplification.</h2></div>
+    <div class="standards-copy"><p class="lead">We distinguish confirmed reporting from reported coverage, uncertainty and information that simply is not available.</p><p class="small">Every publishable record supports source references and review dates. When a correction is needed, it stays part of the public record.</p><p><a class="btn ghost sm" href="/editorial-standards">Our standards <span aria-hidden="true">↗</span></a> <a class="btn ghost sm" href="/contact">Report a correction</a></p></div>
   </section>
 
-  <section>
-    <h2>Popular characters</h2>
+  <section class="home-feed">
+    <div class="section-heading"><div><span class="eyebrow">Character index</span><h2>People in focus.</h2></div><a class="text-link" href="/characters">Browse all characters <span aria-hidden="true">→</span></a></div>
     <div class="grid g3" id="home-chars"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
   </section>
 
-  <section>
-    <h2>Featured guides</h2>
-    <div class="grid g2">
+  <section class="home-guides">
+    <div class="section-heading"><div><span class="eyebrow">From the desk</span><h2>Guides in development.</h2></div><p>Practical coverage, published only when the source record is ready.</p></div>
+    <div class="guide-grid">
       <div class="card media-card">
-        <img src="images/vice-road.svg" alt="Original abstract editorial road illustration" width="1600" height="900" loading="lazy" decoding="async" style="aspect-ratio:16/7;object-fit:cover">
-        <div class="body"><span class="tag teal">How-to</span><h3>How to enter cheat codes — step by step</h3><p class="small">The exact button presses on PS5 &amp; Xbox, and the four reasons codes "don't work".</p><a class="more" href="/blog/gta-6-cheat-codes-how-to-enter">Read →</a></div>
+        <img src="images/editorial/newsroom-desk.png" alt="Illustrative editorial research desk at night" width="1448" height="1086" loading="lazy" decoding="async">
+        <div class="body"><span class="tag teal">Research note</span><h3>How we handle cheat-code claims</h3><p class="small">A clear explanation of what will be published, what will be labelled, and what remains unavailable.</p><a class="more" href="/blog/gta-6-cheat-codes-how-to-enter">Open note <span aria-hidden="true">→</span></a></div>
       </div>
       <div class="card media-card">
-        <img src="images/hero-skyline.svg" alt="Original illustrated coastal skyline" width="1600" height="900" loading="lazy" decoding="async" style="aspect-ratio:16/7;object-fit:cover">
-        <div class="body"><span class="tag yellow">Unlock guide</span><h3>How to unlock every cheat fast</h3><p class="small">Story-finish unlocks, the 5/10 challenge pattern, medals and partner activities.</p><a class="more" href="/blog/gta-6-cheats-fast-unlock">Read →</a></div>
+        <img src="images/editorial/guide-map-desk.png" alt="Illustrative map and compass research desk" width="1448" height="1086" loading="lazy" decoding="async">
+        <div class="body"><span class="tag yellow">Methodology</span><h3>What makes an Atlas record publishable</h3><p class="small">Sources, evidence labels, a review date and the room to correct the record.</p><a class="more" href="/editorial-standards">Read methodology <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>Latest verified updates</h2>
+  <section class="home-feed home-updates">
+    <div class="section-heading"><div><span class="eyebrow">Dispatches</span><h2>Latest updates.</h2></div><a class="text-link" href="/news">Open news desk <span aria-hidden="true">→</span></a></div>
     <div class="grid g2" id="news-root"><div class="skeleton"></div><div class="skeleton"></div></div>
-    <p style="margin-top:14px"><a class="btn ghost sm" href="/news">All news & updates →</a></p>
   </section>
-
-  <div class="ad-slot" data-ad-slot="home-inline">Advertisement placeholder — disabled. Monetization stays off until rights are reviewed by a legal professional (see <a href="/disclaimer">disclaimer</a>).</div>
 </main>
 
 <footer>
@@ -143,6 +148,6 @@
 </footer>
 <script src="js/site-config.js"></script>
 <script src="js/env.js" onerror="this.remove"></script>
-    <script src="app.js?v=4"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

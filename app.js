@@ -177,6 +177,7 @@
       keywords: (n.keywords || []).join(" "), text: (n.summary || n.description || "").toLowerCase()
     }));
     // sites (static pages)
+    push({type:"Page", id:"setup", title:"Gaming & streaming setup planner", url:"/setup", desc:"Compare PS5, Xbox and PC equipment budgets.", cat:"Site", weight:1, keywords:"streaming console microphone headset GPU budget price monitor", text:"gaming streaming setup planner budget equipment cost ps5 xbox pc"});
     [["/","Home","Independent GTA VI information and editorial research"],["/faq","FAQ","Official information and research status"],["/pc","Platforms & PC availability","Official platform information and unresolved PC questions"],["/disclaimer","Disclaimer & Credit Policy","Independence, assets, corrections and rights concerns"]].forEach(p => push({
       type: "Page", id: p[0], title: p[1], url: p[0], desc: p[2], badge: null, cat: "Site", weight: .8, keywords: "", text: p[2].toLowerCase()
     }));
@@ -601,9 +602,19 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
+    if ('IntersectionObserver' in window && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      const observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('atlas-enter');
+          observer.unobserve(entry.target);
+        }
+      });
+      document.querySelectorAll('main > section, .atlas-card, .setup-feature').forEach(item => observer.observe(item));
+    }
     document.querySelectorAll("a.logo").forEach(logo => {
       const href = logo.getAttribute("href") || "/";
-      const asset = href.includes("../") ? "../images/openworld-atlas-mark.svg" : "images/openworld-atlas-mark.svg";
+      const asset = "/images/openworld-atlas-mark.svg";
       logo.setAttribute("aria-label", SITE.name + " — " + SITE.tagline);
       logo.innerHTML = '<img src="' + asset + '" alt="" class="logo-mark"> <span>OPENWORLD <b>ATLAS</b></span>';
     });
