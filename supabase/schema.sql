@@ -55,8 +55,13 @@ create table if not exists public.content (
   image_attribution  text,                             -- credit/licence line
   status             text not null default 'draft' check (status in ('draft','published')),
   verification       text check (verification in
-                       ('CONFIRMED','SUPPORTED','UNCONFIRMED','SPECULATION','NOT_AVAILABLE')),
+                       ('OFFICIALLY_CONFIRMED','INDEPENDENTLY_VERIFIED','REPORTED',
+                        'UNCONFIRMED','SPECULATION','UNKNOWN','CORRECTED_OUTDATED')),
   verified_at        date,                             -- last fact-check date
+  editorial_status   text not null default 'needs_review' check
+                       (editorial_status in ('needs_review','approved','corrected','archived')),
+  reviewed_at        date,
+  correction_note    text,
   published_at       timestamptz,
   fields             jsonb not null default '{}',      -- full entity record (id, inputs, stats…)
   seo_title          text,
@@ -183,8 +188,8 @@ create policy "admins read roles" on public.user_roles
 
 -- --- content -----------------------------------------------------------------
 drop policy if exists "public read published content" on public.content;
-create policy "public read published content" on public.content
-  for select using (status = 'published');
+create policy "public read approved published content" on public.content
+  for select using (status = 'published' and editorial_status = 'approved');
 
 drop policy if exists "admins manage content" on public.content;
 drop policy if exists "editors manage content" on public.content;

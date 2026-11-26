@@ -1,9 +1,9 @@
 # OpenWorld Atlas — Supabase Backend Setup Guide
 
-This guide connects your existing site (static HTML/JS on Vercel + GitHub) to a
-Supabase backend. **The site keeps working in fallback mode the whole time** —
-the bundled JSON data remains the seed content; the database takes over once
-configured. Nothing is rebuilt, nothing is lost.
+This guide connects the static HTML/JS site on Vercel + GitHub to Supabase.
+Bundled JSON is an editorial import source only. Public pages render approved,
+published Supabase records and show an honest unavailable state when the public
+database is not configured or cannot be reached.
 
 > **Key safety rule:** the **anon/publishable key** is public by design (RLS
 > protects the data) — it may live in browser code. The **service_role /
@@ -39,8 +39,8 @@ The object-level guardrails (image types only, ≤5 MB) are already in the SQL.
 
 1. Copy **`js/env.example.js`** → **`js/env.js`**.
 2. Paste your two PUBLIC values into the placeholders.
-3. Reload the site. Done — the app now loads published content from the
-   database (with JSON fallback if the DB is unreachable).
+3. Reload the site. The app loads only records that are both `published` and
+   editorially `approved`. Do not use JSON fixtures as public content.
 
 `js/env.js` is git-ignored, so keys stay out of GitHub. On Vercel, remember
 that `js/env.js` must exist in the deployed output: add it locally before

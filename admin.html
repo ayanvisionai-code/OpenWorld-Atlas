@@ -80,15 +80,18 @@
             <div><label for="c-type">Type</label><select id="c-type"><option>cheat</option><option>character</option><option>vehicle</option><option>weapon</option><option>location</option><option>mission</option><option>guide</option><option>news</option><option>blog</option><option>faq</option></select></div>
             <div><label for="c-slug">Slug (URL id — latin letters, digits, dashes)</label><input id="c-slug" pattern="[a-z0-9-]+" required></div>
             <div><label for="c-title">Title</label><input id="c-title" required></div>
-            <div><label for="c-status">Status</label><select id="c-status"><option value="draft">Draft</option><option value="published">Published</option></select></div>
-            <div><label for="c-verification">Verification badge</label><select id="c-verification"><option>CONFIRMED</option><option>SUPPORTED</option><option>UNCONFIRMED</option><option>SPECULATION</option><option>NOT_AVAILABLE</option></select></div>
-            <div><label for="c-verified-at">Last verified date</label><input id="c-verified-at" type="date"></div>
+            <div><label for="c-status">Publication status</label><select id="c-status"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+            <div><label for="c-editorial-status">Editorial review</label><select id="c-editorial-status"><option value="needs_review">Needs review</option><option value="approved">Approved for public display</option><option value="corrected">Corrected / retained for history</option><option value="archived">Archived</option></select></div>
+            <div><label for="c-verification">Evidence status</label><select id="c-verification"><option>OFFICIALLY_CONFIRMED</option><option>INDEPENDENTLY_VERIFIED</option><option>REPORTED</option><option>UNCONFIRMED</option><option>SPECULATION</option><option>UNKNOWN</option><option>CORRECTED_OUTDATED</option></select></div>
+            <div><label for="c-verified-at">Evidence reviewed on</label><input id="c-verified-at" type="date"></div>
+            <div><label for="c-reviewed-at">Editorial approval date</label><input id="c-reviewed-at" type="date"></div>
             <div class="full"><label for="c-desc">Description (short summary)</label><textarea id="c-desc" maxlength="500"></textarea></div>
             <div class="full"><label for="c-body">Body (long-form, optional)</label><textarea id="c-body"></textarea></div>
             <div class="full"><label for="c-img">Featured image URL</label><input id="c-img" placeholder="https://…supabase.co/storage/v1/object/public/media/…"></div>
             <div class="full"><label for="c-img-alt">Image alt text</label><input id="c-img-alt"></div>
             <div class="full"><label for="c-img-attr">Image attribution / licence</label><input id="c-img-attr" value="Original artwork — this site"></div>
             <div class="full"><label for="c-sources">Sources (one URL per line)</label><textarea id="c-sources" placeholder="https://www.powerpyx.com/…&#10;https://www.rockstargames.com/…"></textarea></div>
+            <div class="full"><label for="c-correction-note">Correction note (required when correcting a published claim)</label><textarea id="c-correction-note" maxlength="1000" placeholder="What changed, why it changed, and the supporting source."></textarea></div>
             <div class="full"><label for="c-fields">Entity fields (JSON — type-specific: input, effect, category, stats…)</label><textarea id="c-fields" style="min-height:160px;font-family:monospace;font-size:.85rem"></textarea></div>
             <div class="full"><label for="c-file">Upload image to Supabase Storage (jpg/png/webp/svg, ≤5 MB)</label><input id="c-file" type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml,image/avif"></div>
             <div class="full" id="upload-state" style="font-size:.85rem;color:var(--muted)"></div>
@@ -176,11 +179,13 @@
   /* ---------- editor ---------- */
   function fieldsToForm(r) {
     $("c-type").value = r.type; $("c-slug").value = r.slug; $("c-title").value = r.title;
-    $("c-status").value = r.status; $("c-verification").value = r.verification || "SUPPORTED";
-    $("c-verified-at").value = r.verified_at || new Date().toISOString().slice(0, 10);
+    $("c-status").value = r.status; $("c-editorial-status").value = r.editorial_status || "needs_review";
+    $("c-verification").value = r.verification || "UNKNOWN";
+    $("c-verified-at").value = r.verified_at || ""; $("c-reviewed-at").value = r.reviewed_at || "";
     $("c-desc").value = r.description || ""; $("c-body").value = r.body || "";
     $("c-img").value = r.featured_image_url || ""; $("c-img-alt").value = r.image_alt || "";
     $("c-img-attr").value = r.image_attribution || "Original artwork — this site";
+    $("c-correction-note").value = r.correction_note || "";
     const f = r.fields || {};
     $("c-sources").value = (f.sources || []).join("\n");
     const rest = Object.assign({}, f); delete rest.sources;
@@ -194,7 +199,10 @@
     if (sources.length) fields.sources = sources; else delete fields.sources;
     return {
       type: $("c-type").value, slug: $("c-slug").value.trim(), title: $("c-title").value.trim(),
-      status: $("c-status").value, verification: $("c-verification").value, verified_at: $("c-verified-at").value || null,
+      status: $("c-status").value, editorial_status: $("c-editorial-status").value,
+      verification: $("c-verification").value, verified_at: $("c-verified-at").value || null,
+      reviewed_at: $("c-reviewed-at").value || null,
+      correction_note: $("c-correction-note").value.trim() || null,
       description: $("c-desc").value.trim() || null, body: $("c-body").value.trim() || null,
       featured_image_url: $("c-img").value.trim() || null, image_alt: $("c-img-alt").value.trim() || null,
       image_attribution: $("c-img-attr").value.trim() || null,
@@ -209,7 +217,9 @@
     if (row) fieldsToForm(row);
     else {
       $("content-form").reset();
-      $("c-verified-at").value = new Date().toISOString().slice(0, 10);
+      $("c-verified-at").value = "";
+      $("c-reviewed-at").value = "";
+      $("c-correction-note").value = "";
       $("c-img-attr").value = "Original artwork — this site";
       $("c-fields").value = "{}";
     }
@@ -221,6 +231,12 @@
   $("content-form").addEventListener("submit", async e => {
     e.preventDefault();
     const payload = formToPayload(); if (!payload) return;
+    if (payload.status === "published" && payload.editorial_status !== "approved") {
+      $("form-msg").textContent = "⚠️ Public records require an approved editorial review."; return;
+    }
+    if (payload.status === "published" && (!payload.verified_at || !payload.reviewed_at || !payload.fields.sources || !payload.fields.sources.length)) {
+      $("form-msg").textContent = "⚠️ Public records require evidence and editorial review dates plus at least one claim-specific source."; return;
+    }
     const { error } = editingId
       ? await sb.from("content").update(payload).eq("id", editingId)
       : await sb.from("content").insert(payload);
@@ -255,7 +271,8 @@
     const tg = e.target.closest("[data-toggle]");
     if (tg) {
       const next = tg.dataset.next;
-      const payload = next === "published" ? { status: "published", published_at: new Date().toISOString() } : { status: "draft" };
+      if (next === "published") { alert("Open the record, add sources and review metadata, then approve it before publishing."); return; }
+      const payload = { status: "draft" };
       const { error } = await sb.from("content").update(payload).eq("id", tg.dataset.toggle);
       if (error) alert("Update failed: " + error.message); else load();
     }

@@ -30,7 +30,10 @@
       date: f.date || r.published_at || "",
       imageUrl: f.imageUrl || r.featured_image_url || "",
       imageAlt: f.imageAlt || r.image_alt || "",
-      verification: f.verification || r.verification || "SUPPORTED",
+      verification: f.verification || r.verification || "UNKNOWN",
+      verifiedAt: r.verified_at || "",
+      reviewedAt: r.reviewed_at || "",
+      correctionNote: r.correction_note || "",
       sources: f.sources || []
     });
   }
@@ -53,7 +56,7 @@
   const READY = (async () => {
     if (!SB_ON) { dataLoadState = "unconfigured"; return; }
     try {
-      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&order=updated_at.desc", {});
+      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&editorial_status=eq.approved&order=updated_at.desc", {});
       if (!Array.isArray(rows)) throw new Error("invalid public content response");
       for (const r of rows) {
         const dbKey = TYPE_TO_DB[r.type]; if (!dbKey || !DB[dbKey]) continue;
@@ -83,7 +86,7 @@
     if (!words.length) return null;
     const ors = words.map(w =>
       `title.ilike.*${w}*,description.ilike.*${w}*,fields->>name.ilike.*${w}*,fields->>effect.ilike.*${w}*,fields->>keywords.ilike.*${w}*`).join(",");
-    const rows = await sbRest(`/rest/v1/content?select=*&status=eq.published&or=(${ors})&limit=${limit || 40}`, {});
+    const rows = await sbRest(`/rest/v1/content?select=*&status=eq.published&editorial_status=eq.approved&or=(${ors})&limit=${limit || 40}`, {});
     return rows.map(r => ({
       r: {
         type: r.type,
@@ -98,11 +101,13 @@
 
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const badge = st => {
-    if (st === "CONFIRMED") return '<span class="badge confirmed">● Confirmed</span>';
-    if (st === "SUPPORTED") return '<span class="badge confirmed">● Supported</span>';
+    if (st === "OFFICIALLY_CONFIRMED") return '<span class="badge confirmed">● Confirmed by official sources</span>';
+    if (st === "INDEPENDENTLY_VERIFIED") return '<span class="badge confirmed">● Independently verified</span>';
+    if (st === "REPORTED") return '<span class="badge unconfirmed">● Reported</span>';
     if (st === "UNCONFIRMED") return '<span class="badge unconfirmed">● Unconfirmed</span>';
     if (st === "SPECULATION") return '<span class="badge speculation">● Speculation</span>';
-    return '<span class="badge unavailable">● Not available</span>';
+    if (st === "CORRECTED_OUTDATED") return '<span class="badge unavailable">● Corrected or outdated</span>';
+    return '<span class="badge unavailable">● Unknown / not available</span>';
   };
   const na = v => (v == null || v === "" ? '<span class="na">Not confirmed yet</span>' : esc(v));
   const inputChips = arr => arr ? '<div class="cheat">' + arr.map(d => `<span>${esc(d)}</span>`).join("") + "</div>" : '<span class="na">Input not yet discovered</span>';
@@ -127,7 +132,7 @@
     // cheats
     DB.cheats.cheats.forEach(c => push({
       type: "Cheat code", id: c.id, title: c.name + " cheat", url: "/detail?type=cheat&id=" + c.id,
-      desc: c.effect, badge: c.inputStatus === "CONFIRMED" ? "CONFIRMED" : "UNAVAILABLE",
+      desc: c.effect, badge: c.verification || "UNKNOWN",
       cat: "Cheat — " + c.category, weight: 1.15,
       keywords: (c.keywords || []).join(" "), text: (c.effect + " " + c.unlock).toLowerCase()
     }));
@@ -172,12 +177,12 @@
       keywords: (n.keywords || []).join(" "), text: (n.summary || n.description || "").toLowerCase()
     }));
     // sites (static pages)
-    [["/","Home","Everything about GTA 6 — the fact-checked guide hub",""],["/faq","FAQ","Every GTA 6 question, answered with sources"],["/pc","PC, Platforms & Price","GTA 6 on PC, console prices, editions, GTA Online"],["/disclaimer","Disclaimer & Credit Policy","Legal safeguards, attribution and takedown contact"]].forEach(p => push({
+    [["/","Home","Independent GTA VI information and editorial research"],["/faq","FAQ","Official information and research status"],["/pc","Platforms & PC availability","Official platform information and unresolved PC questions"],["/disclaimer","Disclaimer & Credit Policy","Independence, assets, corrections and rights concerns"]].forEach(p => push({
       type: "Page", id: p[0], title: p[1], url: p[0], desc: p[2], badge: null, cat: "Site", weight: .8, keywords: "", text: p[2].toLowerCase()
     }));
   }
 
-  const POPULAR = ["money cheat", "cheat codes", "jason and lucia", "mandy", "map size", "niko bellic", "pc release", "ending", "how long is gta 6"];
+  const POPULAR = ["official platforms", "PC availability", "editorial standards", "corrections", "character records", "mission records", "cheat research"];
 
   function score(query) {
     const q = query.toLowerCase().trim();
@@ -410,9 +415,8 @@
         <div>Effect</div><div>${esc(it.effect)}</div>
         <div>How to unlock</div><div>${esc(it.unlock)}</div>
         <div>Input</div><div>${inputChips(it.input)}</div>
-        <div>Input status</div><div>${badge(it.inputStatus === "CONFIRMED" ? "CONFIRMED" : "NOT AVAILABLE")} ${it.inputStatus === "CONFIRMED" ? '<span class="small">— input documented by <a href="https://www.powerpyx.com/gta-6-all-cheats/" target="_blank" rel="noopener">PowerPyx</a>' : '<span class="small">— effect & unlock confirmed; no working input published yet. We do not print unverified inputs.</span>'}</div>
-        <div>Platforms</div><div>PlayStation 5 · Xbox Series X|S</div>
-        <div>Reminder</div><div>Works only after finishing the story. Any cheat disables saving &amp; trophies for that session.</div>
+        <div>Input status</div><div>${it.input && it.input.length ? 'Documented in the sources below' : 'No verified input published'}</div>
+        <div>Testing record</div><div>${it.testedPlatform && it.testedVersion && it.testedAt ? esc(it.testedPlatform + " · " + it.testedVersion + " · " + it.testedAt) : '<span class="na">No OpenWorld Atlas test record published</span>'}</div>
       </div>`;
     } else if (type === "character") {
       body = `<div class="kv">
@@ -467,7 +471,7 @@
     const spoiler = it.spoiler || it.details && /SPOILER/.test(it.details || "");
     root.innerHTML = `
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="${cfg.back}">${cfg.title}s</a> › <span aria-current="page">${esc(it.name)}</span></nav>
-      <div class="page-head"><span class="updated">${cfg.title} · ${badge(it.verification)} · Last verified Nov 25, 2026</span><h1>${esc(it.name)}</h1></div>
+      <div class="page-head"><span class="updated">${cfg.title} · ${badge(it.verification)}${it.verifiedAt ? " · Reviewed " + esc(it.verifiedAt) : ""}</span><h1>${esc(it.name)}</h1></div>
       ${spoiler ? '<div class="spoiler">⚠️ <b>Story spoilers below.</b> <button class="spoiler-btn" id="spoiler-toggle">Reveal</button></div><div id="spoiler-zone" class="spoiler hidden-content">' : '<div id="spoiler-zone">'}
       ${type === "cheat" || type === "vehicle" ? "" : ""}
       ${it.summary ? `<p class="lead">${esc(it.summary)}</p>` : ""}
@@ -475,6 +479,7 @@
       ${it.details ? `<p>${esc(it.details)}</p>` : ""}
       ${type !== "cheat" ? body : ""}
       </div>
+      ${it.correctionNote ? `<div class="callout warn"><b>Correction note:</b> ${esc(it.correctionNote)}</div>` : ""}
       ${srcLine(it.sources)}
       <div class="pager"><a class="btn ghost" href="${cfg.back}">← All ${cfg.title.toLowerCase()}s</a><button class="btn ghost sm" data-search-open data-prefill="${esc(it.name)}">Search related</button></div>`;
     const st = document.getElementById("spoiler-toggle");
@@ -496,10 +501,10 @@
   function unavailableState() { return `<div class="empty"><div class="big">↻</div><b>We couldn't load this information.</b><br>Please try again.<br><button class="btn ghost sm" type="button" onclick="location.reload()">Retry</button></div>`; }
   function cheatRow(c) {
     return `<tr>
-      <td><b>${esc(c.name)}</b>${c.id === "money-250k" ? ' <span class="tag pink" style="margin-left:6px">Most searched</span>' : ""}<br><span class="small">${esc(c.effect)}</span></td>
+      <td><b>${esc(c.name)}</b><br><span class="small">${esc(c.effect)}</span></td>
       <td class="small">${esc(c.unlock)}</td>
       <td>${inputChips(c.input)}</td>
-      <td>${badge(c.inputStatus === "CONFIRMED" ? "CONFIRMED" : "NOT AVAILABLE")}</td>
+      <td>${badge(c.verification)}</td>
       <td><a class="copy-btn" href="/detail?type=cheat&id=${esc(c.id)}">Details</a></td>
     </tr>`;
   }
@@ -515,9 +520,9 @@
         <select id="csort" aria-label="Sort"><option value="az">A–Z</option><option value="cat">By category</option><option value="verified">Verified inputs first</option></select>
         <span class="count" id="ccount"></span>
       </div>
-      <div class="callout warn"><b>Save warning:</b> entering any cheat disables saving and trophies for the rest of that session. Cheats only work after finishing the story.</div>
-      <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Unlock condition</th><th>Input (D-pad)</th><th>Input status</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
-      <p class="small">“Confirmed” = the exact input is documented by <a href="https://www.powerpyx.com/gta-6-all-cheats/" target="_blank" rel="noopener">PowerPyx's complete GTA 6 cheat guide</a> — the primary source other major outlets credit. “Not available” = the cheat, effect and unlock are confirmed but no working input has been published yet. We never print unverified inputs. <a href="/disclaimer">Full policy</a>.</p>`;
+      <div class="callout warn"><b>Research notice:</b> This directory only displays entries approved for publication. Check each entry's source and platform notes before relying on it.</div>
+      <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Claim</th><th>Input</th><th>Verification</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
+      <p class="small">A code is shown only after it has passed editorial review. “Reported” does not mean tested by OpenWorld Atlas. See the <a href="/editorial-standards">Editorial Standards</a>.</p>`;
     const apply = () => {
       let rows = DB.cheats.cheats.filter(c =>
         (state.cat === "all" || c.category === state.cat) &&
@@ -547,7 +552,7 @@
     }[type];
     return `<a class="card entity-card" href="${url}">
       ${media ? `<img class="entity-image" src="${esc(it.imageUrl || media[0])}" alt="${esc(it.imageAlt || media[1])}" loading="lazy" width="1448" height="1086" onerror="this.onerror=null;this.src='${media[0]}'">` : `<span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>`}
-      <span class="badge ${it.verification === "CONFIRMED" ? "confirmed" : it.verification === "UNCONFIRMED" ? "unconfirmed" : "unavailable"}">${(it.verification || "").toLowerCase()}</span>
+      <span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(it.verification) ? "confirmed" : ["REPORTED", "UNCONFIRMED", "SPECULATION"].includes(it.verification) ? "unconfirmed" : "unavailable"}">${esc((it.verification || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span>
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;
   }
@@ -563,7 +568,7 @@
     })) : [];
     if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
     if (!items.length) { root.innerHTML = emptyState("No published news updates are available yet. Check back after editorial review."); return; }
-    root.innerHTML = items.map(i => `<div class="card"><span class="badge ${i.s === "CONFIRMED" ? "confirmed" : i.s === "SUPPORTED" ? "confirmed" : "unconfirmed"}">${i.s.toLowerCase()}</span>
+    root.innerHTML = items.map(i => `<div class="card"><span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(i.s) ? "confirmed" : ["REPORTED", "UNCONFIRMED", "SPECULATION"].includes(i.s) ? "unconfirmed" : "unavailable"}">${esc((i.s || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span>
       <div class="t" style="font-weight:700;margin:6px 0">${esc(i.t)}</div><div class="small">${esc(i.d)} — ${esc(i.x)}</div>
       <div class="srcline"><a href="${esc(i.u)}">Read update →</a></div></div>`).join("");
   }
@@ -632,7 +637,7 @@
       const root = document.getElementById("home-cheats");
       if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
       const top = DB.cheats.cheats.slice(0, 5);
-      root.innerHTML = top.map(c => `<div class="card"><span class="badge ${c.verification === "CONFIRMED" ? "confirmed" : "unconfirmed"}">${esc((c.verification || "supported").toLowerCase())}</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="small">${esc(c.effect || c.summary || "")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("") || emptyState("No published cheat-code records are available yet.");
+      root.innerHTML = top.map(c => `<div class="card"><span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(c.verification) ? "confirmed" : "unconfirmed"}">${esc((c.verification || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="small">${esc(c.effect || c.summary || "")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("") || emptyState("No published cheat-code records are available yet.");
     });
     if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.slice(0, 3), "Character", c => "/detail?type=character&id=" + c.id));
   });
