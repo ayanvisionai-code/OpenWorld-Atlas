@@ -8,4 +8,4 @@
 | Email notification | Client invokes an optional `contact-notify` function. | No delivery guarantee is made. | Confirm whether the function and provider are active. |
 | Browser storage | `sessionStorage` is used for notification throttling and editor previews. | Described generally in Privacy Policy. | Complete runtime cookie/storage review before adding analytics. |
 | Fonts | Google Fonts are referenced in HTML. | Identified as a third-party service. | Confirm whether self-hosting is desired. |
-| Advertising/analytics | No AdSense script or publisher ID found in this repository scan. | Not described as active. | Reassess consent before activation. |
+| Audience measurement | Vercel Web Analytics on production public pages; page-view URLs omit query strings and fragments. Admin and editor previews excluded. | Disclosed in Privacy Policy. | Review disclosure if custom events or advertising are introduced. |

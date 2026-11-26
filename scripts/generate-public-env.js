@@ -16,3 +16,33 @@ const value = `// Generated during deployment. Public Supabase browser configura
 
 fs.writeFileSync(path.join(__dirname, "..", "js", "env.js"), value, "utf8");
 console.log("Generated js/env.js from deployment variables.");
+
+if (process.env.VERCEL_ENV === "production") {
+  const root = path.join(__dirname, "..");
+  const loader = '<script defer src="/js/web-analytics.js"></script>';
+  for (const directory of [root, path.join(root, "blog")]) {
+    for (const name of fs.readdirSync(directory)) {
+      if (!name.endsWith(".html") || name === "admin.html") continue;
+      const file = path.join(directory, name);
+      const html = fs.readFileSync(file, "utf8");
+      if (!html.includes(loader)) {
+        fs.writeFileSync(file, html.replace("</head>", loader + "\n</head>"));
+      }
+    }
+  }
+}
+
+if (process.env.VERCEL_ENV === "production") {
+  const root = path.join(__dirname, "..");
+  const loader = '<script defer src="/js/web-analytics.js"></script>';
+  for (const directory of [root, path.join(root, "blog")]) {
+    for (const name of fs.readdirSync(directory)) {
+      if (!name.endsWith(".html") || name === "admin.html") continue;
+      const file = path.join(directory, name);
+      const html = fs.readFileSync(file, "utf8");
+      if (!html.includes(loader)) {
+        fs.writeFileSync(file, html.replace("</head>", loader + "\n</head>"));
+      }
+    }
+  }
+}
