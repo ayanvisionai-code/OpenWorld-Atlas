@@ -1,10 +1,15 @@
 /* OpenWorld Atlas — runtime: data store, search and renderers */
 (function () {
   "use strict";
+  const SITE = window.OPENWORLD_ATLAS || { name: "OpenWorld Atlas", wordmark: "OPENWORLD ATLAS", tagline: "Explore Every Detail." };
 
   /* ---------------- Data store ---------------- */
-  const DB = { cheats: null, characters: null, vehicles: null, weapons: null, locations: null, missions: null, guides: null };
-  const DATA_VER = "2026-11-25d"; // bump when data/*.json changes so browsers refetch
+  const DB = {
+    cheats: { cheats: [], howTo: [] }, characters: { characters: [] }, vehicles: { vehicles: [] },
+    weapons: { weapons: [] }, locations: { regions: [] }, missions: { missions: [], chapters: [] },
+    guides: { guides: [] }, news: { news: [] }
+  };
+  let dataLoadState = "loading";
 
   /* Supabase config: provided by js/env.js (public values only — URL + publishable key).
      Absent file → JSON fallback; the site never breaks. */
@@ -18,6 +23,13 @@
     return Object.assign({}, f, {
       id: f.id || r.slug,
       name: f.name || r.title,
+      title: f.title || r.title,
+      summary: f.summary || r.description || "",
+      description: f.description || r.description || "",
+      details: f.details || r.body || "",
+      date: f.date || r.published_at || "",
+      imageUrl: f.imageUrl || r.featured_image_url || "",
+      imageAlt: f.imageAlt || r.image_alt || "",
       verification: f.verification || r.verification || "SUPPORTED",
       sources: f.sources || []
     });
@@ -36,29 +48,25 @@
     return r.json();
   }
 
-  /* Fallback: bundled JSON (always fetched — holds wrapper metadata like chapters & how-to) */
-  const READY = Promise.all(
-    Object.keys(DB).map(k =>
-      fetch("data/" + k + ".json?v=" + DATA_VER, { cache: "reload" }).then(r => { if (!r.ok) throw new Error(k); return r.json(); }).then(j => { DB[k] = j; })
-    )
-  ).then(async () => {
-    if (!SB_ON) return; // pure-JSON mode
+  /* Public pages render only published Supabase rows. Seed JSON remains an editorial
+     import source and is never silently presented as current public database content. */
+  const READY = (async () => {
+    if (!SB_ON) { dataLoadState = "unconfigured"; return; }
     try {
-      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&order=updated_at.asc", {});
-      if (!Array.isArray(rows)) return;
+      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&order=updated_at.desc", {});
+      if (!Array.isArray(rows)) throw new Error("invalid public content response");
       for (const r of rows) {
         const dbKey = TYPE_TO_DB[r.type]; if (!dbKey || !DB[dbKey]) continue;
         const list = DB[dbKey][DB_LIST_KEY[dbKey]];
-        if (!list) continue;
-        const rec = rowToRecord(r);
-        const i = list.findIndex(x => x.id === rec.id);
-        if (i >= 0) list[i] = rec; else list.push(rec); // admin edits override seed; new rows appended
+        if (list) list.push(rowToRecord(r));
       }
-      if (rows.length) console.info("[OpenWorld Atlas] loaded " + rows.length + " published records from Supabase");
+      dataLoadState = "ready";
+      console.info("[OpenWorld Atlas] loaded " + rows.length + " published records from Supabase");
     } catch (e) {
-      console.warn("[OpenWorld Atlas] Supabase load failed — using bundled JSON fallback:", e.message);
+      dataLoadState = "error";
+      console.warn("[OpenWorld Atlas] public content could not be loaded:", e.message);
     }
-  });
+  })();
 
   /* Supabase JS client (lazy, only for authenticated admin features) */
   let _sbPromise = null;
@@ -98,7 +106,16 @@
   };
   const na = v => (v == null || v === "" ? '<span class="na">Not confirmed yet</span>' : esc(v));
   const inputChips = arr => arr ? '<div class="cheat">' + arr.map(d => `<span>${esc(d)}</span>`).join("") + "</div>" : '<span class="na">Input not yet discovered</span>';
-  const srcLine = arr => arr && arr.length ? '<div class="srcline"><b>Sources:</b> ' + arr.map(u => `<a href="${esc(u)}" rel="noopener" target="_blank">${esc(new URL(u).hostname.replace("www.",""))}</a>`).join(" · ") + "</div>" : "";
+  const srcLine = arr => {
+    if (!Array.isArray(arr) || !arr.length) return "";
+    const links = arr.map(u => {
+      try {
+        const parsed = new URL(u);
+        return `<a href="${esc(parsed.href)}" rel="noopener" target="_blank">${esc(parsed.hostname.replace("www.", ""))}</a>`;
+      } catch (_) { return ""; }
+    }).filter(Boolean);
+    return links.length ? '<div class="srcline"><b>Sources:</b> ' + links.join(" · ") + "</div>" : "";
+  };
   const LEV = (a, b) => { a = a || ""; b = b || ""; if (!a.length) return b.length; if (!b.length) return a.length; let v0 = [], v1 = new Array(b.length + 1); for (let j = 0; j <= b.length; j++) v0[j] = j; for (let i = 1; i <= a.length; i++) { v1[0] = i; for (let j = 1; j <= b.length; j++) { const cost = a[i-1] === b[j-1] ? 0 : 1; v1[j] = Math.min(v1[j-1] + 1, v0[j] + 1, v0[j-1] + cost); } [v0, v1] = [v1, v0]; } return v0[b.length]; };
 
   /* ---------------- Search index ---------------- */
@@ -146,8 +163,13 @@
     }));
     // guides
     DB.guides.guides.forEach(g => push({
-      type: "Guide", id: g.id, title: g.title, url: g.url, desc: g.summary, badge: g.verification,
+      type: "Guide", id: g.id, title: g.title, url: "/detail?type=guide&id=" + g.id, desc: g.summary, badge: g.verification,
       cat: g.category, weight: 1, keywords: (g.keywords || []).join(" "), text: (g.summary || "").toLowerCase()
+    }));
+    DB.news.news.forEach(n => push({
+      type: "News", id: n.id, title: n.title || n.name, url: "/detail?type=news&id=" + n.id,
+      desc: n.summary || n.description || "", badge: n.verification, cat: "News", weight: 1,
+      keywords: (n.keywords || []).join(" "), text: (n.summary || n.description || "").toLowerCase()
     }));
     // sites (static pages)
     [["/","Home","Everything about GTA 6 — the fact-checked guide hub",""],["/faq","FAQ","Every GTA 6 question, answered with sources"],["/pc","PC, Platforms & Price","GTA 6 on PC, console prices, editions, GTA Online"],["/disclaimer","Disclaimer & Credit Policy","Legal safeguards, attribution and takedown contact"]].forEach(p => push({
@@ -366,9 +388,12 @@
       vehicle:  { title: "Vehicle", back: "/vehicles", data: DB.vehicles.vehicles, nameKey: "name" },
       weapon:   { title: "Weapon", back: "/weapons", data: DB.weapons.weapons, nameKey: "name" },
       location: { title: "Location", back: "/map", data: DB.locations.regions, nameKey: "name" },
-      mission:  { title: "Mission", back: "/missions", data: DB.missions.missions, nameKey: "name" }
+      mission:  { title: "Mission", back: "/missions", data: DB.missions.missions, nameKey: "name" },
+      guide:    { title: "Guide", back: "/guides", data: DB.guides.guides, nameKey: "name" },
+      news:     { title: "News update", back: "/news", data: DB.news.news, nameKey: "name" }
     }[type];
     if (!cfg) { root.innerHTML = emptyState("Unknown content type."); return; }
+    if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
     let it = cfg.data.find(x => x.id === id);
     if (!it && new URLSearchParams(location.search).get("preview") === "1") {
       // Admin draft preview: authenticated session can read draft rows (RLS-enforced)
@@ -436,6 +461,8 @@
         <div>Objectives</div><div>${it.objectives ? it.objectives.map(esc).join(" · ") : '<span class="na">Not confirmed yet</span>'}</div>
         <div>Verification</div><div>${badge(it.verification)}</div>
       </div>` + (it.choices ? `<h3>The choice</h3><div class="table-wrap"><table><tr><th>Prompt</th><th>Outcome</th></tr>${it.choices.map(c => `<tr><td><b>${esc(c.prompt)}</b></td><td>${esc(c.outcome)}</td></tr>`).join("")}</table></div>` : "") + (it.rewards ? `<div class="callout good"><b>Rewards:</b> ${esc(it.rewards)}</div>` : "");
+    } else {
+      body = `<div class="kv"><div>Verification</div><div>${badge(it.verification)}</div></div>`;
     }
     const spoiler = it.spoiler || it.details && /SPOILER/.test(it.details || "");
     root.innerHTML = `
@@ -465,7 +492,8 @@
   }
 
   /* ---------------- List renderers ---------------- */
-  function emptyState(msg) { return `<div class="empty"><div class="big">📭</div>${msg || "Nothing here yet."}</div>`; }
+  function emptyState(msg) { return `<div class="empty"><div class="big">📭</div>${msg || "Nothing published here yet."}</div>`; }
+  function unavailableState() { return `<div class="empty"><div class="big">↻</div><b>We couldn't load this information.</b><br>Please try again.<br><button class="btn ghost sm" type="button" onclick="location.reload()">Retry</button></div>`; }
   function cheatRow(c) {
     return `<tr>
       <td><b>${esc(c.name)}</b>${c.id === "money-250k" ? ' <span class="tag pink" style="margin-left:6px">Most searched</span>' : ""}<br><span class="small">${esc(c.effect)}</span></td>
@@ -477,6 +505,7 @@
   }
   function renderCheatDirectory() {
     const root = document.getElementById("cheat-root"); if (!root) return;
+    if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
     const state = { q: "", cat: "all", sort: "az" };
     const CATS = [["all","All categories"],["player","Player"],["combat","Combat"],["vehicle","Spawn Vehicle"],["environment","Environment"],["filter","Screen Filter"]];
     root.innerHTML = `
@@ -517,14 +546,14 @@
       Guide: ["images/editorial/guide-map-desk.png", "Illustrative map and guide desk scene"]
     }[type];
     return `<a class="card entity-card" href="${url}">
-      ${media ? `<img class="entity-image" src="${media[0]}" alt="${media[1]}" loading="lazy" width="1448" height="1086">` : `<span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>`}
+      ${media ? `<img class="entity-image" src="${esc(it.imageUrl || media[0])}" alt="${esc(it.imageAlt || media[1])}" loading="lazy" width="1448" height="1086" onerror="this.onerror=null;this.src='${media[0]}'">` : `<span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>`}
       <span class="badge ${it.verification === "CONFIRMED" ? "confirmed" : it.verification === "UNCONFIRMED" ? "unconfirmed" : "unavailable"}">${(it.verification || "").toLowerCase()}</span>
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;
   }
   function renderEntityGrid(containerSel, items, type, urlFn) {
     const root = document.querySelector(containerSel); if (!root) return;
-    root.innerHTML = items.map(it => entityCard(type, it, urlFn(it))).join("") || emptyState();
+    root.innerHTML = dataLoadState === "error" || dataLoadState === "unconfigured" ? unavailableState() : (items.map(it => entityCard(type, it, urlFn(it))).join("") || emptyState("No published " + type.toLowerCase() + " records are available yet."));
   }
   function renderNews() {
     const root = document.getElementById("news-root"); if (!root) return;
@@ -532,10 +561,11 @@
     const items = dbNews && dbNews.length ? dbNews.map(n => ({
       d: n.date || "", t: n.title || n.name, s: n.verification || "SUPPORTED", x: n.summary || n.effect || "", u: n.url || ("/detail?type=news&id=" + n.id)
     })) : [];
-    if (!items.length) { root.innerHTML = emptyState("No verified news has been published yet. Check back after the editorial desk has reviewed a source."); return; }
+    if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
+    if (!items.length) { root.innerHTML = emptyState("No published news updates are available yet. Check back after editorial review."); return; }
     root.innerHTML = items.map(i => `<div class="card"><span class="badge ${i.s === "CONFIRMED" ? "confirmed" : i.s === "SUPPORTED" ? "confirmed" : "unconfirmed"}">${i.s.toLowerCase()}</span>
       <div class="t" style="font-weight:700;margin:6px 0">${esc(i.t)}</div><div class="small">${esc(i.d)} — ${esc(i.x)}</div>
-      <div class="srcline"><a href="${esc(i.u)}" target="_blank" rel="noopener">Source ↗</a></div></div>`).join("");
+      <div class="srcline"><a href="${esc(i.u)}">Read update →</a></div></div>`).join("");
   }
   function contentRequestForm() {
     const f = document.getElementById("request-form"); if (!f) return;
@@ -566,11 +596,10 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
-    if (document.title.includes("GTA VI HQ")) document.title = document.title.replace("GTA VI HQ", "OpenWorld Atlas");
     document.querySelectorAll("a.logo").forEach(logo => {
       const href = logo.getAttribute("href") || "/";
       const asset = href.includes("../") ? "../images/openworld-atlas-mark.svg" : "images/openworld-atlas-mark.svg";
-      logo.setAttribute("aria-label", "OpenWorld Atlas — Explore Every Detail");
+      logo.setAttribute("aria-label", SITE.name + " — " + SITE.tagline);
       logo.innerHTML = '<img src="' + asset + '" alt="" class="logo-mark"> <span>OPENWORLD <b>ATLAS</b></span>';
     });
     const mt = document.querySelector(".menu-toggle"), mm = document.querySelector(".mobile-menu");
@@ -590,7 +619,7 @@
     if (document.getElementById("weapons-root")) READY.then(() => renderEntityGrid("#weapons-root", DB.weapons.weapons, "Weapon", w => "/detail?type=weapon&id=" + w.id));
     if (document.getElementById("locations-root")) READY.then(() => renderEntityGrid("#locations-root", DB.locations.regions, "Location", l => "/detail?type=location&id=" + l.id));
     if (document.getElementById("missions-root")) READY.then(() => renderEntityGrid("#missions-root", DB.missions.missions, "Mission", m => "/detail?type=mission&id=" + m.id));
-    if (document.getElementById("guides-root")) READY.then(() => renderEntityGrid("#guides-root", DB.guides.guides, "Guide", g => g.url));
+    if (document.getElementById("guides-root")) READY.then(() => renderEntityGrid("#guides-root", DB.guides.guides, "Guide", g => "/detail?type=guide&id=" + g.id));
     // interactive map schematic: click/keyboard a region → its detail page
     document.querySelectorAll(".map-stage .region[data-href], .map-schematic .region[data-href]").forEach(g => {
       g.classList.add("clickable");
@@ -600,10 +629,12 @@
     });
     // homepage dynamic sections
     if (document.getElementById("home-cheats")) READY.then(() => {
-      const top = DB.cheats.cheats.filter(c => c.input).slice(0, 5);
-      document.getElementById("home-cheats").innerHTML = top.map(c => `<div class="card"><span class="badge confirmed">input confirmed</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="cheat">${c.input.map(d => `<span>${esc(d)}</span>`).join("")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("");
+      const root = document.getElementById("home-cheats");
+      if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
+      const top = DB.cheats.cheats.slice(0, 5);
+      root.innerHTML = top.map(c => `<div class="card"><span class="badge ${c.verification === "CONFIRMED" ? "confirmed" : "unconfirmed"}">${esc((c.verification || "supported").toLowerCase())}</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="small">${esc(c.effect || c.summary || "")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("") || emptyState("No published cheat-code records are available yet.");
     });
-    if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.filter(c => ["jason-duval","lucia-caminos","mandy","niko-bellic","boobie-ike"].includes(c.id)), "Character", c => "/detail?type=character&id=" + c.id));
+    if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.slice(0, 3), "Character", c => "/detail?type=character&id=" + c.id));
   });
   window.GTA = { DB, READY, openSearch, score, esc, badge, na, serverSearch, submitContact, notifyByEmail, SB_ON, sb };
 })();

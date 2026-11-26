@@ -297,3 +297,13 @@ drop policy if exists "admins delete media objects" on storage.objects;
 drop policy if exists "editors delete media objects" on storage.objects;
 create policy "editors delete media objects" on storage.objects
   for delete to authenticated using (bucket_id = 'media' and public.is_editor());
+
+-- Privileges are separate from RLS. These grants allow the PostgREST anon role
+-- to reach tables that already have restrictive row policies above; they do not
+-- expose drafts or grant any write capability.
+grant usage on schema public to anon, authenticated;
+grant select on public.content to anon, authenticated;
+grant select on public.categories, public.tags, public.sources,
+  public.content_categories, public.content_tags, public.content_sources,
+  public.media_assets to anon, authenticated;
+grant insert on public.contact_submissions to anon, authenticated;
