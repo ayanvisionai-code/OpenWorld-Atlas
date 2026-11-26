@@ -26,9 +26,9 @@
 <body>
 <nav class="nav">
   <div class="nav-inner">
-    <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ <span class="badge unconfirmed" style="margin-left:6px">ADMIN</span></a>
+    <a class="logo" href="/">GTA<span class="vi">VI</span> HQ <span class="badge unconfirmed" style="margin-left:6px">ADMIN</span></a>
     <div class="nav-actions">
-      <a class="btn ghost sm" href="index.html">View site</a>
+      <a class="btn ghost sm" href="/">View site</a>
       <button id="signout-btn" class="btn ghost sm" hidden>Sign out</button>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <td class="small">${esc((r.updated_at || "").slice(0, 10))}</td>
       <td><div class="row-actions"><button class="btn ghost sm" data-edit="${r.id}">Edit</button>
         <button class="btn ghost sm" data-toggle="${r.id}" data-next="${r.status === "published" ? "draft" : "published"}">${r.status === "published" ? "Unpublish" : "Publish"}</button>
-        <a class="btn ghost sm" href="detail.html?type=${esc(r.type)}&id=${esc(r.slug)}&preview=1" target="_blank">Preview</a></div></td>
+        <a class="btn ghost sm" href="/detail?type=${esc(r.type)}&id=${esc(r.slug)}&preview=1" target="_blank">Preview</a></div></td>
     </tr>`).join("") || `<tr><td colspan="6">No records yet — click “+ New content”.</td></tr>`;
   }
   ["f-type","f-status"].forEach(id => $(id).addEventListener("change", load));
@@ -230,7 +230,7 @@
   $("preview-btn").addEventListener("click", () => {
     const payload = formToPayload(); if (!payload) return;
     sessionStorage.setItem("gta-preview", JSON.stringify(payload));
-    window.open("detail.html?type=" + encodeURIComponent(payload.type) + "&id=" + encodeURIComponent(payload.slug) + "&preview=1", "_blank");
+    window.open("/detail?type=" + encodeURIComponent(payload.type) + "&id=" + encodeURIComponent(payload.slug) + "&preview=1", "_blank");
   });
 
   $("delete-btn").addEventListener("click", async () => {

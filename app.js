@@ -82,7 +82,7 @@
         title: r.title,
         desc: r.description || "",
         badge: r.verification,
-        url: "detail.html?type=" + r.type + "&id=" + r.slug
+        url: "/detail?type=" + r.type + "&id=" + r.slug
       },
       s: 50
     }));
@@ -109,38 +109,38 @@
     const push = o => INDEX.push(o);
     // cheats
     DB.cheats.cheats.forEach(c => push({
-      type: "Cheat code", id: c.id, title: c.name + " cheat", url: "detail.html?type=cheat&id=" + c.id,
+      type: "Cheat code", id: c.id, title: c.name + " cheat", url: "/detail?type=cheat&id=" + c.id,
       desc: c.effect, badge: c.inputStatus === "CONFIRMED" ? "CONFIRMED" : "UNAVAILABLE",
       cat: "Cheat — " + c.category, weight: 1.15,
       keywords: (c.keywords || []).join(" "), text: (c.effect + " " + c.unlock).toLowerCase()
     }));
     // characters
     DB.characters.characters.forEach(c => push({
-      type: "Character", id: c.id, title: c.name, url: "detail.html?type=character&id=" + c.id,
+      type: "Character", id: c.id, title: c.name, url: "/detail?type=character&id=" + c.id,
       desc: c.summary || (c.details || "").slice(0, 130), badge: c.verification, cat: c.type || "Character", weight: 1.1,
       keywords: (c.keywords || []).join(" ") + " " + (c.voice || ""), text: (c.details || "").toLowerCase()
     }));
     // vehicles
     DB.vehicles.vehicles.forEach(v => push({
-      type: "Vehicle", id: v.id, title: v.name, url: "detail.html?type=vehicle&id=" + v.id,
+      type: "Vehicle", id: v.id, title: v.name, url: "/detail?type=vehicle&id=" + v.id,
       desc: v.description || "", badge: v.verification, cat: v.category, weight: 1,
       keywords: (v.keywords || []).join(" ") + " " + (v.manufacturer || ""), text: (v.description + " " + (v.acquisition || "")).toLowerCase()
     }));
     // weapons
     DB.weapons.weapons.forEach(w => push({
-      type: "Weapon", id: w.id, title: w.name, url: "detail.html?type=weapon&id=" + w.id,
+      type: "Weapon", id: w.id, title: w.name, url: "/detail?type=weapon&id=" + w.id,
       desc: w.description || "", badge: w.verification, cat: w.category, weight: 1,
       keywords: (w.keywords || []).join(" "), text: (w.description + " " + (w.acquisition || "")).toLowerCase()
     }));
     // locations
     DB.locations.regions.forEach(l => push({
-      type: "Location", id: l.id, title: l.name, url: "detail.html?type=location&id=" + l.id,
+      type: "Location", id: l.id, title: l.name, url: "/detail?type=location&id=" + l.id,
       desc: l.officialText, badge: l.verification, cat: l.category, weight: 1.05,
       keywords: (l.keywords || []).join(" "), text: ((l.officialText || "") + " " + (l.places || []).join(" ")).toLowerCase()
     }));
     // missions
     DB.missions.missions.forEach(m => push({
-      type: "Mission", id: m.id, title: m.name, url: "detail.html?type=mission&id=" + m.id,
+      type: "Mission", id: m.id, title: m.name, url: "/detail?type=mission&id=" + m.id,
       desc: (m.summary || "").slice(0, 140), badge: m.verification, cat: "Chapter " + m.chapter, weight: 1,
       keywords: (m.keywords || []).join(" "), text: (m.summary + " " + JSON.stringify(m.objectives || [])).toLowerCase()
     }));
@@ -150,7 +150,7 @@
       cat: g.category, weight: 1, keywords: (g.keywords || []).join(" "), text: (g.summary || "").toLowerCase()
     }));
     // sites (static pages)
-    [["index.html","Home","Everything about GTA 6 — the fact-checked guide hub",""],["faq.html","FAQ","Every GTA 6 question, answered with sources"],["pc.html","PC, Platforms & Price","GTA 6 on PC, console prices, editions, GTA Online"],["disclaimer.html","Disclaimer & Credit Policy","Legal safeguards, attribution and takedown contact"]].forEach(p => push({
+    [["/","Home","Everything about GTA 6 — the fact-checked guide hub",""],["/faq","FAQ","Every GTA 6 question, answered with sources"],["/pc","PC, Platforms & Price","GTA 6 on PC, console prices, editions, GTA Online"],["/disclaimer","Disclaimer & Credit Policy","Legal safeguards, attribution and takedown contact"]].forEach(p => push({
       type: "Page", id: p[0], title: p[1], url: p[0], desc: p[2], badge: null, cat: "Site", weight: .8, keywords: "", text: p[2].toLowerCase()
     }));
   }
@@ -266,7 +266,7 @@
     flat = res.map(x => x.r);
     if (!res.length) {
       body.innerHTML = `<div class="search-empty"><div class="big">🔍</div><b>No matching information found.</b>
-        <p class="small" style="margin-top:6px">Try one of these, or <a href="contact.html">request a topic</a> and we'll research it.</p>
+        <p class="small" style="margin-top:6px">Try one of these, or <a href="/contact">request a topic</a> and we'll research it.</p>
         <div class="chip-row" style="justify-content:center">${POPULAR.slice(0, 5).map(p => `<button data-q="${esc(p)}">${esc(p)}</button>`).join("")}</div></div>`;
       body.querySelectorAll(".chip-row button").forEach(b => b.addEventListener("click", () => { document.getElementById("gta-search-input").value = b.dataset.q; runSearch(b.dataset.q); }));
       return;
@@ -357,16 +357,16 @@
     } catch (e) { console.warn("email notify failed:", e.message); return false; }
   }
 
-  /* ---------------- Detail renderer (detail.html?type=&id=) ---------------- */
+  /* ---------------- Detail renderer (/detail?type=&id=) ---------------- */
   async function renderDetail(type, id) {
     const root = document.getElementById("detail-root");
     const cfg = {
-      cheat:    { title: "Cheat code", back: "cheats.html", data: DB.cheats.cheats, nameKey: "name" },
-      character:{ title: "Character", back: "characters.html", data: DB.characters.characters, nameKey: "name" },
-      vehicle:  { title: "Vehicle", back: "vehicles.html", data: DB.vehicles.vehicles, nameKey: "name" },
-      weapon:   { title: "Weapon", back: "weapons.html", data: DB.weapons.weapons, nameKey: "name" },
-      location: { title: "Location", back: "locations.html", data: DB.locations.regions, nameKey: "name" },
-      mission:  { title: "Mission", back: "missions.html", data: DB.missions.missions, nameKey: "name" }
+      cheat:    { title: "Cheat code", back: "/cheats", data: DB.cheats.cheats, nameKey: "name" },
+      character:{ title: "Character", back: "/characters", data: DB.characters.characters, nameKey: "name" },
+      vehicle:  { title: "Vehicle", back: "/vehicles", data: DB.vehicles.vehicles, nameKey: "name" },
+      weapon:   { title: "Weapon", back: "/weapons", data: DB.weapons.weapons, nameKey: "name" },
+      location: { title: "Location", back: "/map", data: DB.locations.regions, nameKey: "name" },
+      mission:  { title: "Mission", back: "/missions", data: DB.missions.missions, nameKey: "name" }
     }[type];
     if (!cfg) { root.innerHTML = emptyState("Unknown content type."); return; }
     let it = cfg.data.find(x => x.id === id);
@@ -439,7 +439,7 @@
     }
     const spoiler = it.spoiler || it.details && /SPOILER/.test(it.details || "");
     root.innerHTML = `
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> › <a href="${cfg.back}">${cfg.title}s</a> › <span aria-current="page">${esc(it.name)}</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="${cfg.back}">${cfg.title}s</a> › <span aria-current="page">${esc(it.name)}</span></nav>
       <div class="page-head"><span class="updated">${cfg.title} · ${badge(it.verification)} · Last verified Nov 25, 2026</span><h1>${esc(it.name)}</h1></div>
       ${spoiler ? '<div class="spoiler">⚠️ <b>Story spoilers below.</b> <button class="spoiler-btn" id="spoiler-toggle">Reveal</button></div><div id="spoiler-zone" class="spoiler hidden-content">' : '<div id="spoiler-zone">'}
       ${type === "cheat" || type === "vehicle" ? "" : ""}
@@ -472,7 +472,7 @@
       <td class="small">${esc(c.unlock)}</td>
       <td>${inputChips(c.input)}</td>
       <td>${badge(c.inputStatus === "CONFIRMED" ? "CONFIRMED" : "NOT AVAILABLE")}</td>
-      <td><a class="copy-btn" href="detail.html?type=cheat&id=${esc(c.id)}">Details</a></td>
+      <td><a class="copy-btn" href="/detail?type=cheat&id=${esc(c.id)}">Details</a></td>
     </tr>`;
   }
   function renderCheatDirectory() {
@@ -488,7 +488,7 @@
       </div>
       <div class="callout warn"><b>Save warning:</b> entering any cheat disables saving and trophies for the rest of that session. Cheats only work after finishing the story.</div>
       <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Unlock condition</th><th>Input (D-pad)</th><th>Input status</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
-      <p class="small">“Confirmed” = the exact input is documented by <a href="https://www.powerpyx.com/gta-6-all-cheats/" target="_blank" rel="noopener">PowerPyx's complete GTA 6 cheat guide</a> — the primary source other major outlets credit. “Not available” = the cheat, effect and unlock are confirmed but no working input has been published yet. We never print unverified inputs. <a href="disclaimer.html">Full policy</a>.</p>`;
+      <p class="small">“Confirmed” = the exact input is documented by <a href="https://www.powerpyx.com/gta-6-all-cheats/" target="_blank" rel="noopener">PowerPyx's complete GTA 6 cheat guide</a> — the primary source other major outlets credit. “Not available” = the cheat, effect and unlock are confirmed but no working input has been published yet. We never print unverified inputs. <a href="/disclaimer">Full policy</a>.</p>`;
     const apply = () => {
       let rows = DB.cheats.cheats.filter(c =>
         (state.cat === "all" || c.category === state.cat) &&
@@ -530,7 +530,7 @@
     const root = document.getElementById("news-root"); if (!root) return;
     const dbNews = DB.news && DB.news.news;
     const items = dbNews && dbNews.length ? dbNews.map(n => ({
-      d: n.date || "", t: n.title || n.name, s: n.verification || "SUPPORTED", x: n.summary || n.effect || "", u: n.url || ("detail.html?type=news&id=" + n.id)
+      d: n.date || "", t: n.title || n.name, s: n.verification || "SUPPORTED", x: n.summary || n.effect || "", u: n.url || ("/detail?type=news&id=" + n.id)
     })) : [];
     if (!items.length) { root.innerHTML = emptyState("No verified news has been published yet. Check back after the editorial desk has reviewed a source."); return; }
     root.innerHTML = items.map(i => `<div class="card"><span class="badge ${i.s === "CONFIRMED" ? "confirmed" : i.s === "SUPPORTED" ? "confirmed" : "unconfirmed"}">${i.s.toLowerCase()}</span>
@@ -568,7 +568,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     if (document.title.includes("GTA VI HQ")) document.title = document.title.replace("GTA VI HQ", "OpenWorld Atlas");
     document.querySelectorAll("a.logo").forEach(logo => {
-      const href = logo.getAttribute("href") || "index.html";
+      const href = logo.getAttribute("href") || "/";
       const asset = href.includes("../") ? "../images/openworld-atlas-mark.svg" : "images/openworld-atlas-mark.svg";
       logo.setAttribute("aria-label", "OpenWorld Atlas — Explore Every Detail");
       logo.innerHTML = '<img src="' + asset + '" alt="" class="logo-mark"> <span>OPENWORLD <b>ATLAS</b></span>';
@@ -585,11 +585,11 @@
     if (document.getElementById("detail-root")) { READY.then(() => renderDetail(params.get("type"), params.get("id"))); }
     if (document.getElementById("cheat-root")) READY.then(renderCheatDirectory);
     if (document.getElementById("news-root")) READY.then(renderNews);
-    if (document.getElementById("chars-root")) READY.then(() => renderEntityGrid("#chars-root", DB.characters.characters, "Character", c => "detail.html?type=character&id=" + c.id));
-    if (document.getElementById("vehicles-root")) READY.then(() => renderEntityGrid("#vehicles-root", DB.vehicles.vehicles, "Vehicle", v => "detail.html?type=vehicle&id=" + v.id));
-    if (document.getElementById("weapons-root")) READY.then(() => renderEntityGrid("#weapons-root", DB.weapons.weapons, "Weapon", w => "detail.html?type=weapon&id=" + w.id));
-    if (document.getElementById("locations-root")) READY.then(() => renderEntityGrid("#locations-root", DB.locations.regions, "Location", l => "detail.html?type=location&id=" + l.id));
-    if (document.getElementById("missions-root")) READY.then(() => renderEntityGrid("#missions-root", DB.missions.missions, "Mission", m => "detail.html?type=mission&id=" + m.id));
+    if (document.getElementById("chars-root")) READY.then(() => renderEntityGrid("#chars-root", DB.characters.characters, "Character", c => "/detail?type=character&id=" + c.id));
+    if (document.getElementById("vehicles-root")) READY.then(() => renderEntityGrid("#vehicles-root", DB.vehicles.vehicles, "Vehicle", v => "/detail?type=vehicle&id=" + v.id));
+    if (document.getElementById("weapons-root")) READY.then(() => renderEntityGrid("#weapons-root", DB.weapons.weapons, "Weapon", w => "/detail?type=weapon&id=" + w.id));
+    if (document.getElementById("locations-root")) READY.then(() => renderEntityGrid("#locations-root", DB.locations.regions, "Location", l => "/detail?type=location&id=" + l.id));
+    if (document.getElementById("missions-root")) READY.then(() => renderEntityGrid("#missions-root", DB.missions.missions, "Mission", m => "/detail?type=mission&id=" + m.id));
     if (document.getElementById("guides-root")) READY.then(() => renderEntityGrid("#guides-root", DB.guides.guides, "Guide", g => g.url));
     // interactive map schematic: click/keyboard a region → its detail page
     document.querySelectorAll(".map-stage .region[data-href], .map-schematic .region[data-href]").forEach(g => {
@@ -601,9 +601,9 @@
     // homepage dynamic sections
     if (document.getElementById("home-cheats")) READY.then(() => {
       const top = DB.cheats.cheats.filter(c => c.input).slice(0, 5);
-      document.getElementById("home-cheats").innerHTML = top.map(c => `<div class="card"><span class="badge confirmed">input confirmed</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="cheat">${c.input.map(d => `<span>${esc(d)}</span>`).join("")}</div><a class="small" href="detail.html?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("");
+      document.getElementById("home-cheats").innerHTML = top.map(c => `<div class="card"><span class="badge confirmed">input confirmed</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="cheat">${c.input.map(d => `<span>${esc(d)}</span>`).join("")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("");
     });
-    if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.filter(c => ["jason-duval","lucia-caminos","mandy","niko-bellic","boobie-ike"].includes(c.id)), "Character", c => "detail.html?type=character&id=" + c.id));
+    if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.filter(c => ["jason-duval","lucia-caminos","mandy","niko-bellic","boobie-ike"].includes(c.id)), "Character", c => "/detail?type=character&id=" + c.id));
   });
   window.GTA = { DB, READY, openSearch, score, esc, badge, na, serverSearch, submitContact, notifyByEmail, SB_ON, sb };
 })();

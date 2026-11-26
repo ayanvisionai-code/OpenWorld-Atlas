@@ -14,15 +14,15 @@
 
 ## Key pages
 
-- /index.html — hub with popular topics and dynamic sections
-- /cheats.html — searchable 61-cheat directory (filters, sort, input status)
-- /detail.html?type=cheat&id=money-250k — example entity profile (also type=character|vehicle|weapon|location|mission)
+- / — hub with popular topics and dynamic sections
+- /cheats — searchable 61-cheat directory (filters, sort, input status)
+- //detail?type=cheat&id=money-250k — example entity profile (also type=character|vehicle|weapon|location|mission)
 - /blog/gta-6-money-cheat.html — money cheat deep dive
 - /blog/gta-6-cheat-codes-how-to-enter.html — how to enter codes
-- /characters.html, /vehicles.html, /weapons.html, /map.html, /missions.html, /guides.html, /news.html, /faq.html
+- /characters, /vehicles, /weapons, /map, /missions, /guides, /news, /faq
 - /pc.html — platforms, price, PC status
-- /disclaimer.html — credit, images & takedown policy; /privacy.html, /terms.html
-- /search.html?q= — full-site search (typo-tolerant, grouped by type)
+- /disclaimer — credit, images & takedown policy; /privacy, /terms
+- /search?q= — full-site search (typo-tolerant, grouped by type)
 - /sitemap.xml, /robots.txt
 
 ## Citation & verification policy

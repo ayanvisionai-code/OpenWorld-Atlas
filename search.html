@@ -15,16 +15,16 @@
 <a class="skip" href="#main">Skip to content</a>
 <nav class="nav">
   <div class="nav-inner">
-    <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
+    <a class="logo" href="/">GTA<span class="vi">VI</span> HQ</a>
     <div class="nav-links">
-      <a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a>
+      <a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a>
     </div>
     <div class="nav-actions">
       <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
       <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
   </div>
-  <div class="mobile-menu"><a href="index.html">Home</a><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations &amp; Map</a><a href="missions.html">Missions</a><a href="cheats.html">Cheat Codes</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a></div>
+  <div class="mobile-menu"><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations &amp; Map</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a></div>
 </nav>
 
 <main class="wrap" id="main">
@@ -37,16 +37,16 @@
     <span class="count" id="search-count"></span>
   </div>
   <div id="page-results" aria-live="polite"></div>
-  <p class="small" style="margin-top:20px">Nothing found? <a href="contact.html">Request the topic</a> — we research and add verified answers.</p>
+  <p class="small" style="margin-top:20px">Nothing found? <a href="/contact">Request the topic</a> — we research and add verified answers.</p>
 </main>
 
 <footer>
   <div class="footer-inner">
     <div>
-      <a class="logo" href="index.html">GTA<span class="vi">VI</span> HQ</a>
-      <p class="disclaimer">This is an independent, unofficial fan-made information website. It is not affiliated with, endorsed by, sponsored by, or associated with Rockstar Games or Take-Two Interactive. "Grand Theft Auto" and related trademarks belong to their respective owners and are used for identification and informational purposes only. All artwork on this site is original. See our <a href="disclaimer.html">full disclaimer &amp; credit policy</a>.</p>
+      <a class="logo" href="/">GTA<span class="vi">VI</span> HQ</a>
+      <p class="disclaimer">This is an independent, unofficial fan-made information website. It is not affiliated with, endorsed by, sponsored by, or associated with Rockstar Games or Take-Two Interactive. "Grand Theft Auto" and related trademarks belong to their respective owners and are used for identification and informational purposes only. All artwork on this site is original. See our <a href="/disclaimer">full disclaimer &amp; credit policy</a>.</p>
     </div>
-    <div class="fnav"><a href="characters.html">Characters</a><a href="vehicles.html">Vehicles</a><a href="weapons.html">Weapons</a><a href="map.html">Locations</a><a href="missions.html">Missions</a><a href="cheats.html">Cheats</a><a href="guides.html">Guides</a><a href="news.html">News</a><a href="faq.html">FAQ</a><a href="blog/index.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="disclaimer.html">Legal</a></div>
+    <div class="fnav"><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/cheats">Cheats</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/disclaimer">Legal</a></div>
   </div>
 </footer>
 <script src="js/env.js" onerror="this.remove"></script>
@@ -60,7 +60,7 @@
     const render = res => {
       count.textContent = inp.value.trim() ? res.length + " results" : "";
       if (!inp.value.trim()) { out.innerHTML = '<div class="empty"><div class="big">🔍</div>Type above, or press <code>/</code> anywhere on the site.</div>'; return; }
-      if (!res.length) { out.innerHTML = '<div class="empty"><div class="big">📭</div><b>No matching information found.</b><br><a href="contact.html">Request this topic →</a></div>'; return; }
+      if (!res.length) { out.innerHTML = '<div class="empty"><div class="big">📭</div><b>No matching information found.</b><br><a href="/contact">Request this topic →</a></div>'; return; }
       out.innerHTML = '<div class="grid g2">' + res.slice(0, 40).map(card).join("") + "</div>";
     };
     const run = async () => {
