@@ -508,8 +508,16 @@
     if (how) how.innerHTML = `<ol class="steps">${DB.cheats.howTo.map(h => `<li>${esc(h)}</li>`).join("")}</ol>`;
   }
   function entityCard(type, it, url) {
+    const media = {
+      Character: ["images/editorial/character-illustration.png", "Illustrative anonymous profile artwork"],
+      Vehicle: ["images/editorial/vehicle-editorial.png", "Illustrative unbranded vehicle editorial image"],
+      Weapon: ["images/editorial/equipment-still-life.png", "Illustrative generic equipment still life"],
+      Location: ["images/editorial/location-marina.png", "Illustrative coastal environment"],
+      Mission: ["images/editorial/mission-waterfront.png", "Illustrative nighttime waterfront environment"],
+      Guide: ["images/editorial/guide-map-desk.png", "Illustrative map and guide desk scene"]
+    }[type];
     return `<a class="card entity-card" href="${url}">
-      <span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>
+      ${media ? `<img class="entity-image" src="${media[0]}" alt="${media[1]}" loading="lazy" width="1448" height="1086">` : `<span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>`}
       <span class="badge ${it.verification === "CONFIRMED" ? "confirmed" : it.verification === "UNCONFIRMED" ? "unconfirmed" : "unavailable"}">${(it.verification || "").toLowerCase()}</span>
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;

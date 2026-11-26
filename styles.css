@@ -184,10 +184,15 @@ details .a p{margin-bottom:10px}
 /* ---------- Cards: media ---------- */
 .media-card{overflow:hidden;padding:0;display:flex;flex-direction:column}
 .media-card img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#12151D}
+.media-card{isolation:isolate}
+.media-card img{transition:transform .35s ease,filter .35s ease}
+.media-card:hover img{transform:scale(1.025);filter:saturate(.9) contrast(1.04)}
 .media-card .body{padding:16px 18px 18px}
 .entity-card{display:block;color:inherit}
 .entity-card:hover{text-decoration:none;border-color:#3A4150;transform:translateY(-2px)}
 .entity-art{display:block;height:54px;margin:-20px -20px 16px;border-radius:var(--radius) var(--radius) 0 0;background:linear-gradient(120deg,#242A34,#303641)}
+.entity-image{display:block;width:calc(100% + 40px);height:180px;object-fit:cover;margin:-20px -20px 16px;border-radius:var(--radius) var(--radius) 0 0;background:var(--card-2);transition:transform .35s ease,filter .35s ease}
+.entity-card{overflow:hidden}.entity-card:hover .entity-image{transform:scale(1.025);filter:saturate(.9) contrast(1.04)}
 .art-character{background:radial-gradient(circle at 72% 20%,rgba(217,139,72,.35),transparent 28%),linear-gradient(120deg,#282b33,#151922)}
 .art-vehicle{background:linear-gradient(125deg,#151922 20%,#3b4651 20% 22%,#1f2831 22% 58%,#D98B48 58% 60%,#161b22 60%)}
 .art-weapon{background:linear-gradient(145deg,#202731,#202731 42%,#D98B48 42% 45%,#161b21 45%)}

@@ -27,3 +27,9 @@ Include width and height in markup, prioritize only the homepage hero, and lazy-
 - Location fallback: “Original travel-editorial illustration of a fictional coastal district, atmospheric depth, buildings and landscape only, no map, no logos, no recognizable game location.”
 
 Review AI outputs for unintended similarities before approval; retain the generation platform, prompt, date and commercial-use review alongside the asset.
+
+## Current library status
+
+The current library contains repository-original SVG artwork and owner-supplied editorial raster imagery in `images/editorial/`. The supplied raster assets are marked `pending-rights-review` in `images/asset-manifest.json`; they must not be reused outside this site until commercial-use rights are confirmed. No third-party, scraped, licensed-stock or AI-generated raster asset is represented as approved.
+
+Before a photographic asset is added, produce desktop and mobile crops, record its source and rights review, then add it to the manifest and `media_assets` in Supabase. Do not attach an illustrative image to a named game character, vehicle, mission or weapon unless its status and rights have been editorially approved.
