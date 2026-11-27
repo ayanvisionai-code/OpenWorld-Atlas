@@ -9,11 +9,16 @@
   <meta property="og:url" content="https://openworld-atlas.vercel.app/setup">
   <link rel="icon" href="/images/openworld-atlas-mark.svg">
   <link rel="stylesheet" href="/styles.css?v=7">
+  <script defer src="/js/gear.js"></script>
   <script defer src="/js/setup.js"></script>
-</head>
+<link rel="stylesheet" href="/atlas.css?v=1"></head>
 <body>
   <a class="skip" href="#main">Skip to planner</a>
-  <nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/images/openworld-atlas-mark.svg" width="28" height="28" alt=""> OPENWORLD ATLAS</a><a href="/guides">Guides</a><a href="/pc">Platforms</a></div></nav>
+  <nav class="mast" aria-label="Primary"><div class="mast-inner">
+  <a class="mast-brand" href="/"><img src="/images/openworld-atlas-mark.svg" width="32" height="32" alt="">OpenWorld <strong>Atlas</strong></a>
+  <details class="mast-directory"><summary>Browse atlas</summary><div><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/weapons">Weapons</a><a href="/cheats">Cheat codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/blog">Journal</a><a href="/setup" aria-current="page">Setup planner</a><a href="/faq">FAQ</a><a href="/about">About</a><a href="/contact">Contact</a></div></details>
+  <div class="mast-shortcuts"><a href="/map">Locations</a><a href="/news">News</a><a href="/setup" aria-current="page">Setup planner</a></div>
+  <a class="mast-search" href="/search" aria-label="Search the Atlas"><span aria-hidden="true">⌕</span> Search</a></div></nav>
   <main id="main" class="wrap planner">
     <header class="planner-cover">
       <div><p class="planner-label">Equipment guide · United States</p><h1>Build your setup.</h1><p>Price a living-room console, a gaming desk or a streaming studio. Leave out anything you already own.</p></div>
@@ -22,18 +27,23 @@
       <div class="setup-controls">
         <label>Platform<select name="platform"><option value="ps">PlayStation 5</option><option value="xbox">Xbox Series</option><option value="pc">Gaming PC</option></select></label>
         <label>Use<select name="purpose"><option value="play">Gaming</option><option value="stream">Gaming and streaming</option></select></label>
+        <label id="pc-mode" hidden>PC hardware<select name="build"><option value="parts">Build from parts</option><option value="prebuilt">Buy a complete tower</option><option value="owned">I own a gaming PC</option></select></label>
+        <label id="stream-mode" hidden>Broadcast method<select name="broadcast"><option value="native">Stream directly from the console</option><option value="capture">Use a separate streaming computer I own</option></select></label>
       </div>
+      <label id="ownership"><input type="checkbox" name="owned"> I already own this console and its controller</label>
       <fieldset class="tier-picker"><legend>Choose a budget</legend>
-        <label><input type="radio" name="tier" value="0" checked> <strong>Essentials</strong><output></output><small>Reuse your display and furniture.</small></label>
-        <label><input type="radio" name="tier" value="1"> <strong>Mid-range</strong><output></output><small>Add a dedicated screen and headset.</small></label>
-        <label><input type="radio" name="tier" value="2"> <strong>Studio</strong><output></output><small>Budget for a premium display and furnished desk.</small></label>
+        <label><input type="radio" name="tier" value="0" checked> <strong>Essentials</strong><small>Value-focused models.</small></label>
+        <label><input type="radio" name="tier" value="1"> <strong>Mid-range</strong><small>Balanced features and cost.</small></label>
+        <label><input type="radio" name="tier" value="2"> <strong>Studio</strong><small>Premium components and accessories.</small></label>
       </fieldset>
       <fieldset><legend>Include in my estimate</legend><div id="options" class="setup-options"></div></fieldset>
+      <p id="planner-note" class="small"></p>
+      <button type="submit" class="btn">Calculate my setup <span aria-hidden="true">↗</span></button>
     </form>
     <noscript>Enable JavaScript to personalize the item list. A new PS5 Digital console alone has a US planning budget of $599 with an existing HDMI display.</noscript>
-    <section class="setup-receipt"><header><h2>Your equipment list</h2><output id="total" aria-live="polite"></output></header><p id="assumptions"></p><ul id="parts"></ul></section>
-    <p class="small">Hardware allowances in USD, reviewed November 27, 2026. Excludes the game, internet, tax, delivery and subscriptions. Check seller, configuration and checkout price on Amazon. These are ordinary product links.</p>
-    <section class="src"><h2>Before you buy</h2><p>Rockstar lists PS5 and Xbox Series X|S. The PC presets are general gaming and streaming examples. GTA VI performance on these PCs is unverified. <a href="https://www.rockstargames.com/VI">Rockstar platform listing</a></p><p>PS5 can broadcast with a linked streaming account. A capture card is an optional path for sending console video to a separate compatible computer. <a href="https://www.playstation.com/en-us/support/games/ps5-stream-gameplay-broadcast/">PlayStation broadcasting guide</a> · <a href="https://direct.playstation.com/en-us/hardware/ps5">US console prices</a> · <a href="https://help.elgato.com/hc/en-us/articles/5293216945805-Elgato-Game-Capture-HD60-X-Technical-Specifications">Capture specifications</a></p></section>
+    <section class="setup-receipt" id="receipt" tabindex="-1" aria-label="Calculated equipment estimate" hidden><header><h2>Your equipment list</h2><output id="total" aria-live="polite"></output></header><p id="assumptions"></p><ul id="parts"></ul></section>
+    <p class="small">US dollar planning allowances. Prices and stock vary by seller. Excludes the game, internet, tax, delivery and subscriptions, a separate capture computer and any PC operating-system licence. Check seller, configuration and checkout price on Amazon. These are ordinary product links.</p>
+    <section class="src"><h2>Before you buy</h2><p>Rockstar lists PS5 and Xbox Series X|S. The PC presets are general gaming and streaming examples. GTA VI performance on these PCs is unverified. <a href="https://www.rockstargames.com/VI">Rockstar platform listing</a></p><p>PS5 can broadcast with a linked streaming account. A capture card is an optional path for sending console video to a separate compatible computer. <a href="https://www.playstation.com/en-us/support/games/ps5-stream-gameplay-broadcast/">PlayStation broadcasting guide</a> · <a href="https://direct.playstation.com/en-us/hardware/ps5">US console prices</a> · <a href="https://help.elgato.com/hc/en-us/articles/5293216945805-Elgato-Game-Capture-HD60-X-Technical-Specifications">Capture specifications</a> · <a href="https://news.xbox.com/en-us/2022/02/23/xbox-live-streaming-with-twitch/">Xbox broadcasting</a> · <a href="https://www.amd.com/en/products/processors/chipsets/am5.html">AMD socket compatibility</a></p></section>
   </main>
   <footer><div class="footer-inner"><a class="logo" href="/">OPENWORLD ATLAS</a><a href="/editorial-standards">Editorial standards</a><a href="/contact">Suggest a correction</a></div></footer>
 </body></html>

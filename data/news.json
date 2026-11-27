@@ -1,0 +1,64 @@
+{
+  "news": [
+    {
+      "id": "launch-weekend-estimate-44-9m-copies-4b-gross",
+      "title": "Launch-weekend estimate: 44.9M copies, ~$4B gross",
+      "date": "Nov 24, 2026",
+      "summary": "Alinea Analytics estimates GTA 6 sold 44.9 million copies with ~$4 billion gross by the end of launch weekend — twice Taylor Swift's entire Eras Tour take.",
+      "verification": "SUPPORTED",
+      "sources": [
+        "https://www.polygon.com/gta-6-grand-theft-auto-first-weekend-sales/"
+      ]
+    },
+    {
+      "id": "official-3-79b-day-one-retail-sales-32-5m-units-pre-release",
+      "title": "Official: $3.79B day-one retail sales, 32.5M units pre-release",
+      "date": "Nov 20, 2026",
+      "summary": "Take-Two's press release confirms the biggest entertainment launch in history across any medium.",
+      "verification": "CONFIRMED",
+      "sources": [
+        "https://taketwointeractivesoftwareinc.gcs-web.com/news-releases/news-release-details/grand-theft-auto-vi-shatters-entertainment-box-office-records/"
+      ]
+    },
+    {
+      "id": "metacritic-99-highest-rated-game-of-all-time",
+      "title": "Metacritic 99 — highest-rated game of all time",
+      "date": "Nov 18, 2026",
+      "summary": "99 on both PS5 and Xbox Series X from 150+ critic reviews, above Ocarina of Time; OpenCritic 98; user score ~5.7.",
+      "verification": "CONFIRMED",
+      "sources": [
+        "https://www.metacritic.com/game/grand-theft-auto-vi/"
+      ]
+    },
+    {
+      "id": "gta-6-out-now-on-ps5-xbox-series-x-s",
+      "title": "GTA 6 out now on PS5 & Xbox Series X|S",
+      "date": "Nov 19, 2026",
+      "summary": "Released at midnight local time. No PC version announced; Xbox One via cloud only. Pre-load ran from Nov 12.",
+      "verification": "CONFIRMED",
+      "sources": [
+        "https://www.rockstargames.com/VI/out-now"
+      ]
+    },
+    {
+      "id": "full-credits-published-cast-revealed",
+      "title": "Full credits published — cast revealed",
+      "date": "Nov 19, 2026",
+      "summary": "Dylan Rourke as Jason, Manni L. Perez as Lucia, Lexie Shoaibi as Mandy; Michael Hollick credited as 'The Hitman'.",
+      "verification": "CONFIRMED",
+      "sources": [
+        "https://www.polygon.com/gta-6-cast-list-actors-cameos-grand-theft-auto/"
+      ]
+    },
+    {
+      "id": "cheat-inputs-still-being-discovered-15-of-61-known",
+      "title": "Cheat inputs still being discovered (15 of 61 known)",
+      "date": "Ongoing",
+      "summary": "PowerPyx's list is the primary source; we update our database as inputs are verified. No unlimited-money cheat exists.",
+      "verification": "UNCONFIRMED",
+      "sources": [
+        "https://www.powerpyx.com/gta-6-all-cheats/"
+      ]
+    }
+  ]
+}

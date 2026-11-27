@@ -352,7 +352,7 @@ footer .disclaimer,footer .disclaimer a {color:#aaa5b5}
 .grid>* {min-width:0}
 .g2 {grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
 .g3 {grid-template-columns:repeat(auto-fit,minmax(min(100%,255px),1fr))}
-.planner-cover {padding:clamp(30px,6vw,76px);border-radius:18px;background:linear-gradient(90deg,#15101beb,#15101ba8),url(/images/editorial/guide-map-desk.png) center/cover}
+.planner-cover {padding:clamp(30px,6vw,76px);border-radius:18px;background:linear-gradient(90deg,#15101beb,#15101ba8),url(/images/editorial/window-studio.webp) center/cover}
 .planner-cover div {max-width:580px}
 .planner-label,.setup-receipt li small {color:var(--aqua);font-weight:600}
 .planner fieldset {border:0;margin:26px 0}

@@ -51,24 +51,39 @@
     return r.json();
   }
 
-  /* Public pages render only published Supabase rows. Seed JSON remains an editorial
-     import source and is never silently presented as current public database content. */
+  // The archive contains records previously published with their cited sources.
+  // Current approved records take precedence over an archived edition.
+  async function loadArchive(key) {
+    const response = await fetch("/data/" + key + ".json");
+    if (!response.ok) throw new Error("Could not load " + key);
+    const collection = await response.json();
+    const records = collection[DB_LIST_KEY[key]].filter(record => record.sources?.length);
+    return { key, collection, records };
+  }
   const READY = (async () => {
-    if (!SB_ON) { dataLoadState = "unconfigured"; return; }
-    try {
-      const rows = await sbRest("/rest/v1/content?select=*&status=eq.published&editorial_status=eq.approved&order=updated_at.desc", {});
-      if (!Array.isArray(rows)) throw new Error("invalid public content response");
-      for (const r of rows) {
-        const dbKey = TYPE_TO_DB[r.type]; if (!dbKey || !DB[dbKey]) continue;
-        const list = DB[dbKey][DB_LIST_KEY[dbKey]];
-        if (list) list.push(rowToRecord(r));
+    const requests = Object.keys(DB).map(loadArchive);
+    const live = SB_ON ? sbRest("/rest/v1/content?select=*&status=eq.published&editorial_status=eq.approved&order=updated_at.desc", {}) : Promise.resolve([]);
+    const [current, ...archives] = await Promise.allSettled([live, ...requests]);
+    if (current.status === "fulfilled") {
+      for (const row of current.value) {
+        const key = TYPE_TO_DB[row.type];
+        if (key) DB[key][DB_LIST_KEY[key]].push(rowToRecord(row));
       }
-      dataLoadState = "ready";
-      console.info("[OpenWorld Atlas] loaded " + rows.length + " published records from Supabase");
-    } catch (e) {
-      dataLoadState = "error";
-      console.warn("[OpenWorld Atlas] public content could not be loaded:", e.message);
     }
+    for (const archive of archives) {
+      if (archive.status !== "fulfilled") continue;
+      const { key, collection, records } = archive.value;
+      const list = DB[key][DB_LIST_KEY[key]];
+      const known = new Set(list.map(item => item.id));
+      for (const record of records) {
+        if (known.has(record.id)) continue;
+        list.push({ ...record, archivedAt: collection.meta?.updated || record.date, name: record.name || record.title, archived: true,
+          verification: /UNCONFIRMED|SPECULATION/.test(record.verification) ? record.verification : "ARCHIVED_REPORT" });
+      }
+      if (key === "missions") DB.missions.chapters = collection.chapters;
+    }
+    dataLoadState = archives.some(a => a.status === "fulfilled") || (SB_ON && current.status === "fulfilled") ? "ready" : "error";
+    buildIndex();
   })();
 
   /* Supabase JS client (lazy, only for authenticated admin features) */
@@ -103,6 +118,7 @@
   const badge = st => {
     if (st === "OFFICIALLY_CONFIRMED") return '<span class="badge confirmed">● Confirmed by official sources</span>';
     if (st === "INDEPENDENTLY_VERIFIED") return '<span class="badge confirmed">● Independently verified</span>';
+    if (st === "ARCHIVED_REPORT") return '<span class="badge unconfirmed">Archived reporting</span>';
     if (st === "REPORTED") return '<span class="badge unconfirmed">● Reported</span>';
     if (st === "UNCONFIRMED") return '<span class="badge unconfirmed">● Unconfirmed</span>';
     if (st === "SPECULATION") return '<span class="badge speculation">● Speculation</span>';
@@ -116,6 +132,7 @@
     const links = arr.map(u => {
       try {
         const parsed = new URL(u);
+        if (!["http:", "https:"].includes(parsed.protocol)) return "";
         return `<a href="${esc(parsed.href)}" rel="noopener" target="_blank">${esc(parsed.hostname.replace("www.", ""))}</a>`;
       } catch (_) { return ""; }
     }).filter(Boolean);
@@ -401,7 +418,7 @@
     if (!cfg) { root.innerHTML = emptyState("Unknown content type."); return; }
     if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
     let it = cfg.data.find(x => x.id === id);
-    if (!it && new URLSearchParams(location.search).get("preview") === "1") {
+    if (new URLSearchParams(location.search).get("preview") === "1") {
       // Admin draft preview: authenticated session can read draft rows (RLS-enforced)
       it = await previewDraft(type, id);
       if (!it) { root.innerHTML = emptyState("Draft not found — sign in to the admin dashboard first."); return; }
@@ -416,7 +433,7 @@
         <div>Effect</div><div>${esc(it.effect)}</div>
         <div>How to unlock</div><div>${esc(it.unlock)}</div>
         <div>Input</div><div>${inputChips(it.input)}</div>
-        <div>Input status</div><div>${it.input && it.input.length ? 'Documented in the sources below' : 'No verified input published'}</div>
+        <div>Input status</div><div>${it.input && it.input.length ? 'Reported input; see cited sources' : 'No verified input published'}</div>
         <div>Testing record</div><div>${it.testedPlatform && it.testedVersion && it.testedAt ? esc(it.testedPlatform + " · " + it.testedVersion + " · " + it.testedAt) : '<span class="na">No OpenWorld Atlas test record published</span>'}</div>
       </div>`;
     } else if (type === "character") {
@@ -458,7 +475,7 @@
         <div>Notable places</div><div>${it.places && it.places.length ? it.places.map(esc).join(" · ") : '<span class="na">Not confirmed yet</span>'}</div>
         <div>Verification</div><div>${badge(it.verification)}</div>
       </div>
-      <figure class="shot"><img src="images/region-art.svg" alt="Original schematic artwork — ${esc(it.name)}"><figcaption>Original artwork (not an official map)</figcaption></figure>`;
+`;
     } else if (type === "mission") {
       body = `<div class="kv">
         <div>Chapter</div><div>${esc(it.chapter)} — ${esc((DB.missions.chapters.find(c => c.n === it.chapter) || {}).name || "")}</div>
@@ -474,8 +491,8 @@
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="${cfg.back}">${cfg.title}s</a> › <span aria-current="page">${esc(it.name)}</span></nav>
       <div class="page-head"><span class="updated">${cfg.title} · ${badge(it.verification)}${it.verifiedAt ? " · Reviewed " + esc(it.verifiedAt) : ""}</span><h1>${esc(it.name)}</h1></div>
       ${spoiler ? '<div class="spoiler">⚠️ <b>Story spoilers below.</b> <button class="spoiler-btn" id="spoiler-toggle">Reveal</button></div><div id="spoiler-zone" class="spoiler hidden-content">' : '<div id="spoiler-zone">'}
-      ${type === "cheat" || type === "vehicle" ? "" : ""}
-      ${it.summary ? `<p class="lead">${esc(it.summary)}</p>` : ""}
+      ${it.archived ? '<p class="archive-note">From the original Atlas archive. The sources below document the earlier report. Individual details may have changed since publication.</p>' : ""}
+      ${(it.summary || it.description || it.officialText) ? `<p class="lead">${esc(it.summary || it.description || it.officialText)}</p>` : ""}
       ${type === "cheat" ? body : ""}
       ${it.details ? `<p>${esc(it.details)}</p>` : ""}
       ${type !== "cheat" ? body : ""}
@@ -488,6 +505,7 @@
     injectLD(type, it, cfg);
   }
   function injectLD(type, it, cfg) {
+    if (it.archived) return;
     const s = document.createElement("script"); s.type = "application/ld+json";
     s.textContent = JSON.stringify({
       "@context": "https://schema.org", "@type": type === "cheat" ? "HowTo" : "Article",
@@ -518,12 +536,12 @@
       <div class="toolbar">
         <input id="cq" type="search" placeholder="Filter ${DB.cheats.cheats.length} cheats — name, effect or keyword…" aria-label="Filter cheats">
         <select id="ccat" aria-label="Category">${CATS.map(c => `<option value="${c[0]}">${c[1]}</option>`).join("")}</select>
-        <select id="csort" aria-label="Sort"><option value="az">A–Z</option><option value="cat">By category</option><option value="verified">Verified inputs first</option></select>
+        <select id="csort" aria-label="Sort"><option value="az">A–Z</option><option value="cat">By category</option><option value="verified">Listed inputs first</option></select>
         <span class="count" id="ccount"></span>
       </div>
-      <div class="callout warn"><b>Research notice:</b> This directory only displays entries approved for publication. Check each entry's source and platform notes before relying on it.</div>
+      <div class="callout warn"><b>Research notice:</b> Earlier source-linked reports carry an archive label. Check each entry's source and platform notes before relying on it.</div>
       <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Claim</th><th>Input</th><th>Verification</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
-      <p class="small">A code is shown only after it has passed editorial review. “Reported” does not mean tested by OpenWorld Atlas. See the <a href="/editorial-standards">Editorial Standards</a>.</p>`;
+      <p class="small">Archived inputs are reproduced from the earlier directory. “Reported” does not mean tested by OpenWorld Atlas. See the <a href="/editorial-standards">Editorial Standards</a>.</p>`;
     const apply = () => {
       let rows = DB.cheats.cheats.filter(c =>
         (state.cat === "all" || c.category === state.cat) &&
@@ -543,16 +561,8 @@
     if (how) how.innerHTML = `<ol class="steps">${DB.cheats.howTo.map(h => `<li>${esc(h)}</li>`).join("")}</ol>`;
   }
   function entityCard(type, it, url) {
-    const media = {
-      Character: ["images/editorial/character-illustration.png", "Illustrative anonymous profile artwork"],
-      Vehicle: ["images/editorial/vehicle-editorial.png", "Illustrative unbranded vehicle editorial image"],
-      Weapon: ["images/editorial/equipment-still-life.png", "Illustrative generic equipment still life"],
-      Location: ["images/editorial/location-marina.png", "Illustrative coastal environment"],
-      Mission: ["images/editorial/mission-waterfront.png", "Illustrative nighttime waterfront environment"],
-      Guide: ["images/editorial/guide-map-desk.png", "Illustrative map and guide desk scene"]
-    }[type];
-    return `<a class="card entity-card" href="${url}">
-      ${media ? `<img class="entity-image" src="${esc(it.imageUrl || media[0])}" alt="${esc(it.imageAlt || media[1])}" loading="lazy" width="1448" height="1086" onerror="this.onerror=null;this.src='${media[0]}'">` : `<span class="entity-art art-${type.toLowerCase().replace(/\s+/g, "-")}" aria-hidden="true"></span>`}
+    return `<a class="card entity-card record-tile" href="${url}">
+      <small class="record-kind">${esc(it.category || it.type || type)}</small>
       <span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(it.verification) ? "confirmed" : ["REPORTED", "UNCONFIRMED", "SPECULATION"].includes(it.verification) ? "unconfirmed" : "unavailable"}">${esc((it.verification || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span>
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;
@@ -612,7 +622,7 @@
       });
       document.querySelectorAll('main > section, .atlas-card, .setup-feature').forEach(item => observer.observe(item));
     }
-    document.querySelectorAll("a.logo").forEach(logo => {
+    document.querySelectorAll("footer a.logo").forEach(logo => {
       const href = logo.getAttribute("href") || "/";
       const asset = "/images/openworld-atlas-mark.svg";
       logo.setAttribute("aria-label", SITE.name + " — " + SITE.tagline);
@@ -624,7 +634,7 @@
     const rp = document.querySelector(".progress");
     if (rp) { const up = () => { const h = document.documentElement; rp.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%"; }; document.addEventListener("scroll", up, { passive: true }); up(); }
     contentRequestForm();
-    window.GTA.READY.then(() => { buildIndex(); document.dispatchEvent(new CustomEvent("gta:index-ready")); });
+    window.GTA.READY.then(() => { document.dispatchEvent(new CustomEvent("gta:index-ready")); });
     // page renderers
     const params = new URLSearchParams(location.search);
     if (document.getElementById("detail-root")) { READY.then(() => renderDetail(params.get("type"), params.get("id"))); }
@@ -636,12 +646,10 @@
     if (document.getElementById("locations-root")) READY.then(() => renderEntityGrid("#locations-root", DB.locations.regions, "Location", l => "/detail?type=location&id=" + l.id));
     if (document.getElementById("missions-root")) READY.then(() => renderEntityGrid("#missions-root", DB.missions.missions, "Mission", m => "/detail?type=mission&id=" + m.id));
     if (document.getElementById("guides-root")) READY.then(() => renderEntityGrid("#guides-root", DB.guides.guides, "Guide", g => "/detail?type=guide&id=" + g.id));
-    // interactive map schematic: click/keyboard a region → its detail page
-    document.querySelectorAll(".map-stage .region[data-href], .map-schematic .region[data-href]").forEach(g => {
-      g.classList.add("clickable");
-      g.addEventListener("click", () => { location.href = g.dataset.href; });
-      g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); location.href = g.dataset.href; } });
-      g.setAttribute("tabindex", "0"); g.setAttribute("role", "link");
+    const collectibles = document.getElementById("collectible-links");
+    if (collectibles) READY.then(() => {
+      const records = DB.cheats.cheats.filter(c => /collectible|flamingos/i.test(c.unlock || ""));
+      collectibles.innerHTML = records.map(c => `<a href="/detail?type=cheat&id=${encodeURIComponent(c.id)}">${esc(c.unlock)} <span>→ ${esc(c.name)}</span></a>`).join("");
     });
     // homepage dynamic sections
     if (document.getElementById("home-cheats")) READY.then(() => {

@@ -10,22 +10,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=7">
-</head>
+<link rel="stylesheet" href="/atlas.css?v=1"></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a>
-    <div class="nav-links"><a href="/setup">Setup planner</a>
-      <a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a>
-    </div>
-    <div class="nav-actions">
-      <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
-    </div>
-  </div>
-  <div class="mobile-menu"><a href="/setup">Setup planner</a><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations &amp; Map</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a></div>
-</nav>
+<nav class="mast" aria-label="Primary"><div class="mast-inner">
+  <a class="mast-brand" href="/"><img src="/images/openworld-atlas-mark.svg" width="32" height="32" alt="">OpenWorld <strong>Atlas</strong></a>
+  <details class="mast-directory"><summary>Browse atlas</summary><div><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/weapons">Weapons</a><a href="/cheats">Cheat codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/blog">Journal</a><a href="/setup">Setup planner</a><a href="/faq">FAQ</a><a href="/about">About</a><a href="/contact">Contact</a></div></details>
+  <div class="mast-shortcuts"><a href="/map">Locations</a><a href="/news">News</a><a href="/setup">Setup planner</a></div>
+  <a class="mast-search" href="/search" aria-label="Search the Atlas"><span aria-hidden="true">⌕</span> Search</a></div></nav>
 
 <main class="wrap" id="main">
   <div class="page-head">
@@ -51,37 +43,7 @@
 </footer>
 <script src="js/site-config.js"></script>
 <script src="js/env.js" onerror="this.remove"></script>
-    <script src="app.js?v=3"></script>
-<script>
-  GTA.READY.then(() => {
-    const inp = document.getElementById("page-search"), out = document.getElementById("page-results"), count = document.getElementById("search-count");
-    const q0 = new URLSearchParams(location.search).get("q");
-    if (q0) inp.value = q0;
-    const card = x => `<a class="card entity-card" href="${GTA.esc(x.r.url)}"><span class="badge ${x.r.badge === "CONFIRMED" ? "confirmed" : x.r.badge === "UNCONFIRMED" ? "unconfirmed" : "confirmed"}">${GTA.esc(x.r.type)}</span><div class="t">${GTA.esc(x.r.title)}</div><div class="d">${GTA.esc((x.r.desc || "").slice(0, 140))}</div></a>`;
-    const render = res => {
-      count.textContent = inp.value.trim() ? res.length + " results" : "";
-      if (!inp.value.trim()) { out.innerHTML = '<div class="empty"><div class="big">🔍</div>Type above, or press <code>/</code> anywhere on the site.</div>'; return; }
-      if (!res.length) { out.innerHTML = '<div class="empty"><div class="big">📭</div><b>No matching information found.</b><br><a href="/contact">Request this topic →</a></div>'; return; }
-      out.innerHTML = '<div class="grid g2">' + res.slice(0, 40).map(card).join("") + "</div>";
-    };
-    const run = async () => {
-      const q = inp.value;
-      if (!q.trim()) { render([]); return; }
-      // Server-backed search when the database is connected (no full-DB download);
-      // otherwise the bundled-index engine.
-      if (GTA.SB_ON) {
-        out.innerHTML = '<div class="skeleton"></div>';
-        try {
-          let res = await GTA.serverSearch(q, 40);
-          if (!res || !res.length) res = GTA.score(q).slice(0, 40); // broaden with client index
-          render(res); return;
-        } catch (e) { console.warn("server search failed, using local:", e.message); }
-      }
-      render(GTA.score(q).slice(0, 40));
-    };
-    let t; inp.addEventListener("input", () => { clearTimeout(t); t = setTimeout(run, 250); });
-    run();
-  });
-</script>
+    <script src="/app.js?v=8"></script>
+<script src="/js/search-page.js"></script>
 </body>
 </html>

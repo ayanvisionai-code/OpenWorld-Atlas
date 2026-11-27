@@ -12,10 +12,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=7">
-</head>
+<link rel="stylesheet" href="/atlas.css?v=1"></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav"><div class="nav-inner"><a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a><div class="nav-links"><a href="/setup">Setup planner</a><a href="/">Home</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/about">About</a></div><div class="nav-actions"><button class="search-btn" data-search-open aria-label="Search">Search</button><button class="menu-toggle" aria-label="Open menu">☰</button></div></div></nav>
+<nav class="mast" aria-label="Primary"><div class="mast-inner">
+  <a class="mast-brand" href="/"><img src="/images/openworld-atlas-mark.svg" width="32" height="32" alt="">OpenWorld <strong>Atlas</strong></a>
+  <details class="mast-directory"><summary>Browse atlas</summary><div><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/weapons">Weapons</a><a href="/cheats">Cheat codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/blog">Journal</a><a href="/setup">Setup planner</a><a href="/faq">FAQ</a><a href="/about">About</a><a href="/contact">Contact</a></div></details>
+  <div class="mast-shortcuts"><a href="/map">Locations</a><a href="/news">News</a><a href="/setup">Setup planner</a></div>
+  <a class="mast-search" href="/search" aria-label="Search the Atlas"><span aria-hidden="true">⌕</span> Search</a></div></nav>
 <main class="wrap" id="main">
   <nav class="crumbs"><a href="/">Home</a> › <span aria-current="page">Editorial Standards</span></nav>
   <div class="page-head"><span class="updated">Last updated November 26, 2026</span><h1>Editorial Standards</h1></div>
@@ -24,7 +28,7 @@
   <h2>How we research</h2>
   <p>We start with sources that directly support the claim: Rockstar Games, Take-Two, official platform pages, support documentation, and documented developer statements. Established journalism can be useful for reporting and direct testing. Social posts, leaks, search snippets and AI output are research leads, not evidence by themselves.</p>
 
-  <h2>Our labels</h2>
+  <h2>Our labels</h2><p><b>Archived reporting</b> identifies material from an earlier public edition. The original source links are preserved. An archive entry can include claims that still need independent confirmation. A newer approved record takes precedence in the directory.</p>
   <div class="grid g2">
     <div class="card"><h3>Officially confirmed</h3><p class="small">A relevant primary source supports the exact claim.</p></div>
     <div class="card"><h3>Independently verified</h3><p class="small">A documented, reproducible test supports the claim. The published record must identify the method, platform or version, and date.</p></div>
@@ -47,6 +51,6 @@
 <footer><div class="footer-inner"><div><a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a><p class="disclaimer">Independent, unofficial gaming information publication. Not affiliated with Rockstar Games or Take-Two Interactive.</p></div><div class="fnav"><a href="/contact">Corrections</a><a href="/editorial-standards">Editorial Standards</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/disclaimer">Disclaimer</a></div></div></footer>
 <script src="js/site-config.js"></script>
 <script src="js/env.js" onerror="this.remove"></script>
-<script src="app.js?v=6"></script>
+<script src="/app.js?v=8"></script>
 </body>
 </html>

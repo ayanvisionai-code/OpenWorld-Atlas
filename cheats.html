@@ -12,38 +12,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=7">
-</head>
+<link rel="stylesheet" href="/atlas.css?v=1"></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a>
-    <div class="nav-links"><a href="/setup">Setup planner</a>
-      <a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/cheats" class="active">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a>
-    </div>
-    <div class="nav-actions">
-      <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
-    </div>
-  </div>
-  <div class="mobile-menu"><a href="/setup">Setup planner</a><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations &amp; Map</a><a href="/missions">Missions</a><a href="/cheats" class="active">Cheat Codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a></div>
-</nav>
+<nav class="mast" aria-label="Primary"><div class="mast-inner">
+  <a class="mast-brand" href="/"><img src="/images/openworld-atlas-mark.svg" width="32" height="32" alt="">OpenWorld <strong>Atlas</strong></a>
+  <details class="mast-directory"><summary>Browse atlas</summary><div><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/weapons">Weapons</a><a href="/cheats" aria-current="page">Cheat codes</a><a href="/guides">Guides</a><a href="/news">News</a><a href="/blog">Journal</a><a href="/setup">Setup planner</a><a href="/faq">FAQ</a><a href="/about">About</a><a href="/contact">Contact</a></div></details>
+  <div class="mast-shortcuts"><a href="/map">Locations</a><a href="/news">News</a><a href="/setup">Setup planner</a></div>
+  <a class="mast-search" href="/search" aria-label="Search the Atlas"><span aria-hidden="true">⌕</span> Search</a></div></nav>
 
 <main class="wrap" id="main">
   <nav class="crumbs"><a href="/">Home</a> › <span aria-current="page">Cheat Codes</span></nav>
-  <div class="page-head">
-    <span class="updated">Editorial review required before publication</span>
-    <h1>GTA VI Cheat Code Research</h1>
-    <p class="lead">We publish a code only after a claim-specific source has been reviewed and an editor has approved the record. Old totals, inputs, unlock requirements and gameplay effects are under review.</p>
-  </div>
+  <header class="directory-cover"><div><h1>The code directory</h1><p>Filter the original research by effect, unlock condition or category. Open a record to inspect its sources.</p></div><figure><img src="/images/editorial/field-notebook.webp" alt=""><figcaption>Atlas illustration</figcaption></figure></header>
 
-  <section id="howto">
-    <h2>Research status</h2>
-    <p>No general entry method, money-cheat amount, unlock condition, or save/trophy consequence is presented here as verified until the supporting evidence has been checked.</p>
-  </section>
+
 
   <section id="directory">
-    <h2>Approved records</h2>
+    <h2>Cheat records</h2>
     <div id="cheat-root"></div>
   </section>
 
@@ -66,6 +51,6 @@
 </footer>
 <script src="js/site-config.js"></script>
 <script src="js/env.js" onerror="this.remove"></script>
-    <script src="app.js?v=3"></script>
+    <script src="/app.js?v=8"></script>
 </body>
 </html>

@@ -12,30 +12,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=7">
-</head>
+<link rel="stylesheet" href="/atlas.css?v=1"></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="logo" href="/"><span class="atlas-mark" aria-hidden="true">◈</span> OPENWORLD ATLAS</a>
-    <div class="nav-links"><a href="/setup">Setup planner</a>
-      <a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides" class="active">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a>
-    </div>
-    <div class="nav-actions">
-      <button class="search-btn" data-search-open aria-label="Search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="lbl">Search</span></button>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
-    </div>
-  </div>
-  <div class="mobile-menu"><a href="/setup">Setup planner</a><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/weapons">Weapons</a><a href="/map">Locations &amp; Map</a><a href="/missions">Missions</a><a href="/cheats">Cheat Codes</a><a href="/guides" class="active">Guides</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="/blog">Blog</a><a href="/about">About</a></div>
-</nav>
+<nav class="mast" aria-label="Primary"><div class="mast-inner">
+  <a class="mast-brand" href="/"><img src="/images/openworld-atlas-mark.svg" width="32" height="32" alt="">OpenWorld <strong>Atlas</strong></a>
+  <details class="mast-directory"><summary>Browse atlas</summary><div><a href="/">Home</a><a href="/characters">Characters</a><a href="/vehicles">Vehicles</a><a href="/map">Locations</a><a href="/missions">Missions</a><a href="/weapons">Weapons</a><a href="/cheats">Cheat codes</a><a href="/guides" aria-current="page">Guides</a><a href="/news">News</a><a href="/blog">Journal</a><a href="/setup">Setup planner</a><a href="/faq">FAQ</a><a href="/about">About</a><a href="/contact">Contact</a></div></details>
+  <div class="mast-shortcuts"><a href="/map">Locations</a><a href="/news">News</a><a href="/setup">Setup planner</a></div>
+  <a class="mast-search" href="/search" aria-label="Search the Atlas"><span aria-hidden="true">⌕</span> Search</a></div></nav>
 
 <main class="wrap" id="main">
   <nav class="crumbs"><a href="/">Home</a> › <span aria-current="page">Guides</span></nav>
-  <div class="page-head">
-    <span class="updated">Updated Nov 25, 2026 · Every guide opens with the direct answer + sources</span>
-    <h1>GTA 6 Guide Library</h1>
-    <p class="lead">Practical answers to real player questions — organized by category, each showing its verification status and linking its sources. Missing something? <a href="/contact">Request a guide</a>.</p>
-  </div>
+  <header class="directory-cover"><div><h1>Field guides</h1><p>Browse the original guides and the reporting behind each topic.</p></div><figure><img src="/images/editorial/window-studio.webp" alt=""><figcaption>Atlas illustration</figcaption></figure></header>
   <div class="grid g2" id="guides-root"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
 
   <div class="pager"><a class="btn ghost" href="/blog">In-depth blog articles →</a><a class="btn ghost" href="/faq">FAQ →</a></div>
@@ -52,6 +40,6 @@
 </footer>
 <script src="js/site-config.js"></script>
 <script src="js/env.js" onerror="this.remove"></script>
-    <script src="app.js?v=3"></script>
+    <script src="/app.js?v=8"></script>
 </body>
 </html>
