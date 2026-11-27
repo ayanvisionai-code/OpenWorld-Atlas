@@ -2,7 +2,10 @@ GTA.READY.then(() => {
     const inp = document.getElementById("page-search"), out = document.getElementById("page-results"), count = document.getElementById("search-count");
     const q0 = new URLSearchParams(location.search).get("q");
     if (q0) inp.value = q0;
-    const card = x => `<a class="card entity-card" href="${GTA.esc(x.r.url)}"><span class="badge ${x.r.badge === "CONFIRMED" ? "confirmed" : x.r.badge === "UNCONFIRMED" ? "unconfirmed" : "confirmed"}">${GTA.esc(x.r.type)}</span><div class="t">${GTA.esc(x.r.title)}</div><div class="d">${GTA.esc((x.r.desc || "").slice(0, 140))}</div></a>`;
+    const card = ({ r }) => `<a class="card entity-card record-tile" href="${GTA.esc(r.url)}">
+      <small class="record-kind">${GTA.esc(r.type)}</small>
+      ${r.badge === "ARCHIVED_REPORT" ? GTA.badge(r.badge) : ""}
+      <div class="t">${GTA.esc(r.title)}</div><div class="d">${GTA.esc((r.desc || "").slice(0, 140))}</div></a>`;
     const render = res => {
       count.textContent = inp.value.trim() ? res.length + " results" : "";
       if (!inp.value.trim()) { out.innerHTML = '<div class="empty"><div class="big">🔍</div>Type above, or press <code>/</code> anywhere on the site.</div>'; return; }

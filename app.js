@@ -118,7 +118,7 @@
   const badge = st => {
     if (st === "OFFICIALLY_CONFIRMED") return '<span class="badge confirmed">● Confirmed by official sources</span>';
     if (st === "INDEPENDENTLY_VERIFIED") return '<span class="badge confirmed">● Independently verified</span>';
-    if (st === "ARCHIVED_REPORT") return '<span class="badge unconfirmed">Archived reporting</span>';
+    if (st === "ARCHIVED_REPORT") return '<span class="badge archive-label" title="Previously published in the Atlas">From the archive</span>';
     if (st === "REPORTED") return '<span class="badge unconfirmed">● Reported</span>';
     if (st === "UNCONFIRMED") return '<span class="badge unconfirmed">● Unconfirmed</span>';
     if (st === "SPECULATION") return '<span class="badge speculation">● Speculation</span>';
@@ -126,7 +126,15 @@
     return '<span class="badge unavailable">● Unknown / not available</span>';
   };
   const na = v => (v == null || v === "" ? '<span class="na">Not confirmed yet</span>' : esc(v));
-  const inputChips = arr => arr ? '<div class="cheat">' + arr.map(d => `<span>${esc(d)}</span>`).join("") + "</div>" : '<span class="na">Input not yet discovered</span>';
+  const directionSymbols = { UP: "↑", RIGHT: "→", DOWN: "↓", LEFT: "←" };
+  function inputChips(inputs) {
+    if (!Array.isArray(inputs) || !inputs.length) return '<span class="na">Input unavailable</span>';
+    const steps = inputs.map((input, index) => {
+      const symbol = directionSymbols[input];
+      return `<li><small aria-hidden="true">${index + 1}</small><kbd aria-label="${esc(input)}">${esc(symbol || input)}</kbd></li>`;
+    });
+    return '<ol class="code-sequence" aria-label="Button sequence in input order">' + steps.join("") + "</ol>";
+  }
   const srcLine = arr => {
     if (!Array.isArray(arr) || !arr.length) return "";
     const links = arr.map(u => {
@@ -337,10 +345,8 @@
   }
   function initSearchUI() {
     document.querySelectorAll("[data-search-open]").forEach(b => b.addEventListener("click", () => openSearch(b.dataset.prefill || "")));
-    document.addEventListener("keydown", e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); openSearch(); }
-      if (e.key === "Escape") closeSearch();
-      if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); openSearch(); }
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeSearch();
     });
   }
 
@@ -491,7 +497,7 @@
       <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="${cfg.back}">${cfg.title}s</a> › <span aria-current="page">${esc(it.name)}</span></nav>
       <div class="page-head"><span class="updated">${cfg.title} · ${badge(it.verification)}${it.verifiedAt ? " · Reviewed " + esc(it.verifiedAt) : ""}</span><h1>${esc(it.name)}</h1></div>
       ${spoiler ? '<div class="spoiler">⚠️ <b>Story spoilers below.</b> <button class="spoiler-btn" id="spoiler-toggle">Reveal</button></div><div id="spoiler-zone" class="spoiler hidden-content">' : '<div id="spoiler-zone">'}
-      ${it.archived ? '<p class="archive-note">From the original Atlas archive. The sources below document the earlier report. Individual details may have changed since publication.</p>' : ""}
+      ${it.archived ? '<p class="archive-note">This entry preserves the original report and its citations. Details may have changed since publication.</p>' : ""}
       ${(it.summary || it.description || it.officialText) ? `<p class="lead">${esc(it.summary || it.description || it.officialText)}</p>` : ""}
       ${type === "cheat" ? body : ""}
       ${it.details ? `<p>${esc(it.details)}</p>` : ""}
@@ -539,8 +545,8 @@
         <select id="csort" aria-label="Sort"><option value="az">A–Z</option><option value="cat">By category</option><option value="verified">Listed inputs first</option></select>
         <span class="count" id="ccount"></span>
       </div>
-      <div class="callout warn"><b>Research notice:</b> Earlier source-linked reports carry an archive label. Check each entry's source and platform notes before relying on it.</div>
-      <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Claim</th><th>Input</th><th>Verification</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
+      <div class="callout warn"><b>Research notice:</b> Read each numbered button from left to right. Check each entry's source and platform notes before relying on it.</div>
+      <div class="table-wrap"><table><thead><tr><th>Cheat</th><th>Claim</th><th>Button order</th><th>Verification</th><th></th></tr></thead><tbody id="cbody"></tbody></table></div>
       <p class="small">Archived inputs are reproduced from the earlier directory. “Reported” does not mean tested by OpenWorld Atlas. See the <a href="/editorial-standards">Editorial Standards</a>.</p>`;
     const apply = () => {
       let rows = DB.cheats.cheats.filter(c =>
@@ -563,7 +569,7 @@
   function entityCard(type, it, url) {
     return `<a class="card entity-card record-tile" href="${url}">
       <small class="record-kind">${esc(it.category || it.type || type)}</small>
-      <span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(it.verification) ? "confirmed" : ["REPORTED", "UNCONFIRMED", "SPECULATION"].includes(it.verification) ? "unconfirmed" : "unavailable"}">${esc((it.verification || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span>
+      ${badge(it.verification)}
       <div class="t">${esc(it.name || it.title)}</div><div class="d">${esc((it.summary || it.effect || it.description || it.officialText || "").slice(0, 130))}</div>
       <div class="more" style="margin-top:10px;color:var(--accent)">${type} details →</div></a>`;
   }
@@ -579,7 +585,7 @@
     })) : [];
     if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
     if (!items.length) { root.innerHTML = emptyState("No published news updates are available yet. Check back after editorial review."); return; }
-    root.innerHTML = items.map(i => `<div class="card"><span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(i.s) ? "confirmed" : ["REPORTED", "UNCONFIRMED", "SPECULATION"].includes(i.s) ? "unconfirmed" : "unavailable"}">${esc((i.s || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span>
+    root.innerHTML = items.map(i => `<div class="card">${badge(i.s)}
       <div class="t" style="font-weight:700;margin:6px 0">${esc(i.t)}</div><div class="small">${esc(i.d)} — ${esc(i.x)}</div>
       <div class="srcline"><a href="${esc(i.u)}">Read update →</a></div></div>`).join("");
   }
@@ -656,7 +662,7 @@
       const root = document.getElementById("home-cheats");
       if (dataLoadState === "error" || dataLoadState === "unconfigured") { root.innerHTML = unavailableState(); return; }
       const top = DB.cheats.cheats.slice(0, 5);
-      root.innerHTML = top.map(c => `<div class="card"><span class="badge ${["OFFICIALLY_CONFIRMED", "INDEPENDENTLY_VERIFIED"].includes(c.verification) ? "confirmed" : "unconfirmed"}">${esc((c.verification || "UNKNOWN").replace(/_/g, " ").toLowerCase())}</span><div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="small">${esc(c.effect || c.summary || "")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("") || emptyState("No published cheat-code records are available yet.");
+      root.innerHTML = top.map(c => `<div class="card">${badge(c.verification)}<div class="t" style="font-weight:700;margin:6px 0">${esc(c.name)}</div><div class="small">${esc(c.effect || c.summary || "")}</div><a class="small" href="/detail?type=cheat&id=${esc(c.id)}">Details →</a></div>`).join("") || emptyState("No published cheat-code records are available yet.");
     });
     if (document.getElementById("home-chars")) READY.then(() => renderEntityGrid("#home-chars", DB.characters.characters.slice(0, 3), "Character", c => "/detail?type=character&id=" + c.id));
   });
