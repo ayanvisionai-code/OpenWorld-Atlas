@@ -523,7 +523,7 @@
 
   /* ---------------- List renderers ---------------- */
   function emptyState(msg) { return `<div class="empty"><div class="big">📭</div>${msg || "Nothing published here yet."}</div>`; }
-  function unavailableState() { return `<div class="empty"><div class="big">↻</div><b>We couldn't load this information.</b><br>Please try again.<br><button class="btn ghost sm" type="button" onclick="location.reload()">Retry</button></div>`; }
+  function unavailableState() { return `<div class="empty"><div class="big">↻</div><b>We couldn't load this information.</b><br>Please try again.<br><button class="btn ghost sm" type="button" data-action="reload">Retry</button></div>`; }
   function cheatRow(c) {
     return `<tr>
       <td><b>${esc(c.name)}</b><br><span class="small">${esc(c.effect)}</span></td>
@@ -637,6 +637,10 @@
     const mt = document.querySelector(".menu-toggle"), mm = document.querySelector(".mobile-menu");
     if (mt && mm) mt.addEventListener("click", () => mm.classList.toggle("open"));
     initSearchUI();
+    document.addEventListener("click", e => {
+      const btn = e.target && e.target.closest ? e.target.closest("button[data-action='reload']") : null;
+      if (btn) location.reload();
+    });
     const rp = document.querySelector(".progress");
     if (rp) { const up = () => { const h = document.documentElement; rp.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%"; }; document.addEventListener("scroll", up, { passive: true }); up(); }
     contentRequestForm();
